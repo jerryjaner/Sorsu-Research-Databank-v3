@@ -21,14 +21,13 @@ class Research extends Model
         'course',
         'major',
         'academic_year',
-        'publication',
+        'publication_status',
         'description',
         'abstract_file_name',
         'abstract_path',
         'research_paper_file_name',
         'research_paper_path',
     ];
-
     // Optional: define relations
     public function campus()
     {

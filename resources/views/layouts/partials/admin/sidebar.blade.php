@@ -5,7 +5,7 @@
         data-kt-scroll-wrappers="#kt_aside_menu" data-kt-scroll-dependencies="#kt_aside_logo, #kt_aside_footer"
         data-kt-scroll-offset="20px">
         <div class="menu-item mb-1 ">
-            <a class="menu-link"  href="{{ route('admin.dashboard') }}">
+           <a class="menu-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
                 <span class="menu-icon">
                     <!--begin::Svg Icon | path: icons/duotone/Layout/Layout-4-blocks.svg-->
                     <span class="svg-icon svg-icon-2">
@@ -51,10 +51,8 @@
             </span>
             <div class="menu-sub menu-sub-accordion">
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('admin.user-accounts.index') }}">
-                        <span class="menu-bullet">
-                            <span class="bullet bullet-dot"></span>
-                        </span>
+                    <a class="menu-link {{ request()->routeIs('admin.user-accounts.index') ? 'active' : '' }}" href="{{ route('admin.user-accounts.index') }}">
+                        <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
                         <span class="menu-title">User Accounts</span>
                     </a>
                 </div>
@@ -78,17 +76,14 @@
             </span>
             <div class="menu-sub menu-sub-accordion">
                 <div class="menu-item">
-                    <a class="menu-link" href="{{ route('admin.researches.index') }}">
-                        <span class="menu-bullet">
-                            <span class="bullet bullet-dot"></span>
-                        </span>
+                   <a class="menu-link {{ request()->routeIs('admin.researches.index') ? 'active' : '' }}" href="{{ route('admin.researches.index') }}">
+                        <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
                         <span class="menu-title">Research Projects</span>
                     </a>
                 </div>
             </div>
         </div>
-        <div data-kt-menu-trigger="click"
-            class="menu-item menu-accordion {{ request()->routeIs('admin.campuses.*') || request()->routeIs('admin.departments.*') ? 'show' : '' }}">
+         <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('admin.campuses.*') || request()->routeIs('admin.departments.*') || request()->routeIs('admin.college.*') ? 'show' : '' }}">
             <span class="menu-link">
                 <span class="menu-icon">
                     <!--begin::Svg Icon | path: icons/duotone/Interface/Lock.svg-->
@@ -119,7 +114,7 @@
 
                     <div class="menu-sub menu-sub-accordion">
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('admin.campuses.index') }}">
+                           <a class="menu-link {{ request()->routeIs('admin.campuses.index') ? 'active' : '' }}" href="{{ route('admin.campuses.index') }}">
                                 <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
                                 View Campuses
                             </a>
@@ -139,7 +134,7 @@
 
                     <div class="menu-sub menu-sub-accordion">
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('admin.college.index') }}">
+                            <a class="menu-link {{ request()->routeIs('admin.college.index') ? 'active' : '' }}" href="{{ route('admin.college.index') }}">
                                 <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
                                 View College
                             </a>
@@ -149,8 +144,7 @@
 
             </div>
         </div>
-        <div data-kt-menu-trigger="click"
-            class="menu-item menu-accordion {{ request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*') ? 'show' : '' }}">
+       <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*') ? 'show' : '' }}">
             <span class="menu-link">
                 <span class="menu-icon">
                     <!--begin::Svg Icon | path: icons/duotone/Interface/Lock.svg-->
@@ -185,8 +179,7 @@
 
                     <div class="menu-sub menu-sub-accordion">
                         <div class="menu-item">
-                            <a class="menu-link {{ request()->routeIs('admin.roles.index') ? 'active' : '' }}"
-                                href="{{ route('admin.roles.index') }}">
+                            <a class="menu-link {{ request()->routeIs('admin.roles.index') ? 'active' : '' }}" href="{{ route('admin.roles.index') }}">
                                 <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
                                 View Roles
                             </a>
@@ -207,8 +200,7 @@
 
                     <div class="menu-sub menu-sub-accordion">
                         <div class="menu-item">
-                            <a class="menu-link {{ request()->routeIs('admin.permissions.index') ? 'active' : '' }}"
-                                href="{{ route('admin.permissions.index') }}">
+                            <a class="menu-link {{ request()->routeIs('admin.permissions.index') ? 'active' : '' }}" href="{{ route('admin.permissions.index') }}">
                                 <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
                                 View Permissions
                             </a>

@@ -32,6 +32,7 @@ class ResearchUpdateRequest extends FormRequest
             'course' => 'required|string|max:255',
             'major' => 'nullable|string|max:255',
             'academic_year' => 'required|string|max:255',
+            'publication_status' => 'required|in:published,unpublished',
             'publication' => 'required|string|max:255',
             'description' => 'required|string',
             'abstract_document' => 'nullable|file|mimes:pdf|max:10240',

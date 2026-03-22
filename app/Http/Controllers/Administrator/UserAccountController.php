@@ -245,7 +245,6 @@ class UserAccountController extends Controller
             'role'     => 'required|array', // plural
             'phone'    => 'required|string|max:20',
             'address'  => 'required|string|max:255',
-            'deparment_id' => 'required',
             'campus_id' => 'required',
         ]);
 
