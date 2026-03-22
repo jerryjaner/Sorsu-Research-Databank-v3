@@ -1,6 +1,15 @@
 @extends('layouts.admin')
 @section('title', 'User Management')
 
+@section('page-title', 'User Management')
+
+@section('breadcrumb')
+<li class="breadcrumb-item text-muted">
+    <a href="{{ route('homepage') }}" class="text-muted text-hover-primary">Home</a>
+</li>
+<li class="breadcrumb-item text-dark">User</li>
+@endsection
+
 @section('content')
     <div class="container" id="kt_content_container">
         <div class="row g-xl-8">
@@ -123,10 +132,10 @@
                                         </div>
 
                                         <div class="fv-row mb-10">
-                                            <label class="form-label">Department</label>
+                                            <label class="form-label">College</label>
                                             <select name="department_id" id="department_select"
                                                 class="form-select form-select-solid">
-                                                <option value="">Select Department</option>
+                                                <option value="">Select College</option>
                                             </select>
                                             <span class="text-danger department_id_error"></span>
                                         </div>
@@ -182,7 +191,7 @@
                                         <p><strong>Phone:</strong> <span id="review_phone"></span></p>
                                         <p><strong>Address:</strong> <span id="review_address"></span></p>
                                         <p><strong>Campus:</strong> <span id="review_campus"></span></p>
-                                        <p><strong>Department:</strong> <span id="review_department"></span></p>
+                                        <p><strong>College:</strong> <span id="review_department"></span></p>
                                         <p><strong>Role:</strong> <span id="review_role"></span></p>
                                     </div>
 
@@ -335,7 +344,7 @@
 
                     if (campusId) {
                         $.get('/user-accounts/departments/' + campusId, function(data) {
-                            var options = '<option value="">Select Department</option>';
+                            var options = '<option value="">Select College</option>';
                             data.forEach(function(dept) {
                                 options += `<option value="${dept.id}">${dept.name}</option>`;
                             });
@@ -349,7 +358,7 @@
                             }
                         });
                     } else {
-                        $('#department_select').html('<option value="">Select Department</option>');
+                        $('#department_select').html('<option value="">Select College</option>');
                     }
                 });
 

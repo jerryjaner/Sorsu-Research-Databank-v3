@@ -1,7 +1,7 @@
 <!--begin::Container-->
 <div class="container-fluid d-flex align-items-stretch justify-content-between" id="kt_header_container">
     <!--begin::Page title-->
-    <div class="page-title d-flex flex-column align-items-start justify-content-center flex-wrap me-2 mb-5 mb-lg-0"
+    {{-- <div class="page-title d-flex flex-column align-items-start justify-content-center flex-wrap me-2 mb-5 mb-lg-0"
         data-kt-swapper="true" data-kt-swapper-mode="prepend"
         data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
         <!--begin::Heading-->
@@ -17,6 +17,23 @@
             <li class="breadcrumb-item text-dark">Dashboards</li>
         </ul>
         <!--end::Breadcrumb-->
+    </div> --}}
+    <div class="page-title d-flex flex-column align-items-start justify-content-center flex-wrap me-2 mb-5 mb-lg-0"
+        data-kt-swapper="true" data-kt-swapper-mode="prepend"
+        data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
+
+        <!-- Title -->
+        <h1 class="text-dark fw-bolder mt-1 mb-1 fs-2">
+            @yield('page-title', 'Dashboard')
+            <small class="text-muted fs-6 fw-normal ms-1">
+                @yield('page-subtitle')
+            </small>
+        </h1>
+
+        <!-- Breadcrumb -->
+        <ul class="breadcrumb fw-bold fs-base mb-1">
+            @yield('breadcrumb')
+        </ul>
     </div>
     <!--end::Page title=-->
     <!--begin::Logo bar-->
@@ -40,13 +57,9 @@
         </div>
         <!--end::Aside Toggle-->
         <!--begin::Logo-->
-       <a href="{{ route('admin.dashboard') }}" class="d-lg-none">
-            <img
-                alt="Logo"
-                src="{{ asset('administrator/assets/media/logos/ssu-logo.png') }}"
-                class="img-fluid"
-                style="max-height: 40px; object-fit: contain;"
-            />
+        <a href="{{ route('admin.dashboard') }}" class="d-lg-none">
+            <img alt="Logo" src="{{ asset('administrator/assets/media/logos/ssu-logo.png') }}" class="img-fluid"
+                style="max-height: 40px; object-fit: contain;" />
         </a>
         <!--end::Logo-->
     </div>
@@ -99,18 +112,16 @@
                                         <!--begin::Svg Icon | path: icons/duotone/Home/Library.svg-->
                                         <span class="svg-icon svg-icon-warning svg-icon-1">
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                height="24px" viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none"
-                                                    fill-rule="evenodd">
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                     <rect x="0" y="0" width="24" height="24" />
                                                     <path
                                                         d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z"
                                                         fill="#000000" />
                                                     <rect fill="#000000" opacity="0.3"
                                                         transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519)"
-                                                        x="16.3255682" y="2.94551858" width="3" height="18"
-                                                        rx="1" />
+                                                        x="16.3255682" y="2.94551858" width="3" height="18" rx="1" />
                                                 </g>
                                             </svg>
                                         </span>
@@ -135,10 +146,9 @@
                                         <!--begin::Svg Icon | path: icons/duotone/Shopping/Credit-card.svg-->
                                         <span class="svg-icon svg-icon-danger svg-icon-1">
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                height="24px" viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none"
-                                                    fill-rule="evenodd">
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                     <rect x="0" y="0" width="24" height="24" />
                                                     <rect fill="#000000" opacity="0.3" x="2" y="5" width="20"
                                                         height="14" rx="2" />
@@ -169,10 +179,9 @@
                                         <!--begin::Svg Icon | path: icons/duotone/Shopping/Cart3.svg-->
                                         <span class="svg-icon svg-icon-primary svg-icon-1">
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                height="24px" viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none"
-                                                    fill-rule="evenodd">
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                     <rect x="0" y="0" width="24" height="24" />
                                                     <path
                                                         d="M12,4.56204994 L7.76822128,9.6401844 C7.4146572,10.0644613 6.7840925,10.1217854 6.3598156,9.76822128 C5.9355387,9.4146572 5.87821464,8.7840925 6.23177872,8.3598156 L11.2317787,2.3598156 C11.6315738,1.88006147 12.3684262,1.88006147 12.7682213,2.3598156 L17.7682213,8.3598156 C18.1217854,8.7840925 18.0644613,9.4146572 17.6401844,9.76822128 C17.2159075,10.1217854 16.5853428,10.0644613 16.2317787,9.6401844 L12,4.56204994 Z"
@@ -204,10 +213,9 @@
                                         <!--begin::Svg Icon | path: icons/duotone/General/User.svg-->
                                         <span class="svg-icon svg-icon-info svg-icon-1">
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                height="24px" viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none"
-                                                    fill-rule="evenodd">
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                     <polygon points="0 0 24 0 24 24 0 24" />
                                                     <path
                                                         d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z"
@@ -239,16 +247,15 @@
                                         <!--begin::Svg Icon | path: icons/duotone/General/Like.svg-->
                                         <span class="svg-icon svg-icon-primary svg-icon-1">
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                height="24px" viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none"
-                                                    fill-rule="evenodd">
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                     <rect x="0" y="0" width="24" height="24" />
                                                     <path
                                                         d="M9,10 L9,19 L10.1525987,19.3841996 C11.3761964,19.7920655 12.6575468,20 13.9473319,20 L17.5405883,20 C18.9706314,20 20.2018758,18.990621 20.4823303,17.5883484 L21.231529,13.8423552 C21.5564648,12.217676 20.5028146,10.6372006 18.8781353,10.3122648 C18.6189212,10.260422 18.353992,10.2430672 18.0902299,10.2606513 L14.5,10.5 L14.8641964,6.49383981 C14.9326895,5.74041495 14.3774427,5.07411874 13.6240179,5.00562558 C13.5827848,5.00187712 13.5414031,5 13.5,5 L13.5,5 C12.5694044,5 11.7070439,5.48826024 11.2282564,6.28623939 L9,10 Z"
                                                         fill="#000000" />
-                                                    <rect fill="#000000" opacity="0.3" x="2" y="9" width="5"
-                                                        height="11" rx="1" />
+                                                    <rect fill="#000000" opacity="0.3" x="2" y="9" width="5" height="11"
+                                                        rx="1" />
                                                 </g>
                                             </svg>
                                         </span>
@@ -273,16 +280,15 @@
                                         <!--begin::Svg Icon | path: icons/duotone/General/Save.svg-->
                                         <span class="svg-icon svg-icon-success svg-icon-1">
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                height="24px" viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none"
-                                                    fill-rule="evenodd">
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                     <polygon points="0 0 24 0 24 24 0 24" />
                                                     <path
                                                         d="M17,4 L6,4 C4.79111111,4 4,4.7 4,6 L4,18 C4,19.3 4.79111111,20 6,20 L18,20 C19.2,20 20,19.3 20,18 L20,7.20710678 C20,7.07449854 19.9473216,6.94732158 19.8535534,6.85355339 L17,4 Z M17,11 L7,11 L7,4 L17,4 L17,11 Z"
                                                         fill="#000000" fill-rule="nonzero" />
-                                                    <rect fill="#000000" opacity="0.3" x="12" y="4" width="3"
-                                                        height="5" rx="0.5" />
+                                                    <rect fill="#000000" opacity="0.3" x="12" y="4" width="3" height="5"
+                                                        rx="0.5" />
                                                 </g>
                                             </svg>
                                         </span>
@@ -307,10 +313,9 @@
                                         <!--begin::Svg Icon | path: icons/duotone/General/Settings-2.svg-->
                                         <span class="svg-icon svg-icon-warning svg-icon-1">
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                height="24px" viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none"
-                                                    fill-rule="evenodd">
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                     <rect x="0" y="0" width="24" height="24" />
                                                     <path
                                                         d="M5,8.6862915 L5,5 L8.6862915,5 L11.5857864,2.10050506 L14.4852814,5 L19,5 L19,9.51471863 L21.4852814,12 L19,14.4852814 L19,19 L14.4852814,19 L11.5857864,21.8994949 L8.6862915,19 L5,19 L5,15.3137085 L1.6862915,12 L5,8.6862915 Z M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z"
@@ -339,10 +344,9 @@
                                         <!--begin::Svg Icon | path: icons/duotone/General/Trash.svg-->
                                         <span class="svg-icon svg-icon-danger svg-icon-1">
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                height="24px" viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none"
-                                                    fill-rule="evenodd">
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                     <rect x="0" y="0" width="24" height="24" />
                                                     <path
                                                         d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z"
@@ -374,10 +378,9 @@
                                         <!--begin::Svg Icon | path: icons/duotone/General/Update.svg-->
                                         <span class="svg-icon svg-icon-primary svg-icon-1">
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                height="24px" viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none"
-                                                    fill-rule="evenodd">
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                     <rect x="0" y="0" width="24" height="24" />
                                                     <path
                                                         d="M8.43296491,7.17429118 L9.40782327,7.85689436 C9.49616631,7.91875282 9.56214077,8.00751728 9.5959027,8.10994332 C9.68235021,8.37220548 9.53982427,8.65489052 9.27756211,8.74133803 L5.89079566,9.85769242 C5.84469033,9.87288977 5.79661753,9.8812917 5.74809064,9.88263369 C5.4720538,9.8902674 5.24209339,9.67268366 5.23445968,9.39664682 L5.13610134,5.83998177 C5.13313425,5.73269078 5.16477113,5.62729274 5.22633424,5.53937151 C5.384723,5.31316892 5.69649589,5.25819495 5.92269848,5.4165837 L6.72910242,5.98123382 C8.16546398,4.72182424 10.0239806,4 12,4 C16.418278,4 20,7.581722 20,12 C20,16.418278 16.418278,20 12,20 C7.581722,20 4,16.418278 4,12 L6,12 C6,15.3137085 8.6862915,18 12,18 C15.3137085,18 18,15.3137085 18,12 C18,8.6862915 15.3137085,6 12,6 C10.6885336,6 9.44767246,6.42282109 8.43296491,7.17429118 Z"
@@ -406,10 +409,9 @@
                                         <!--begin::Svg Icon | path: icons/duotone/Shopping/Credit-card.svg-->
                                         <span class="svg-icon svg-icon-warning svg-icon-1">
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                                                height="24px" viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none"
-                                                    fill-rule="evenodd">
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                     <rect x="0" y="0" width="24" height="24" />
                                                     <rect fill="#000000" opacity="0.3" x="2" y="5" width="20"
                                                         height="14" rx="2" />
@@ -488,12 +490,12 @@
                 <!--begin::Menu item-->
                 <div class="menu-item px-5">
                     <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <a class="menu-link px-5" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault(); this.closest('form').submit();">
-                                        {{ __('Sign Out') }}
-                                    </a>
-                                </form>
+                        @csrf
+                        <a class="menu-link px-5" href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); this.closest('form').submit();">
+                            {{ __('Sign Out') }}
+                        </a>
+                    </form>
                 </div>
                 <!--end::Menu item-->
             </div>

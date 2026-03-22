@@ -1,5 +1,15 @@
 @extends('layouts.admin')
 @section('title', 'Dashboard Management')
+
+@section('page-title', 'Dashboard Management')
+
+@section('breadcrumb')
+<li class="breadcrumb-item text-muted">
+    <a href="{{ route('homepage') }}" class="text-muted text-hover-primary">Home</a>
+</li>
+<li class="breadcrumb-item text-dark">Dashboard</li>
+@endsection
+
 @section('content')
 <div class="content d-flex flex-column flex-column-fluid fs-6" id="kt_content">
     <!--begin::Container-->

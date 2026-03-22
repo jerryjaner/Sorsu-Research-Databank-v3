@@ -1,5 +1,14 @@
 @extends('layouts.admin')
 @section('title', 'Research Management')
+
+@section('page-title', 'Research Management')
+
+@section('breadcrumb')
+<li class="breadcrumb-item text-muted">
+    <a href="{{ route('homepage') }}" class="text-muted text-hover-primary">Home</a>
+</li>
+<li class="breadcrumb-item text-dark">Research</li>
+@endsection
 @section('content')
     <div class="container" id="kt_content_container">
 
@@ -139,10 +148,10 @@
                                     <span class="text-danger error-text campus_id_error"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Department <span class="text-danger">*</span></label>
+                                    <label class="form-label">College <span class="text-danger">*</span></label>
                                     <select class="form-select form-select-solid" name="department_id"
                                         id="departmentSelect">
-                                        <option value="">Select Department</option>
+                                        <option value="">Select College</option>
                                         <!-- Options will be dynamically loaded -->
                                     </select>
                                     <span class="text-danger error-text department_id_error"></span>
@@ -292,7 +301,7 @@
                                         readonly>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Department</label>
+                                    <label class="form-label">College</label>
                                     <input type="text" class="form-control form-control-solid" id="view_department"
                                         readonly>
                                 </div>
@@ -449,10 +458,10 @@
                                     <span class="text-danger error-text campus_id_error"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">Department <span class="text-danger">*</span></label>
+                                    <label class="form-label">College <span class="text-danger">*</span></label>
                                     <select class="form-select form-select-solid" name="department_id"
                                         id="edit_departmentSelect">
-                                        <option value="">Select Department</option>
+                                        <option value="">Select College</option>
                                     </select>
                                     <span class="text-danger error-text department_id_error"></span>
                                 </div>
@@ -578,7 +587,7 @@
                             success: function(data) {
                                 var deptSelect = $('#departmentSelect');
                                 deptSelect.empty();
-                                deptSelect.append('<option value="">Select Department</option>');
+                                deptSelect.append('<option value="">Select College</option>');
                                 $.each(data, function(key, value) {
                                     deptSelect.append('<option value="' + value.id + '">' +
                                         value.name + '</option>');
@@ -587,7 +596,7 @@
                         });
                     } else {
                         $('#departmentSelect').empty();
-                        $('#departmentSelect').append('<option value="">Select Department</option>');
+                        $('#departmentSelect').append('<option value="">Select College</option>');
                     }
                 });
 
@@ -797,7 +806,7 @@
                             $.get('/researches/departments/' + res.campus.id, function(data) {
                                 let deptSelect = $('#edit_departmentSelect');
                                 deptSelect.empty().append(
-                                    '<option value="">Select Department</option>');
+                                    '<option value="">Select College</option>');
 
                                 $.each(data, function(key, value) {
                                     deptSelect.append('<option value="' + value.id +
@@ -817,7 +826,7 @@
                 $('#edit_campusSelect').on('change', function() {
                     let campusId = $(this).val();
                     let deptSelect = $('#edit_departmentSelect');
-                    deptSelect.empty().append('<option value="">Select Department</option>');
+                    deptSelect.empty().append('<option value="">Select College</option>');
 
                     if (campusId) {
                         $.get('/researches/departments/' + campusId, function(data) {
@@ -840,7 +849,7 @@
                         'Please wait <span class="fas fa-spinner fa-spin align-middle ms-2"></span>');
                     $('#btn_edit_submit').attr("disabled", true);
                     $.ajax({
-                        url: 'researches/update/' + id, // Assuming standard resource route
+                        url: 'researches/update/' + id,
                         type: 'POST',
                         data: formData,
                         processData: false,

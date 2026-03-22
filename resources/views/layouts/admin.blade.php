@@ -15,12 +15,9 @@ License: For each use you must have a valid license purchased only from above li
 	<head><base href="">
 		<meta charset="utf-8" />
 		<title>@yield('title')</title>
-		<meta name="description" content="Rider admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets." />
-		<meta name="keywords" content="Rider, bootstrap, bootstrap 5, dmin themes, free admin themes, bootstrap admin, bootstrap dashboard" />
-		<link rel="canonical" href="Https://preview.keenthemes.com/rider-free" />
         <meta name="csrf-token" content="{{ csrf_token() }}">
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="shortcut icon" href="{{ URL::to('administrator/assets/media/logos/favicon.ico') }}" />
+		<link rel="shortcut icon" href="{{ asset('administrator/assets/media/logos/ssu-logo.png') }}" />
 		<!--begin::Fonts-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700" />
 		<!--end::Fonts-->

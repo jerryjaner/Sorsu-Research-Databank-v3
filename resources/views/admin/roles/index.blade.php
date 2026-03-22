@@ -1,5 +1,14 @@
 @extends('layouts.admin')
 @section('title', 'Role Management')
+
+@section('page-title', 'Role Management')
+
+@section('breadcrumb')
+<li class="breadcrumb-item text-muted">
+    <a href="{{ route('homepage') }}" class="text-muted text-hover-primary">Home</a>
+</li>
+<li class="breadcrumb-item text-dark">Role</li>
+@endsection
 @section('content')
     <div class="container" id="kt_content_container">
 
