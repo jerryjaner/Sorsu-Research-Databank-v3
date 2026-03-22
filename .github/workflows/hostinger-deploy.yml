@@ -3,51 +3,28 @@ name: HostingerDeploy
 on:
   push:
     branches: [main]
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      # Setup PHP
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-
-      # Checkout repository
       - uses: actions/checkout@v2
-
-      # Setup Node (use version 22 for Vite)
       - uses: actions/setup-node@v3
         with:
           node-version: 22
-
-      # Copy environment variables (optional: replace with real .env from secrets)
       - name: Copy .env
         run: cp .env.example .env
-
-      # Install PHP dependencies
-      - name: Install composer dependencies
+      - name: Install composer Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-
-      # Install Node dependencies
       - name: Install node dependencies
         run: npm ci
-
-      # Build frontend (Vite)
-      - name: Build frontend
-        run: npm run build
-
-      # Install SSH key for deployment
-      - name: Install SSH key
+      - name: Setup Project
         run: |
-          mkdir -p ~/.ssh/
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -t rsa -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
-      # Deploy project to Hostinger
-      - name: Deploy PHP to Hostinger
+          npm run build
+      - name: Deploy PHP to Server
+        if: ${{ success() }}
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -55,14 +32,17 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd ~/domains/lightgreen-grasshopper-124971.hostingersite.com
+            cd domains
+            cd lightgreen-grasshopper-124971.hostingersite.com
             git pull
-            composer install --no-interaction --optimize-autoloader
+            php composer.phar install
             php artisan migrate --force
-            npm ci
-            npm run build
-
-      # Copy build files to Hostinger public folder
+      - name: Install SSH key
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -t rsa -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
       - name: Copy Build Files to Target Server
         run: |
           rsync -r -e "ssh -p ${{ secrets.SSH_PORT }}" ${{ github.workspace }}/public/build/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/domains/lightgreen-grasshopper-124971.hostingersite.com/public/build
