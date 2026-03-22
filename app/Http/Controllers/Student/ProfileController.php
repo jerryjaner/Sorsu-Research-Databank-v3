@@ -3,95 +3,93 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
-     public function index(){
+    public function index()
+    {
         return view('student.profile.index');
     }
-    public function update(Request $request)
-    {
-        $user_update = User::find(Auth::user()->id);
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg',
-            'email' => [
-                'required',
-                Rule::unique('users')->ignore(Auth::user()->id),
-            ],
-            'password' => $request->filled('password') ? [
-                'required',
-                'string',
-                'min:8',
-                'max:20',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/',
-                'confirmed',
-            ] : [
-                'nullable',
-                'string',
-                'min:8',
-                'max:20',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/',
-            ],
-        ], [
-            'password.regex' => 'The password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
-            'password.min' => 'The password must be at least 8 characters long.',
-            'password.max' => 'The password may not be greater than 20 characters.',
-            'password.confirmed' => 'The password confirmation does not match.',
-            'email.unique' => 'The email address is already taken.',
+public function update(Request $request)
+{
+    $user = Auth::user();
+
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'email' => ['required','email', Rule::unique('users')->ignore($user->id)],
+        'password' => $request->filled('password') ? ['required','string','min:8','confirmed'] : 'nullable',
+        'image_upload' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ]);
+
+    if ($validator->fails()) {
+        return back()->withErrors($validator)->withInput();
+    }
+
+    DB::beginTransaction();
+
+    try {
+        // update basic info
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        // PROFILE DATA
+        $profileData = [];
+
+        // IMAGE UPLOAD
+        if ($request->hasFile('image_upload')) {
+            $file = $request->file('image_upload');
+
+            // generate filename
+            $filename = time().'_'.$file->getClientOriginalName();
+
+            // store
+            $file->storeAs('profile-picture/images', $filename, 'public');
+
+            // delete old
+            if ($user->profile && $user->profile->profile_picture) {
+                Storage::disk('public')->delete('profile-picture/images/'.$user->profile->profile_picture);
+            }
+
+            $profileData['profile_picture'] = $filename;
+        }
+
+        // SAVE PROFILE
+        if (!empty($profileData)) {
+            $user->profile()->updateOrCreate(
+                ['user_id' => $user->id],
+                $profileData
+            );
+        }
+
+        DB::commit();
+
+        return back()->with([
+            'message' => 'Profile updated successfully',
+            'alert-type' => 'success'
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+    } catch (\Exception $e) {
+        DB::rollBack();
 
-        DB::beginTransaction();
-
-        try {
-
-            // Update event details
-            $user_update->name = $request->name;
-            $user_update->email = $request->email;
-
-            if ($request->hasFile('image_upload')) {
-                $file = $request->file('image_upload');
-
-                // Check if the file is valid before proceeding
-                if ($file) {
-                    $extension = $file->getClientOriginalExtension();
-                    $filename = time() . '.' . $extension;
-                    $file->storeAs('public/profile-picture/images', $filename);
-
-                    // Delete the old profile picture if it exists
-                    if ($user_update->profile_picture && Storage::exists('public/profile-picture/images/' . $user_update->profile_picture)) {
-                        Storage::delete('public/profile-picture/images/' . $user_update->profile_picture);
-                    }
-
-                    $user_update->profile_picture = $filename;
-                }
-            }
-
-            if ($request->filled('password')) {
-                $user_update->password = Hash::make($request->input('password'));
-            }
-
-            $user_update->save();
-            DB::commit();
-
-            $notification = array(
-                'message' => 'Your account is updated successfully.',
-                'alert-type' => 'success'
-            );
-            return redirect()->back()->with($notification);
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'status' => 0,
-                'msg' => 'Failed to update user account. ' . $e->getMessage(),
-            ]);
-        }
+        return back()->with([
+            'message' => 'Error: '.$e->getMessage(),
+            'alert-type' => 'error'
+        ]);
     }
+}
 }

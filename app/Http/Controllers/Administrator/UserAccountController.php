@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Administrator;
 
+use App\Concerns\UpdateMailNotifier;
+use App\Concerns\SendMailNotifier;
 use App\Http\Controllers\Controller;
 use App\Models\Campus;
 use App\Models\Department;
@@ -15,12 +17,8 @@ use Spatie\Permission\Models\Role;
 class UserAccountController extends Controller
 {
 
-    // public function __construct()
-    // {
-    //     // // Protect methods using Spatie permissions
-    //     $this->middleware('permission:user_delete')->only('destroy');
-    // }
 
+    use SendMailNotifier, UpdateMailNotifier;
     /*
         * Get departments based on selected campus (for dynamic dropdown)
     */
@@ -88,6 +86,7 @@ class UserAccountController extends Controller
         }
 
         DB::transaction(function() use ($request) {
+            $plainPassword = $request->password;
             // Create user
             $user = User::create([
                 'name'          => $request->name,
@@ -108,6 +107,8 @@ class UserAccountController extends Controller
                 'phone'   => $request->phone,
                 'address' => $request->address,
             ]);
+
+             $this->SendMailNotifier($user, $plainPassword);
         });
 
         return response()->json(['status' => 200, 'message' => 'User created successfully']);
@@ -236,16 +237,65 @@ class UserAccountController extends Controller
         //
     }
 
+    // public function update(Request $request, $id)
+    // {
+    //     $validator = \Validator::make($request->all(), [
+    //         'name'     => 'required|string|max:255',
+    //         'email'    => 'required|email|unique:users,email,' . $id,
+    //         'password' => 'nullable|string|min:6',
+    //         'role'     => 'required|array', // plural
+    //         'phone'    => 'required|string|max:20',
+    //         'address'  => 'required|string|max:255',
+    //         'campus_id' => 'required',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'status' => 422,
+    //             'errors' => $validator->errors()
+    //         ], 422);
+    //     }
+
+    //     DB::transaction(function() use ($request, $id) {
+    //         $user = User::findOrFail($id);
+    //         $user->name  = $request->name;
+    //         $user->email = $request->email;
+    //         $user->campus_id = $request->campus_id;
+    //         $user->department_id = $request->department_id;
+    //         if ($request->password) {
+    //             $user->password = Hash::make($request->password);
+    //         }
+    //         $user->save();
+
+    //         // Assign role using Spatie
+    //         if ($request->role) {
+    //             $user->syncRoles([$request->role]);
+    //         }
+
+    //         // Update or create profile
+    //         $profileData = [
+    //             'phone'   => $request->phone,
+    //             'address' => $request->address,
+    //         ];
+    //         $user->profile()->updateOrCreate(['user_id' => $user->id], $profileData);
+    //     });
+
+    //     return response()->json([
+    //         'status' => 200,
+    //         'message' => 'User updated successfully'
+    //     ]);
+    // }
     public function update(Request $request, $id)
     {
         $validator = \Validator::make($request->all(), [
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:6',
-            'role'     => 'required|array', // plural
-            'phone'    => 'required|string|max:20',
-            'address'  => 'required|string|max:255',
-            'campus_id' => 'required',
+            'name'       => 'required|string|max:255',
+            'email'      => 'required|email|unique:users,email,' . $id,
+            'password'   => 'nullable|string|min:6',
+            'role'       => 'required|array',
+            'phone'      => 'required|string|max:20',
+            'address'    => 'required|string|max:255',
+            'campus_id'  => 'required|exists:campuses,id',
+            'department_id' => 'nullable|exists:departments,id',
         ]);
 
         if ($validator->fails()) {
@@ -257,34 +307,44 @@ class UserAccountController extends Controller
 
         DB::transaction(function() use ($request, $id) {
             $user = User::findOrFail($id);
-            $user->name  = $request->name;
-            $user->email = $request->email;
-            $user->campus_id = $request->campus_id;
+
+            // Track if email or password changes
+            $emailChanged    = $user->email !== $request->email;
+            $passwordChanged = !empty($request->password);
+
+            $plainPassword = $request->password;
+
+            // Update user info
+            $user->name          = $request->name;
+            $user->email         = $request->email;
+            $user->campus_id     = $request->campus_id;
             $user->department_id = $request->department_id;
-            if ($request->password) {
-                $user->password = Hash::make($request->password);
+            if ($passwordChanged) {
+                $user->password = Hash::make($plainPassword);
             }
             $user->save();
 
-            // Assign role using Spatie
+            // Update roles
             if ($request->role) {
-                $user->syncRoles([$request->role]);
+                $user->syncRoles($request->role);
             }
 
-            // Update or create profile
+            // Update profile
             $profileData = [
                 'phone'   => $request->phone,
                 'address' => $request->address,
             ];
             $user->profile()->updateOrCreate(['user_id' => $user->id], $profileData);
+
+            // Send email only if email or password changed
+            $this->UpdateMailNotifier($request->all(), $plainPassword, $emailChanged, $passwordChanged);
         });
 
         return response()->json([
             'status' => 200,
-            'message' => 'User updated successfully'
+            'message' => 'User updated successfully. Email sent if credentials changed.'
         ]);
     }
-
     public function destroy($id)
     {
         $user = User::findOrFail($id);
