@@ -33,7 +33,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd domains
-            cd lightgreen-grasshopper-124971.hostingersite.com
+            cd skyblue-lapwing-383377.hostingersite.com
             git pull
             php composer.phar install
             php artisan migrate --force
@@ -45,4 +45,4 @@ jobs:
           ssh-keyscan -t rsa -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
       - name: Copy Build Files to Target Server
         run: |
-          rsync -r -e "ssh -p ${{ secrets.SSH_PORT }}" ${{ github.workspace }}/public/build/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/domains/lightgreen-grasshopper-124971.hostingersite.com/public/build
+          rsync -r -e "ssh -p ${{ secrets.SSH_PORT }}" ${{ github.workspace }}/public/build/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/domains/skyblue-lapwing-383377.hostingersite.com/public/build
