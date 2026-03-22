@@ -5,11 +5,30 @@ namespace App\Http\Controllers\Administrator;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Permision\PermissionStoreRequest;
 use App\Http\Requests\Admin\Permision\PermissionUpdateRequest;
+use App\Traits\HasPermissions;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
+     use HasPermissions;
+
+    protected $permissions = [
+       // Permission management
+        'permission_store'  => ['store'],
+        'permission_create' => ['create'],
+        'permission_edit'   => ['edit'],
+        'permission_update'   => ['update'],
+        'permission_view'   => ['view'],
+        'permission_destroy' => ['destroy'],
+
+    ];
+
+    public function __construct()
+    {
+        $this->applyPermissions();
+    }
+
     /**
      * Display a listing of the resource.
      */

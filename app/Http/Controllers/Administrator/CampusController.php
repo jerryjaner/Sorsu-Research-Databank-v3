@@ -6,11 +6,28 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Campus\CampusStoreRequest;
 use App\Http\Requests\Admin\Campus\CampusUpdateRequest;
 use App\Models\Campus;
+use App\Traits\HasPermissions;
 use Illuminate\Http\Request;
 
 
 class CampusController extends Controller
 {
+
+    use HasPermissions;
+
+    protected $permissions = [
+        'campus_store'   => ['store'],
+        'campus_create'  => ['create'],
+        'campus_edit'    => ['edit'],
+        'campus_view'    => ['view'],
+        'campus_update'    => ['update'],
+        'campus_destroy'  => ['destroy'],
+    ];
+
+    public function __construct()
+    {
+        $this->applyPermissions();
+    }
     /**
      * Display a listing of the resource.
      */

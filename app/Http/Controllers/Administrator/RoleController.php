@@ -5,21 +5,32 @@ namespace App\Http\Controllers\Administrator;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Roles\RolesStoreRequest;
 use App\Http\Requests\Admin\Roles\RolesUpdateRequest;
+use App\Traits\HasPermissions;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    // public function __construct()
-    // {
-    //     // // Protect methods using Spatie permissions
-    //     $this->middleware('permission:user_create')->only('store');
-    //     $this->middleware('permission:user_delete')->only('destroy');
-    // }
-    /**
-     * Display a listing of the resource.
-     */
+    use HasPermissions;
+
+    protected $permissions = [
+       // Role management
+        'role_store'      => ['store'],
+        'role_create'     => ['create'],
+        'role_edit'       => ['edit'],
+        'role_view'       => ['view'],
+        'role_update'       => ['update'],
+        'role_destroy'     => ['delete'],
+        'role_get_permissions'  => ['getPermissions'],
+        'role_add_permissions'  => ['addPermissionToRole'],
+
+    ];
+
+    public function __construct()
+    {
+        $this->applyPermissions();
+    }
     public function index()
     {
         $permissions = Permission::get();
@@ -177,17 +188,17 @@ class RoleController extends Controller
 
     // Assign permissions to a role
     public function addPermissionToRole(Request $request, $roleId)
-{
-    $role = Role::findOrFail($roleId);
-    $permissionIds = $request->input('permission', []);
-    $permissions = Permission::whereIn('id', $permissionIds)->get();
+    {
+        $role = Role::findOrFail($roleId);
+        $permissionIds = $request->input('permission', []);
+        $permissions = Permission::whereIn('id', $permissionIds)->get();
 
-    $role->syncPermissions($permissions);
+        $role->syncPermissions($permissions);
 
-    return response()->json([
-        'status' => 200,
-        'message' => 'Permissions assigned to role successfully'
-    ]);
-}
+        return response()->json([
+            'status' => 200,
+            'message' => 'Permissions assigned to role successfully'
+        ]);
+    }
 
 }

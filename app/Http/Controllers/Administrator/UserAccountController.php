@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Administrator;
 
-use App\Concerns\UpdateMailNotifier;
 use App\Concerns\SendMailNotifier;
+use App\Concerns\UpdateMailNotifier;
 use App\Http\Controllers\Controller;
 use App\Models\Campus;
 use App\Models\Department;
 use App\Models\Profile;
 use App\Models\User;
+use App\Traits\HasPermissions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +17,25 @@ use Spatie\Permission\Models\Role;
 
 class UserAccountController extends Controller
 {
+    use HasPermissions;
 
+    protected $permissions = [
+       // User management
+        'user_store'      => ['store'],
+        'user_create'     => ['create'],
+        'user_update'     => ['update'],
+        'user_edit'       => ['edit'],
+        'user_view'       => ['view'],
+        'user_update'       => ['update'],
+        'user_destroy'    => ['destroy'],
+
+
+    ];
+
+    public function __construct()
+    {
+        $this->applyPermissions();
+    }
 
     use SendMailNotifier, UpdateMailNotifier;
     /*

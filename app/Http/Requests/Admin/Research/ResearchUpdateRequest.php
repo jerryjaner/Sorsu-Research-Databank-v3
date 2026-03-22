@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests\Admin\Research;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Campus;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
 class ResearchUpdateRequest extends FormRequest
@@ -28,7 +29,10 @@ class ResearchUpdateRequest extends FormRequest
             'author' => 'required|string|max:255',
             'adviser' => 'required|string|max:255',
             'campus_id' => ['required', 'exists:campuses,id'],
-            'department_id' => ['required', 'exists:departments,id'],
+             'department_id' => ['nullable', 'exists:departments,id'],
+            // Department required unless campus is Graduate Studies
+             // Department required only if campus is NOT Graduate Studies
+
             'course' => 'required|string|max:255',
             'major' => 'nullable|string|max:255',
             'academic_year' => 'required|string|max:255',
@@ -38,6 +42,21 @@ class ResearchUpdateRequest extends FormRequest
             'abstract_document' => 'nullable|file|mimes:pdf|max:10240',
             'full_paper_file' => 'nullable|file|mimes:pdf|max:10240',
         ];
+    }
+
+     public function withValidator($validator)
+    {
+        $validator->sometimes('department_id', 'required', function ($input) {
+            $campus = Campus::find($input->campus_id);
+            return $campus && $campus->name !== 'Sorsogon State University - Graduate Studies Campus';
+        });
+
+        $validator->after(function ($validator) {
+            $campus = Campus::find($this->campus_id);
+            if ($campus && $campus->name === 'Sorsogon State University - Graduate Studies Campus') {
+                $validator->errors()->forget('department_id');
+            }
+        });
     }
 
     /**

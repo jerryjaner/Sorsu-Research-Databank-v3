@@ -97,7 +97,7 @@
                     </span>
                     <!--end::Svg Icon-->
                 </span>
-                <span class="menu-title">School</span>
+                <span class="menu-title">University</span>
                 <span class="menu-arrow"></span>
             </span>
 

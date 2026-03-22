@@ -12,7 +12,7 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        // List of default permissions with 'store' added
+        // List of default permissions with store, update, and destroy
         $permissions = [
             // User management
             'user_store',
@@ -25,42 +25,50 @@ class PermissionSeeder extends Seeder
             // Role management
             'role_store',
             'role_create',
+            'role_update',
             'role_edit',
             'role_view',
-            'role_delete',
+            'role_destroy',
+            'role_get_permissions',
+            'role_add_permissions',
 
             // Permission management
             'permission_store',
             'permission_create',
+            'permission_update',
             'permission_edit',
             'permission_view',
-            'permission_delete',
+            'permission_destroy',
 
-            // Campus & Department
+            // Campus management
             'campus_store',
             'campus_create',
+            'campus_update',
             'campus_edit',
             'campus_view',
-            'campus_delete',
+            'campus_destroy',
 
+            // College/Department management
             'college_store',
             'college_create',
+            'college_update',
             'college_edit',
             'college_view',
-            'college_delete',
+            'college_destroy',
 
             // Research management
             'research_store',
             'research_create',
+            'research_update',
             'research_edit',
             'research_view',
-            'research_delete',
+            'research_destroy',
         ];
 
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(['name' => $permission]);
         }
 
-        $this->command->info('Default permissions including store seeded successfully!');
+        $this->command->info('Default permissions including store, update, and destroy seeded successfully!');
     }
 }

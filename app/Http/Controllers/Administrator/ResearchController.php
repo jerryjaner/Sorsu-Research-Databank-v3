@@ -14,20 +14,21 @@ use App\Traits\HasPermissions;
 
 class ResearchController extends Controller
 {
-    //  use HasPermissions;
+    use HasPermissions;
 
-    // protected $permissions = [
-    //     'research_create' => ['create'],
-    //     'research_view'   => ['view'],
-    //     'research_delete' => ['destroy'],
-    //     'research_store' => ['store'],
-    //     'research_edit' => ['edit']
-    // ];
+    protected $permissions = [
+        'research_create' => ['create'],
+        'research_view'   => ['view'],
+        'research_update'   => ['update'],
+        'research_destroy' => ['destroy'],
+        'research_store' => ['store'],
+        'research_edit' => ['edit']
+    ];
 
-    // public function __construct()
-    // {
-    //     $this->applyPermissions();
-    // }
+    public function __construct()
+    {
+        $this->applyPermissions();
+    }
 
 
     public function getDepartmentsByCampus($campusId)
@@ -147,7 +148,7 @@ class ResearchController extends Controller
                                 </td>
                                 <td class="p-0"><span class="text-gray-800 fs-5">' . ucfirst($research->title) . '</span></td>
                                 <td class="p-0"><span class="text-gray-800 fs-5">' . ucfirst($research->campus->name) . '</span></td>
-                                <td class="p-0"><span class="text-gray-800 fs-5">' . ucfirst($research->department->name) . '</span></td>
+                               <td class="p-0"><span class="text-gray-800 fs-5">' . ($research->department?->name) . '</span></td>
                                 <td><span class="text-gray-800 fs-5 d-block">' . $research->created_at->format('M d, Y') . '</span></td>
                                 <td class="pe-0 text-end">
                                     <button class="btn btn-primary btn-sm mt-1 research_view" data-id="' . $research->id . '" data-bs-toggle="modal" data-bs-target="#viewResearchModal">View Details</button>

@@ -22,6 +22,7 @@ class Research extends Model
         'major',
         'academic_year',
         'publication_status',
+        'publication',
         'description',
         'abstract_file_name',
         'abstract_path',
@@ -36,7 +37,7 @@ class Research extends Model
 
     public function department()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Department::class)->withDefault();
     }
 
     public function downloads()

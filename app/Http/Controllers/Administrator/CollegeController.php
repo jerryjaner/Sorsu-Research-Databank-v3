@@ -7,10 +7,29 @@ use App\Http\Requests\Admin\Department\DepartmentStoreRequest;
 use App\Http\Requests\Admin\Department\DepartmentUpdateRequest;
 use App\Models\Campus;
 use App\Models\Department;
+use App\Traits\HasPermissions;
 use Illuminate\Http\Request;
 
 class CollegeController extends Controller
 {
+
+     use HasPermissions;
+
+    protected $permissions = [
+        'college_store'  => ['store'],
+        'college_create' => ['create'],
+        'college_edit'   => ['edit'],
+        'college_view'   => ['view'],
+        'college_update'   => ['update'],
+        'college_destroy' => ['delete'],
+
+    ];
+
+    public function __construct()
+    {
+        $this->applyPermissions();
+    }
+
     /**
      * Display a listing of the resource.
      */
