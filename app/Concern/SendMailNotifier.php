@@ -20,7 +20,7 @@ trait SendMailNotifier
             'subject' => $subject,
             'body' => $body,
         ];
-
         Mail::to($data->email)->send(new SendEmail($mailData));
+
     }
 }
