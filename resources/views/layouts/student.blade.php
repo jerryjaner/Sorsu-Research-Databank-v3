@@ -20,7 +20,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
     <!--end::Fonts-->
     <!--begin::Page Vendor Stylesheets(used by this page)-->
-    <link href="{{URL::to('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css')}}" rel="stylesheet" type="text/css" />
     <!--end::Page Vendor Stylesheets-->
     <!--begin::Global Stylesheets Bundle(used by all pages)-->
     <link href="{{URL::to('student/assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css" />
@@ -152,7 +151,7 @@
 <script src="{{URL::to('student/assets/js/scripts.bundle.js')}}"></script>
 <!--end::Global Javascript Bundle-->
 <!--begin::Page Vendors Javascript(used by this page)-->
-<script src="{{URL::to('student/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js')}}"></script>
+
 <!--end::Page Vendors Javascript-->
 <!--begin::Page Custom Javascript(used by this page)-->
 <script src="{{URL::to('student/assets/js/custom/widgets.js')}}"></script>

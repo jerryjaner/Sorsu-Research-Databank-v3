@@ -128,20 +128,20 @@
                     </div>
                 </div>
 
-                <!-- Department Menu -->
+                <!-- College Menu -->
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 
                     <span class="menu-link">
                         <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                        <span class="menu-title">Department</span>
+                        <span class="menu-title">College</span>
                         <span class="menu-arrow"></span>
                     </span>
 
                     <div class="menu-sub menu-sub-accordion">
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('admin.departments.index') }}">
+                            <a class="menu-link" href="{{ route('admin.college.index') }}">
                                 <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                                View Department
+                                View College
                             </a>
                         </div>
                     </div>

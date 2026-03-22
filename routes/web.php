@@ -1,15 +1,17 @@
 <?php
 
 use App\Http\Controllers\Administrator\CampusController;
+use App\Http\Controllers\Administrator\CollegeController;
 use App\Http\Controllers\Administrator\DashboardController;
 use App\Http\Controllers\Administrator\DepartmentController;
 use App\Http\Controllers\Administrator\PermissionController;
 use App\Http\Controllers\Administrator\ResearchController;
 use App\Http\Controllers\Administrator\RoleController;
 use App\Http\Controllers\Administrator\UserAccountController;
-use App\Http\Controllers\Student\ProfileController;
 use App\Http\Controllers\Student\HomepageController;
+use App\Http\Controllers\Student\ProfileController;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -41,6 +43,7 @@ use Illuminate\Support\Facades\Route;
     $adminRoles = ['super-admin', 'bulan-admin', 'sorsogon-admin', 'castilla-admin', 'magallanes-admin', 'graduate-admin'];
 
     Route::middleware(['auth', 'checkRole:' . implode('|', $adminRoles), 'role:' . implode('|', $adminRoles)])->name('admin.')->group(function () {
+
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         // ROLES
@@ -56,8 +59,10 @@ use Illuminate\Support\Facades\Route;
         // CAMPUS & DEPARTMENT
         Route::get('campuses/fetch', [CampusController::class, 'fetch'])->name('campuses.fetch');
         Route::resource('campuses', CampusController::class);
-        Route::get('departments/fetch', [DepartmentController::class, 'fetch'])->name('departments.fetch');
-        Route::resource('departments', DepartmentController::class);
+
+
+         Route::get('college/fetch', [CollegeController::class, 'fetch'])->name('college.fetch');
+         Route::resource('college', CollegeController::class);
 
         //Account Settings
         Route::get('/user-accounts/departments/{campusId}', [UserAccountController::class, 'getDepartmentsByCampus']);
@@ -74,7 +79,7 @@ use Illuminate\Support\Facades\Route;
         Route::get('researches/view-research-pdf/{id}', [ResearchController::class, 'view_research_pdf'])->name('researches.view_research_pdf');
         Route::get('researches/edit/{id}', [ResearchController::class, 'edit'])->name('researches.edit');
         Route::post('researches/update/{id}', [ResearchController::class, 'update'])->name('researches.update');
-        Route::delete('researches/delete', [ResearchController::class, 'destroy'])->name('researches.destroy');
+        Route::delete('researches/delete/{id}', [ResearchController::class, 'destroy'])->name('researches.destroy');
     });
 
 require __DIR__.'/auth.php';

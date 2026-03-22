@@ -72,18 +72,7 @@
                                 </span>
                                 <!--end::Svg Icon-->
                                 <input type="text" class="w-150px form-control form-control-sm form-control-solid ps-10"
-                                    name="search" value="" placeholder="Search" />
-                            </div>
-                            <!--end::Search-->
-                            <div class="my-1">
-                                <!--begin::Select-->
-                                <select class="form-select form-select-sm form-select-solid fw-bolder w-125px"
-                                    data-control="select2" data-placeholder="All Users" data-hide-search="true">
-                                    <option value="1" selected="selected">All Users</option>
-                                    <option value="2">Active users</option>
-                                    <option value="3">Pending users</option>
-                                </select>
-                                <!--end::Select-->
+                                    name="search"  id="permission_search" placeholder="Search" />
                             </div>
                         </div>
                     </div>
@@ -117,19 +106,21 @@
                 }
             });
 
+            GetPermissionRecord();
             // Fetch and display all permissions
-            function GetPermissionRecord() {
+            function GetPermissionRecord(search = '') {
                 $.ajax({
                     url: '{{ route('admin.permissions.fetch') }}',
                     method: 'GET',
+                    data: { search: search }, // pass search query
                     success: function(response) {
                         $("#all_permissions").html(response);
-                        $("#kt_table_widget_1").DataTable({
-                            "order": [[0, "asc"]],
-                            "language": {
-                                "lengthMenu": "Show _MENU_",
-                            },
-                        });
+                        if ($("#kt_table_widget_1").length) {
+                            $("#kt_table_widget_1").DataTable({
+                                "order": [[0, "asc"]],
+                                "language": { "lengthMenu": "Show _MENU_" },
+                            });
+                        }
                     },
                     error: function(xhr) {
                         if (xhr.status === 403) {
@@ -141,7 +132,12 @@
                 });
             }
 
-            GetPermissionRecord();
+
+            // Search permissions dynamically
+            $('#permission_search').on('keyup', function() {
+                let query = $(this).val();
+                GetPermissionRecord(query);
+            });
 
             // ✅ CREATE / UPDATE
             $('#PermissionForm').on('submit', function(e) {

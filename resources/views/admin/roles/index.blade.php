@@ -71,15 +71,7 @@
                                     <!-- SVG icon here -->
                                 </span>
                                 <input type="text" class="w-150px form-control form-control-sm form-control-solid ps-10"
-                                    name="search" placeholder="Search" />
-                            </div>
-                            <!-- Filter -->
-                            <div class="my-1">
-                                <select class="form-select form-select-sm form-select-solid fw-bolder w-125px">
-                                    <option value="1" selected>All Users</option>
-                                    <option value="2">Active users</option>
-                                    <option value="3">Pending users</option>
-                                </select>
+                                    name="search" id="role_search" placeholder="Search" />
                             </div>
                         </div>
                     </div>
@@ -112,7 +104,7 @@
 
                     <div class="modal-body">
                         <!-- Info -->
-                        <div class="alert alert-primary d-flex align-items-start mb-4">
+                        <div class="alert alert-warning d-flex align-items-start mb-4">
                             <i class="bi bi-info-circle-fill fs-3 me-3"></i>
                             <div>
                                 <strong>Assigning permissions:</strong>
@@ -134,7 +126,7 @@
                                         <input class="form-check-input me-2" type="checkbox" value="{{ $permission->id }}"
                                             id="perm{{ $permission->id }}">
                                         <i class="bi bi-key-fill text-warning me-2"></i>
-                                        <span>{{ ucfirst($permission->name) }}</span>
+                                        <span>{{ $permission->name }}</span>
                                     </label>
                                 </div>
                             @endforeach
@@ -170,8 +162,8 @@ $(document).ready(function() {
     });
 
     // Fetch roles table
-    function GetRoleRecord() {
-        $.get('{{ route('admin.roles.fetch') }}')
+    function GetRoleRecord(search = '') {
+        $.get('{{ route('admin.roles.fetch') }}', { search: search })
         .done(function(response) {
             $("#all_roles").html(response);
             if($("#kt_table_widget_1").length){
@@ -185,6 +177,11 @@ $(document).ready(function() {
             Swal.fire('Error', xhr.responseJSON?.message || 'Failed to load roles.', 'error');
         });
     }
+
+    $('#role_search').on('keyup', function() {
+        let query = $(this).val();
+        GetRoleRecord(query);
+    });
     GetRoleRecord();
 
     // Create / Update role

@@ -52,9 +52,14 @@ class RoleController extends Controller
     /**
      * Fetch all roles.
      */
-    public function fetch()
+    public function fetch(Request $request)
     {
-        $roles = Role::all();
+        $query = $request->input('search');
+
+        $roles = Role::when($query, function($q) use ($query) {
+            $q->where('name', 'LIKE', "%{$query}%");
+        })->get();
+
         $i = 1;
 
         if ($roles->count() > 0) {
@@ -77,23 +82,13 @@ class RoleController extends Controller
 
             foreach ($roles as $role) {
                 $output .= '<tr>
-                                <!-- Checkbox -->
                                 <td class="p-0">
                                     <div class="form-check form-check-sm form-check-custom form-check-solid">
                                         <input class="form-check-input" type="checkbox" value="' . $role->id . '" />
                                     </div>
                                 </td>
-
-                                <!-- Role Name -->
-                                <td class="p-0">
-                                    <span class="text-gray-800 fs-5">' . ucfirst($role->name) . '</span>
-                                </td>
-
-                                <!-- Created At -->
-                                <td>
-                                    <span class="text-gray-800 fs-5 d-block">' . $role->created_at->format('M d, Y') . '</span>
-                                </td>
-
+                                <td class="p-0"><span class="text-gray-800 fs-5">' . $role->name . '</span></td>
+                                <td><span class="text-gray-800 fs-5 d-block">' . $role->created_at->format('M d, Y') . '</span></td>
                                 <td class="pe-0 text-end">
                                     <button type="button"
                                             class="btn btn-success btn-sm mt-1 role_assign"
@@ -110,23 +105,20 @@ class RoleController extends Controller
 
             $output .= '</tbody></table></div>';
 
-            echo $output;
-        }
-        else {
-           return response('
+            return $output;
+        } else {
+            return response('
                 <table class="table align-middle table-row-bordered table-row-dashed gy-5">
                     <tbody>
                         <tr>
                             <td colspan="5" class="text-center py-5">
                                 <i class="fas fa-search fa-3x text-muted mb-2"></i>
-                                <div class="fw-bold mt-2"> <span class="text-gray-400 fw-bold mt-2 fs-6">No record found in the database.</span></div>
-
+                                <div class="fw-bold mt-2 text-gray-400 fs-6">No record found in the database.</div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             ');
-
         }
     }
 

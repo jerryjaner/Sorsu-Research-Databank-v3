@@ -218,9 +218,10 @@
 
                             <!-- Buttons -->
                             <div class="mt-4 d-flex justify-content-end">
-                                <button type="button" class="btn btn-sm btn-secondary me-2"
-                                    data-bs-dismiss="modal"> <i class="bi bi-x-circle me-1"></i> Close</button>
-                                <button type="submit" class="btn btn-sm btn-primary" id="btn_submit"><i class="bi bi-check2-circle me-1"></i>Submit</button>
+                                <button type="button" class="btn btn-sm btn-secondary me-2" data-bs-dismiss="modal"> <i
+                                        class="bi bi-x-circle me-1"></i> Close</button>
+                                <button type="submit" class="btn btn-sm btn-primary" id="btn_submit"><i
+                                        class="bi bi-check2-circle me-1"></i>Submit</button>
                             </div>
 
                         </form>
@@ -367,8 +368,8 @@
 
                             <!-- Modal Buttons -->
                             <div class="d-flex justify-content-end mt-4">
-                                <button type="button" class="btn btn-secondary me-2"
-                                    data-bs-dismiss="modal"> <i class="bi bi-x-circle me-1"></i>Close</button>
+                                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal"> <i
+                                        class="bi bi-x-circle me-1"></i>Close</button>
                             </div>
 
                         </form>
@@ -528,9 +529,10 @@
 
                             <!-- Buttons -->
                             <div class="d-flex justify-content-end mt-4">
-                                <button type="button" class="btn btn-secondary me-2"
-                                    data-bs-dismiss="modal"> <i class="bi bi-x-circle me-1"></i>Close</button>
-                                <button type="submit" class="btn btn-primary" id="btn_edit_submit"> <i class="bi bi-check2-circle me-1"></i>Update</button>
+                                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal"> <i
+                                        class="bi bi-x-circle me-1"></i>Close</button>
+                                <button type="submit" class="btn btn-primary" id="btn_edit_submit"> <i
+                                        class="bi bi-check2-circle me-1"></i>Update</button>
                             </div>
                         </form>
 
@@ -550,14 +552,15 @@
                     }
                 });
 
-                 // -----------------------------
+                // -----------------------------
                 // GLOBAL AJAX ERROR HANDLER
                 // -----------------------------
                 $(document).ajaxError(function(event, xhr) {
                     if (xhr.status === 403) {
                         Swal.fire(
                             'Permission Denied',
-                            xhr.responseJSON?.message || 'You do not have permission to perform this action.',
+                            xhr.responseJSON?.message ||
+                            'You do not have permission to perform this action.',
                             'error'
                         );
                     }
@@ -833,7 +836,8 @@
                     let formData = new FormData(this);
 
 
-                    $("#btn_edit_submit").html('Please wait <span class="fas fa-spinner fa-spin align-middle ms-2"></span>');
+                    $("#btn_edit_submit").html(
+                        'Please wait <span class="fas fa-spinner fa-spin align-middle ms-2"></span>');
                     $('#btn_edit_submit').attr("disabled", true);
                     $.ajax({
                         url: 'researches/update/' + id, // Assuming standard resource route
@@ -867,7 +871,6 @@
                 });
 
                 $(document).on('click', '.research_delete', function() {
-
                     const id = $(this).data('id');
 
                     Swal.fire({
@@ -877,31 +880,34 @@
                         showCancelButton: true,
                         confirmButtonText: 'Yes, delete it!'
                     }).then((result) => {
-
                         if (!result.isConfirmed) return;
 
                         $.ajax({
-                            url: "{{ route('admin.departments.destroy', ':id') }}".replace(':id', id),
+                            url: "/researches/delete/" + id,
                             method: 'DELETE',
                             data: {
-                                _token: '{{ csrf_token() }}'
+                                _token: '{{ csrf_token() }}',
+                                id: id // pass the ID in the request body
                             },
                             success: function() {
-                                GetDepartmentRecord();
+                                GetResearchRecord(); // refresh the table
 
                                 Swal.fire({
                                     icon: 'success',
-                                    title: 'Department Deleted Successfully',
+                                    title: 'Research Deleted Successfully',
                                     showConfirmButton: false,
                                     timer: 3000
                                 });
+                            },
+                            error: function(xhr) {
+                                let message = xhr.responseJSON?.message ||
+                                    'Something went wrong.';
+                                Swal.fire('Error', message, 'error');
                             }
                         });
                     });
                 });
-
             });
         </script>
-
     @endpush
 @endsection

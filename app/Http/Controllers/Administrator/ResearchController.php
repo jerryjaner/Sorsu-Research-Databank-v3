@@ -14,20 +14,20 @@ use App\Traits\HasPermissions;
 
 class ResearchController extends Controller
 {
-     use HasPermissions;
-     use HasPermissions;
+    //  use HasPermissions;
+    //  use HasPermissions;
 
-    protected $permissions = [
-        'research_create' => ['store'],
-        'research_view'   => ['view'],
-        'research_delete' => ['destroy'],
-    ];
+    // protected $permissions = [
+    //     'research_create' => ['store'],
+    //     'research_view'   => ['view'],
+    //     'research_delete' => ['destroy'],
+    // ];
 
-    public function __construct()
-    {
-        // ⚡ Call the trait method here!
-        $this->applyPermissions();
-    }
+    // public function __construct()
+    // {
+    //     // ⚡ Call the trait method here!
+    //     $this->applyPermissions();
+    // }
     // public function __construct()
     // {
     //     // // Protect methods using Spatie permissions
@@ -102,7 +102,7 @@ class ResearchController extends Controller
      */
     public function fetch(Request $request)
     {
-         $user = auth()->user();
+        $user = auth()->user();
         $query = Research::with('campus', 'department');
 
         // If the user is NOT super-admin, restrict to their campus
@@ -276,32 +276,30 @@ class ResearchController extends Controller
     }
 
     public function destroy(Request $request)
-    {
-        try {
-            $research = Research::findOrFail($request->id);
+{
+    $research = Research::findorFail($request->id);
 
-            // Delete abstract
-            if ($research->abstract_path && Storage::disk('public')->exists($research->abstract_path)) {
-                Storage::disk('public')->delete($research->abstract_path);
-            }
-
-            // Delete full paper
-            if ($research->research_paper_path && Storage::disk('public')->exists($research->research_paper_path)) {
-                Storage::disk('public')->delete($research->research_paper_path);
-            }
-
-            // ✅ DELETE RECORD
-            $research->delete();
-
-            return response()->json([
-                'message' => 'Research deleted successfully.'
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Delete failed',
-                'message' => $e->getMessage()
-            ], 500);
-        }
+    if (!$research) {
+        return response()->json([
+            'error' => 'Delete failed',
+            'message' => 'Research record not found.'
+        ], 404);
     }
+
+    // Delete abstract file
+    if ($research->abstract_path && Storage::disk('public')->exists($research->abstract_path)) {
+        Storage::disk('public')->delete($research->abstract_path);
+    }
+
+    // Delete full paper
+    if ($research->research_paper_path && Storage::disk('public')->exists($research->research_paper_path)) {
+        Storage::disk('public')->delete($research->research_paper_path);
+    }
+
+    $research->delete();
+
+    return response()->json([
+        'message' => 'Research deleted successfully.'
+    ]);
+}
 }

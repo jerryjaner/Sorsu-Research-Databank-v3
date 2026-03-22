@@ -10,12 +10,6 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
-    public function __construct()
-    {
-        // // Protect methods using Spatie permissions
-        $this->middleware('permission:permission_create')->only('store');
-        $this->middleware('permission:permission_delete')->only('destroy');
-    }
     /**
      * Display a listing of the resource.
      */
@@ -47,13 +41,13 @@ class PermissionController extends Controller
         ]);
     }
 
-    /**
-     * Fetch all permissions.
-     */
-    public function fetch()
+    public function fetch(Request $request)
     {
-        $permissions = Permission::all();
-        $i = 1;
+        $query = $request->input('search');
+
+        $permissions = Permission::when($query, function($q) use ($query) {
+            $q->where('name', 'LIKE', "%{$query}%");
+        })->get();
 
         if ($permissions->count() > 0) {
             $output = '<div class="table-responsive">
@@ -75,23 +69,13 @@ class PermissionController extends Controller
 
             foreach ($permissions as $permission) {
                 $output .= '<tr>
-                                <!-- Checkbox -->
                                 <td class="p-0">
                                     <div class="form-check form-check-sm form-check-custom form-check-solid">
                                         <input class="form-check-input" type="checkbox" value="' . $permission->id . '" />
                                     </div>
                                 </td>
-
-                                <!-- Permission Name -->
-                                <td class="p-0">
-                                    <span class="text-gray-800  fs-5">' . $permission->name . '</span>
-                                </td>
-
-                                <!-- Created At -->
-                                <td>
-                                    <span class="text-gray-800  fs-5 d-block">' . $permission->created_at->format('M d, Y') . '</span>
-                                </td>
-
+                                <td class="p-0"><span class="text-gray-800 fs-5">' . $permission->name . '</span></td>
+                                <td><span class="text-gray-800 fs-5 d-block">' . $permission->created_at->format('M d, Y') . '</span></td>
                                 <td class="pe-0 text-end">
                                     <button class="btn btn-primary btn-sm mt-1 permission_edit" data-id="' . $permission->id . '">Edit</button>
                                     <button class="btn btn-danger btn-sm mt-1 permission_delete" data-id="' . $permission->id . '">Delete</button>
@@ -101,26 +85,22 @@ class PermissionController extends Controller
 
             $output .= '</tbody></table></div>';
 
-            echo $output;
-        }
-        else {
-           return response('
+            return $output;
+        } else {
+            return response('
                 <table class="table align-middle table-row-bordered table-row-dashed gy-5">
                     <tbody>
                         <tr>
                             <td colspan="5" class="text-center py-5">
                                 <i class="fas fa-search fa-3x text-muted mb-2"></i>
-                                <div class="fw-bold mt-2"> <span class="text-gray-400 fw-bold mt-2 fs-6">No record found in the database.</span></div>
-
+                                <div class="fw-bold mt-2 text-gray-400 fs-6">No record found in the database.</div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             ');
-
         }
     }
-
     /**
      * Display the specified resource.
      */
