@@ -105,7 +105,7 @@
                     <div class="card-body pt-5">
                         <!-- Top Researcher -->
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <div class="text-white opacity-75fw-semibold fs-6">Top Researcher</div>
+                            <div class="text-white opacity-75 fw-semibold fs-6">Top Researcher</div>
                             <div class="d-flex align-items-center text-truncate" style="max-width: 180px;">
                                 <i class="ki-duotone ki-arrow-up-right fs-2 text-success me-2"></i>
                                 <span class="text-white opacity-75 fw-bolder fs-6 text-truncate" title="{{ $topResearcherName }}">

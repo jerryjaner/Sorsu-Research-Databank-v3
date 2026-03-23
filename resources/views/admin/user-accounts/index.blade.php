@@ -162,7 +162,7 @@
                                         <div class="fv-row mb-10">
                                             <label class="form-label">Role</label>
 
-                                            @if (auth()->user()->hasRole(['super-admin','bulan-admin','sorsogon-admin','castilla-admin','magallanes-admin','graduate-admin']))
+                                            @if (auth()->user()->hasRole(['super-admin']))
 
                                                 <!-- Super-admin and other admin can select multiple roles -->
                                                 <select class="form-select form-control-solid" name="role[]"
