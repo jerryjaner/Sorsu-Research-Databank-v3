@@ -99,19 +99,19 @@
                 <!-- Highlights Card -->
                 <div class="card card-flush h-lg-50 shadow-sm rounded">
                     <div class="card-header pt-5 d-flex justify-content-between align-items-center">
-                        <h3 class="card-title text-gray-800 fs-3 fw-bold">Highlights</h3>
+                        <h3 class="card-title text-white opacity-75 fs-3 fw-bold">Highlights</h3>
                         <i class="bi bi-bar-chart-line fs-2 text-gray-400"></i>
                     </div>
                     <div class="card-body pt-5">
                         <!-- Top Researcher -->
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <div class="text-gray-700 fw-semibold fs-6">Top Researcher</div>
+                            <div class="text-white opacity-75fw-semibold fs-6">Top Researcher</div>
                             <div class="d-flex align-items-center text-truncate" style="max-width: 180px;">
                                 <i class="ki-duotone ki-arrow-up-right fs-2 text-success me-2"></i>
-                                <span class="text-gray-900 fw-bolder fs-6 text-truncate" title="{{ $topResearcherName }}">
+                                <span class="text-white opacity-75 fw-bolder fs-6 text-truncate" title="{{ $topResearcherName }}">
                                     {{ $topResearcherName }}
                                 </span>
-                                <span class="text-gray-500 fw-bold fs-7 ms-1">({{ $topResearcherCount }} papers)</span>
+                                <span class="text-white opacity-75 fw-bold fs-7 ms-1">({{ $topResearcherCount }} papers)</span>
                             </div>
                         </div>
 
@@ -119,13 +119,13 @@
 
                         <!-- Most Downloaded Research -->
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <div class="text-gray-700 fw-semibold fs-6">Most Downloaded Research</div>
+                            <div class="text-white opacity-75 fw-semibold fs-6">Most Downloaded Research</div>
                             <div class="d-flex align-items-center text-truncate" style="max-width: 180px;">
                                 <i class="ki-duotone ki-arrow-up-right fs-2 text-primary me-2"></i>
-                                <span class="text-gray-900 fw-bolder fs-6 text-truncate" title="{{ $topDownloaded->title ?? 'N/A' }}">
+                                <span class="text-white opacity-75 fw-bolder fs-6 text-truncate" title="{{ $topDownloaded->title ?? 'N/A' }}">
                                     {{ $topDownloaded->title ?? 'N/A' }}
                                 </span>
-                                <span class="text-gray-500 fw-bold fs-7 ms-1">({{ $topDownloaded->downloads ?? 0 }})</span>
+                                <span class="text-white opacity-75 fw-bold fs-7 ms-1">({{ $topDownloaded->downloads ?? 0 }})</span>
                             </div>
                         </div>
 
@@ -133,10 +133,10 @@
 
                         <!-- New Users This Month -->
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <div class="text-gray-700 fw-semibold fs-6">New Users This Month</div>
+                            <div class="text-white opacity-75 fw-semibold fs-6">New Users This Month</div>
                             <div class="d-flex align-items-center">
                                 <i class="ki-duotone ki-arrow-up-right fs-2 text-success me-2"></i>
-                                <span class="text-gray-900 fw-bolder fs-6">{{ $newUsersThisMonth ?? 0 }}</span>
+                                <span class="text-white opacity-75 fw-bolder fs-6">{{ $newUsersThisMonth ?? 0 }}</span>
                             </div>
                         </div>
 
@@ -144,10 +144,10 @@
 
                         <!-- Avg Research per Campus -->
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="text-gray-700 fw-semibold fs-6">Avg Research per Campus</div>
+                            <div class="text-white opacity-75 fw-semibold fs-6">Avg Research per Campus</div>
                             <div class="d-flex align-items-center">
                                 <i class="ki-duotone ki-arrow-up-right fs-2 text-success me-2"></i>
-                                <span class="text-gray-900 fw-bolder fs-6">{{ $avgResearchPerCampus ?? 0 }}</span>
+                                <span class="text-white opacity-75 fw-bolder fs-6">{{ $avgResearchPerCampus ?? 0 }}</span>
                             </div>
                         </div>
 
