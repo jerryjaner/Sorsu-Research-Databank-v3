@@ -6,7 +6,7 @@
     <div class="toolbar py-5 py-lg-15" id="kt_toolbar">
         <div id="kt_toolbar_container" class="container-xxl d-flex flex-stack flex-wrap">
             <div class="page-title d-flex flex-column">
-                <h1 class="d-flex text-white fw-bold fs-2qx my-1 me-5">Research Repositorysss</h1>
+                <h1 class="d-flex text-white fw-bold fs-2qx my-1 me-5">Research Repository</h1>
                 <span class="text-white opacity-75 pt-1">Discover and explore academic research</span>
             </div>
         </div>
