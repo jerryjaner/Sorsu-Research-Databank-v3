@@ -97,7 +97,7 @@
                 </div>
 
                 <!-- Highlights Card -->
-                <div class="card card-flush h-lg-50 shadow-sm rounded">
+                <div class="card card-flush h-lg-50 shadow-sm rounded bg-primary">
                     <div class="card-header pt-5 d-flex justify-content-between align-items-center">
                         <h3 class="card-title text-white opacity-75 fs-3 fw-bold">Highlights</h3>
                         <i class="bi bi-bar-chart-line fs-2 text-gray-400"></i>
