@@ -2,137 +2,259 @@
 @section('title', 'Home Page')
 
 @section('content')
-    <!-- Toolbar -->
-    <div class="toolbar py-5 py-lg-15" id="kt_toolbar">
-        <div id="kt_toolbar_container" class="container-xxl d-flex flex-stack flex-wrap">
-            <div class="page-title d-flex flex-column">
-                <h1 class="d-flex text-white fw-bold fs-2qx my-1 me-5">Research Repository</h1>
-                <span class="text-white opacity-75 pt-1">Discover and explore academic research</span>
-            </div>
+<!-- Toolbar -->
+<div class="toolbar py-5 py-lg-15" id="kt_toolbar">
+    <div id="kt_toolbar_container" class="container-xxl d-flex flex-stack flex-wrap">
+        <div class="page-title d-flex flex-column">
+            <h1 class="d-flex text-white fw-bold fs-2qx my-1 me-5">Research Repository</h1>
+            <span class="text-white opacity-75 pt-1">Discover and explore academic research</span>
         </div>
     </div>
+</div>
 
-    <!-- Content -->
-    <div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container-xxl">
-        <div class="content flex-row-fluid" id="kt_content">
+<!-- Content -->
+<div id="kt_content_container" class="d-flex flex-column-fluid align-items-start container-xxl">
+    <div class="content flex-row-fluid" id="kt_content">
 
-            <!-- Filter Form -->
-            <div class="d-flex justify-content-center mb-4 w-100">
-                <form id="filter-form" class="row g-3 align-items-center w-100">
+        <!-- Filter Form -->
+        <div class="d-flex justify-content-center mb-4 w-100">
+            <form id="filter-form" class="row g-3 align-items-center w-100">
 
-                    <div class="col-12 col-md-4">
-                        <input type="text" class="form-control form-control-solid" name="title" placeholder="Search">
-                    </div>
+                <div class="col-12 col-md-4">
+                    <input type="text" class="form-control form-control-solid" name="title" placeholder="Search">
+                </div>
 
-                    <div class="col-12 col-md-3">
-                        <select class="form-select form-select-solid" name="campus_id" id="campus-select">
-                            <option value="">Select Campus</option>
-                            @foreach ($campuses as $campus)
-                                <option value="{{ $campus->id }}">{{ $campus->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                <div class="col-12 col-md-3">
+                    <select class="form-select form-select-solid" name="campus_id" id="campus-select">
+                        <option value="">Select Campus</option>
+                        @foreach ($campuses as $campus)
+                        <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-                    <div class="col-12 col-md-3">
-                        <select class="form-select form-select-solid" name="department_id" id="department-select">
-                            <option value="">Select College</option>
-                        </select>
-                    </div>
+                <div class="col-12 col-md-3">
+                    <select class="form-select form-select-solid" name="department_id" id="department-select">
+                        <option value="">Select College</option>
+                    </select>
+                </div>
 
-                    <div class="col-6 col-md-1">
-                        <button type="button" id="reset-btn" class="btn btn-secondary w-100">
-                            <i class="fas fa-redo"></i>
-                        </button>
-                    </div>
+                <div class="col-6 col-md-1">
+                    <button type="button" id="reset-btn" class="btn btn-secondary w-100">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
 
-                    <div class="col-6 col-md-1">
-                        <button type="submit" class="btn btn-primary w-100">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
+                <div class="col-6 col-md-1">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
 
-                </form>
-            </div>
-
-            <!-- Research Results -->
-            <div class="row mt-5" id="research-results">
-                <!-- Placeholder / Results injected via JS -->
-            </div>
-
+            </form>
         </div>
+
+        <!-- Research Results -->
+        <div class="row mt-5" id="research-results">
+            <!-- Placeholder / Results injected via JS -->
+        </div>
+
     </div>
+</div>
 
-    {{-- Pass auth info to JS --}}
-    <script>
-        var isLoggedIn = @json(Auth::check());
-    </script>
+{{-- Pass auth info to JS --}}
+<script>
+    var isLoggedIn = @json(Auth::check());
+</script>
 
-    @push('script')
-    <script>
-        $(document).ready(function() {
+@push('script')
+<script>
+    $(document).ready(function() {
 
+            // function fetchResearch(page = 1) {
+            //     let formData = $('#filter-form').serialize();
+            //     $.ajax({
+            //         url: "{{ route('search') }}?page=" + page,
+            //         type: "GET",
+            //         data: formData,
+            //         success: function(res) {
+            //             let html = '';
+
+            //             if (!res.data || res.data.length === 0) {
+            //                 // Full-width placeholder card
+            //                 html = `<div class="col-12 d-flex justify-content-center mt-5">
+            //                     <div class="card text-center shadow-sm p-5" style="width: 100%; max-width: 1000px; border-radius: 15px;">
+            //                         <div class="card-body">
+            //                             <i class="fas fa-search fa-3x text-primary mb-3"></i>
+            //                             <h4 class="card-title mb-2">Start Searching</h4>
+            //                             <p class="card-text text-muted">
+            //                                 Use the search box or filters above to find research papers in the repository.
+            //                             </p>
+            //                         </div>
+            //                     </div>
+            //                 </div>`;
+            //             } else {
+            //                 // Render research results
+            //                 res.data.forEach(function(item) {
+            //                     html += `
+            //                     <div class="col-12 mb-4">
+            //                         <div class="card shadow-sm border-0 rounded-3 h-100">
+            //                             <div class="card-body p-4">
+            //                                 <div class="d-flex justify-content-between align-items-start mb-3">
+            //                                     <h4 class="card-title mb-0 text-primary">${item.title}</h4>
+            //                                     ${item.abstract_path
+            //                                         ? (isLoggedIn
+            //                                             ? `<a href="/research/download/${item.id}" class="btn btn-sm btn-danger">
+            //                                                  <i class="fas fa-file-pdf"></i> Download
+            //                                                </a>`
+            //                                             : `<span class="badge bg-danger">Login to download research absract</span>`)
+            //                                         : `<span class="text-muted"><em>No Abstract</em></span>`}
+            //                                 </div>
+            //                                 <p class="mb-1"><strong>Author:</strong> ${item.author}</p>
+            //                                 <p class="mb-1"><strong>Year:</strong> ${item.academic_year ?? 'N/A'}</p>
+            //                                 <p class="mb-2" style="text-align: justify;">${item.description ?? 'No description available.'}</p>
+            //                                 <div class="d-flex gap-2 flex-wrap">
+            //                                     ${item.publication ? `<span class="badge bg-primary">Publication: ${item.publication}</span>` : ''}
+            //                                     ${item.department ? `<span class="badge bg-warning">College: ${item.department.name}</span>` : ''}
+            //                                     ${item.campus ? `<span class="badge bg-success">${item.campus.name}</span>` : ''}
+            //                                 </div>
+            //                             </div>
+            //                         </div>
+            //                     </div>`;
+            //                 });
+
+            //                 // Pagination
+            //                 if (res.last_page > 1) {
+            //                     html += `<div class="col-12 d-flex justify-content-center mt-4">
+            //                         <ul class="pagination">`;
+            //                     for (let i = 1; i <= res.last_page; i++) {
+            //                         html += `<li class="page-item ${i === res.current_page ? 'active' : ''}">
+            //                             <a href="#" class="page-link" data-page="${i}">${i}</a>
+            //                         </li>`;
+            //                     }
+            //                     html += `</ul></div>`;
+            //                 }
+            //             }
+
+            //             $('#research-results').html(html);
+            //         }
+            //     });
+            // }
             function fetchResearch(page = 1) {
                 let formData = $('#filter-form').serialize();
+
                 $.ajax({
                     url: "{{ route('search') }}?page=" + page,
                     type: "GET",
                     data: formData,
                     success: function(res) {
-                        let html = '';
 
+                        let html = '';
                         if (!res.data || res.data.length === 0) {
-                            // Full-width placeholder card
-                            html = `<div class="col-12 d-flex justify-content-center mt-5">
-                                <div class="card text-center shadow-sm p-5" style="width: 100%; max-width: 1000px; border-radius: 15px;">
+                            html = `
+                            <div class="col-12 d-flex justify-content-center mt-5">
+                                <div class="card border-0 shadow-sm text-center p-5"
+                                    style="max-width: 700px; border-radius: 18px;">
                                     <div class="card-body">
                                         <i class="fas fa-search fa-3x text-primary mb-3"></i>
-                                        <h4 class="card-title mb-2">Start Searching</h4>
-                                        <p class="card-text text-muted">
-                                            Use the search box or filters above to find research papers in the repository.
+                                        <h3 class="fw-bold mb-2">No Results Found</h3>
+                                        <p class="text-muted mb-0">
+                                            Try adjusting your filters or search keywords to find research papers.
                                         </p>
                                     </div>
                                 </div>
                             </div>`;
                         } else {
-                            // Render research results
+
+                            // =========================
                             res.data.forEach(function(item) {
+
                                 html += `
                                 <div class="col-12 mb-4">
-                                    <div class="card shadow-sm border-0 rounded-3 h-100">
+                                    <div class="card border-0 shadow-sm h-100 research-card"
+                                        style="border-radius: 16px; transition: all 0.3s ease;">
+
                                         <div class="card-body p-4">
-                                            <div class="d-flex justify-content-between align-items-start mb-3">
-                                                <h4 class="card-title mb-0 text-primary">${item.title}</h4>
+
+                                            <!-- TITLE + ACTION -->
+                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                                <h4 class="fw-bold text-primary mb-0" style="line-height:1.4;">
+                                                    ${item.title ?? 'Untitled Research'}
+                                                </h4>
+
                                                 ${item.abstract_path
                                                     ? (isLoggedIn
-                                                        ? `<a href="/research/download/${item.id}" class="btn btn-sm btn-danger">
-                                                             <i class="fas fa-file-pdf"></i> Download
-                                                           </a>`
-                                                        : `<span class="badge bg-danger">Login to download research absract</span>`)
-                                                    : `<span class="text-muted"><em>No Abstract</em></span>`}
+                                                        ? `<a href="/research/download/${item.id}"
+                                                            class="btn btn-sm btn-danger rounded-pill px-3">
+                                                            <i class="fas fa-file-pdf me-1"></i> Download Abstract
+                                                        </a>`
+                                                        : `<span class="badge bg-danger-subtle text-danger px-3 py-2">
+                                                            Login to download
+                                                        </span>`)
+                                                    : `<span class="text-muted small"><em>No Abstract</em></span>`}
                                             </div>
-                                            <p class="mb-1"><strong>Author:</strong> ${item.author}</p>
-                                            <p class="mb-1"><strong>Year:</strong> ${item.academic_year ?? 'N/A'}</p>
-                                            <p class="mb-2" style="text-align: justify;">${item.description ?? 'No description available.'}</p>
-                                            <div class="d-flex gap-2 flex-wrap">
-                                                ${item.publication ? `<span class="badge bg-primary">Publication: ${item.publication}</span>` : ''}
-                                                ${item.department ? `<span class="badge bg-warning">College: ${item.department.name}</span>` : ''}
-                                                ${item.campus ? `<span class="badge bg-success">${item.campus.name}</span>` : ''}
+
+                                            <!-- META -->
+                                            <div class="mb-2 text-muted small">
+                                                <span><strong>Author:</strong> ${item.author ?? 'N/A'}</span>
+                                                <span class="mx-2">•</span>
+                                                <span><strong>Year:</strong> ${item.academic_year ?? 'N/A'}</span>
                                             </div>
+
+                                            <!-- DESCRIPTION -->
+                                            <p class="text-muted mb-3" style="text-align: justify;">
+                                                ${item.description
+                                                    ? item.description.substring(0, 200) + '...'
+                                                    : 'No description available.'}
+                                            </p>
+
+                                            <!-- TAGS -->
+                                            <div class="d-flex flex-wrap gap-2">
+                                                ${item.publication
+                                                    ? `<span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">
+                                                        ${item.publication}
+                                                    </span>`
+                                                    : ''}
+
+                                                ${item.department
+                                                    ? `<span class="badge bg-warning-subtle text-warning px-3 py-2 rounded-pill">
+                                                        ${item.department.name}
+                                                    </span>`
+                                                    : ''}
+
+                                                ${item.campus
+                                                    ? `<span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">
+                                                        ${item.campus.name}
+                                                    </span>`
+                                                    : ''}
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>`;
                             });
 
-                            // Pagination
                             if (res.last_page > 1) {
-                                html += `<div class="col-12 d-flex justify-content-center mt-4">
-                                    <ul class="pagination">`;
+                                html += `
+                                <div class="col-12 d-flex justify-content-center mt-4">
+                                    <nav>
+                                        <ul class="pagination pagination-sm">`;
+
                                 for (let i = 1; i <= res.last_page; i++) {
-                                    html += `<li class="page-item ${i === res.current_page ? 'active' : ''}">
-                                        <a href="#" class="page-link" data-page="${i}">${i}</a>
+                                    html += `
+                                    <li class="page-item ${i === res.current_page ? 'active' : ''}">
+                                        <a href="#" class="page-link rounded-circle mx-1"
+                                            data-page="${i}"
+                                            style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;">
+                                            ${i}
+                                        </a>
                                     </li>`;
                                 }
-                                html += `</ul></div>`;
+
+                                html += `
+                                        </ul>
+                                    </nav>
+                                </div>`;
                             }
                         }
 
@@ -195,6 +317,6 @@
             });
 
         });
-    </script>
-    @endpush
+</script>
+@endpush
 @endsection

@@ -10,7 +10,7 @@ class Campus extends Model
 
     public function departments()
     {
-        return $this->hasMany(Department::class);
+        return $this->hasMany(Department::class)->withDefault();
     }
 
     public function users()

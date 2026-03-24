@@ -32,7 +32,7 @@ class Research extends Model
     // Optional: define relations
     public function campus()
     {
-        return $this->belongsTo(Campus::class);
+        return $this->belongsTo(Campus::class)->withDefault();
     }
 
     public function department()

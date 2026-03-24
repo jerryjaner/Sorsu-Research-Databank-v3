@@ -57,7 +57,7 @@ class User extends Authenticatable
 
     public function department():belongsTo
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Department::class)->withDefault();
     }
 
     public function profile()

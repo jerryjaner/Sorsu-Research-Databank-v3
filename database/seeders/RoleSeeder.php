@@ -19,7 +19,8 @@ class RoleSeeder extends Seeder
             'sorsogon-admin',
             'castilla-admin',
             'magallanes-admin',
-            'graduate-admin'
+            'graduate-admin',
+            'student',
         ];
 
         foreach ($adminRoles as $roleName) {

@@ -291,9 +291,20 @@
                         $('#user_save_button').show();
 
                         // Fill review
-                        let roles = $('[name="role[]"] option:selected').map(function() {
-                            return $(this).text();
-                        }).get().join(', ');
+                        // let roles = $('[name="role[]"] option:selected').map(function() {
+                        //     return $(this).text();
+                        // }).get().join(', ');
+                        let roleElement = $('[name="role[]"]');
+                        let roles = '';
+
+                        if (roleElement.is('select')) {
+                            roles = roleElement.find('option:selected').map(function() {
+                                return $(this).text();
+                            }).get().join(', ');
+                        } else {
+                            roles = roleElement.val();
+                        }
+
                         let campus = $('#campus_select option:selected').text() || 'N/A';
                         let department = $('#department_select option:selected').text() || 'N/A';
 

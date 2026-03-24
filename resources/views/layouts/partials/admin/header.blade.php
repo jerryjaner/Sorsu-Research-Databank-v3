@@ -68,8 +68,8 @@
     <div class="d-flex align-items-stretch flex-shrink-0">
 
         <!--end::Activities-->
-        <!--begin::Notifications-->
-        {{-- <div class="d-flex align-items-center ms-1 ms-lg-3">
+        {{-- <!--begin::Notifications-->
+        <div class="d-flex align-items-center ms-1 ms-lg-3">
             <!--begin::Menu wrapper-->
             <div class="btn btn-icon btn-active-light-primary position-relative w-30px h-30px w-md-40px h-md-40px"
                 data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end"
@@ -448,8 +448,8 @@
             </div>
             <!--end::Menu-->
             <!--end::Menu wrapper-->
-        </div> --}}
-        <!--end::Notifications-->
+        </div>
+        <!--end::Notifications--> --}}
         <!--begin::User-->
         <div class="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
             <!--begin::Menu wrapper-->
