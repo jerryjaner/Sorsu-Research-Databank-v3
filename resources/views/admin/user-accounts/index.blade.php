@@ -11,274 +11,270 @@
 @endsection
 
 @section('content')
-    <div class="container" id="kt_content_container">
-        <div class="row g-xl-8">
+<div class="container" id="kt_content_container">
+    <div class="row g-xl-8">
 
-            <!-- Stepper Form -->
-            <div class="col-xxl-12">
-                <div class="card card-flush mb-5 mb-xxl-8">
-                    <div class="card-header mt-5">
-                        <div class="alert alert-primary d-flex align-items-start mb-4">
-                            <i class="bi bi-info-circle-fill fs-3 me-3"></i>
-                            <div>
-                                <h5 class="mb-1 fw-bold">Create a New User</h5>
-                                <p class="mb-0 text-muted">
-                                    Complete the steps to create a new user account. You can assign roles and permissions in
-                                    the final step.
-                                </p>
-                            </div>
+        <!-- Stepper Form -->
+        <div class="col-xxl-12">
+            <div class="card card-flush mb-5 mb-xxl-8">
+                <div class="card-header mt-5">
+                    <div class="alert alert-primary d-flex align-items-start mb-4">
+                        <i class="bi bi-info-circle-fill fs-3 me-3"></i>
+                        <div>
+                            <h5 class="mb-1 fw-bold">Create a New User</h5>
+                            <p class="mb-0 text-muted">
+                                Complete the steps to create a new user account. You can assign roles and permissions in
+                                the final step.
+                            </p>
                         </div>
                     </div>
+                </div>
 
-                    <div class="card-body pt-1">
-                        <div class="stepper stepper-pills stepper-column d-flex flex-column flex-lg-row"
-                            id="kt_stepper_example_vertical">
+                <div class="card-body pt-1">
+                    <div class="stepper stepper-pills stepper-column d-flex flex-column flex-lg-row"
+                        id="kt_stepper_example_vertical">
 
-                            <!-- Stepper Nav -->
-                            <div class="d-flex flex-row-auto w-100 w-lg-300px">
-                                <div class="stepper-nav flex-column">
-                                    <div class="stepper-item current" data-kt-stepper-element="nav">
-                                        <div class="stepper-wrapper d-flex align-items-center">
-                                            <div class="stepper-icon w-40px h-40px">
-                                                <i class="stepper-check fas fa-check"></i>
-                                                <span class="stepper-number">1</span>
-                                            </div>
-                                            <div class="stepper-label">
-                                                <h3 class="stepper-title">User Details</h3>
-                                                <div class="stepper-desc">Full name, phone, address, campus and department.
-                                                </div>
-                                            </div>
+                        <!-- Stepper Nav -->
+                        <div class="d-flex flex-row-auto w-100 w-lg-300px">
+                            <div class="stepper-nav flex-column">
+                                <div class="stepper-item current" data-kt-stepper-element="nav">
+                                    <div class="stepper-wrapper d-flex align-items-center">
+                                        <div class="stepper-icon w-40px h-40px">
+                                            <i class="stepper-check fas fa-check"></i>
+                                            <span class="stepper-number">1</span>
                                         </div>
-                                    </div>
-
-                                    <div class="stepper-item" data-kt-stepper-element="nav">
-                                        <div class="stepper-wrapper d-flex align-items-center">
-                                            <div class="stepper-icon w-40px h-40px">
-                                                <i class="stepper-check fas fa-check"></i>
-                                                <span class="stepper-number">2</span>
-                                            </div>
-                                            <div class="stepper-label">
-                                                <h3 class="stepper-title">Login Credentials</h3>
-                                                <div class="stepper-desc">Email and password.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="stepper-item" data-kt-stepper-element="nav">
-                                        <div class="stepper-wrapper d-flex align-items-center">
-                                            <div class="stepper-icon w-40px h-40px">
-                                                <i class="stepper-check fas fa-check"></i>
-                                                <span class="stepper-number">3</span>
-                                            </div>
-                                            <div class="stepper-label">
-                                                <h3 class="stepper-title">Roles & Permissions</h3>
-                                                <div class="stepper-desc">Assign role for the user.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="stepper-item" data-kt-stepper-element="nav">
-                                        <div class="stepper-wrapper d-flex align-items-center">
-                                            <div class="stepper-icon w-40px h-40px">
-                                                <i class="stepper-check fas fa-check"></i>
-                                                <span class="stepper-number">4</span>
-                                            </div>
-                                            <div class="stepper-label">
-                                                <h3 class="stepper-title">Review & Submit</h3>
-                                                <div class="stepper-desc">Confirm all details before submitting.</div>
+                                        <div class="stepper-label">
+                                            <h3 class="stepper-title">User Details</h3>
+                                            <div class="stepper-desc">Full name, phone, address, campus and department.
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Stepper Content -->
-                            <div class="flex-row-fluid">
-                                <form id="UserForm" class="form w-lg-500px mx-auto" novalidate
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    <input type="hidden" id="user_id" name="user_id">
-
-                                    <!-- Step 1: User Details -->
-                                    <div class="flex-column current" data-kt-stepper-element="content">
-                                        <div class="fv-row mb-10">
-                                            <label class="form-label">Full Name</label>
-                                            <input type="text" class="form-control form-control-solid" name="name"
-                                                placeholder="Enter full name" />
-                                            <span class="text-danger name_error"></span>
+                                <div class="stepper-item" data-kt-stepper-element="nav">
+                                    <div class="stepper-wrapper d-flex align-items-center">
+                                        <div class="stepper-icon w-40px h-40px">
+                                            <i class="stepper-check fas fa-check"></i>
+                                            <span class="stepper-number">2</span>
                                         </div>
-                                        <div class="fv-row mb-10">
-                                            <label class="form-label">Phone Number</label>
-                                            <input type="text" class="form-control form-control-solid" name="phone"
-                                                placeholder="Enter phone number" />
-                                            <span class="text-danger phone_error"></span>
-                                        </div>
-                                        <div class="fv-row mb-10">
-                                            <label class="form-label">Address</label>
-                                            <input type="text" class="form-control form-control-solid" name="address"
-                                                placeholder="Enter address" />
-                                            <span class="text-danger address_error"></span>
-                                        </div>
-                                        {{-- <div class="fv-row mb-10">
-                                            <label class="form-label">Campus</label>
-                                            <select name="campus_id" id="campus_select"
-                                                class="form-select form-select-solid">
-                                                <option value="">Select Campus</option>
-                                                @foreach ($campuses as $campus)
-                                                    <option value="{{ $campus->id }}">{{ $campus->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            <span class="text-danger campus_id_error"></span>
-                                        </div>
-
-                                        <div class="fv-row mb-10">
-                                            <label class="form-label">College</label>
-                                            <select name="department_id" id="department_select"
-                                                class="form-select form-select-solid">
-                                                <option value="">Select College</option>
-                                            </select>
-                                            <span class="text-danger department_id_error"></span>
-                                        </div> --}}
-                                        <div class="fv-row mb-10">
-    <label class="form-label">Campus</label>
-
-    <select name="campus_id" id="campus_select"
-        class="form-select form-select-solid"
-        {{ !auth()->user()->hasRole('super-admin') ? 'disabled' : '' }}>
-
-        <option value="">Select Campus</option>
-
-        @foreach ($campuses as $campus)
-            <option value="{{ $campus->id }}"
-                {{ !auth()->user()->hasRole('super-admin') && auth()->user()->campus_id == $campus->id ? 'selected' : '' }}>
-                {{ $campus->name }}
-            </option>
-        @endforeach
-    </select>
-
-    {{-- Hidden input (important when disabled) --}}
-    @if(!auth()->user()->hasRole('super-admin'))
-        <input type="hidden" name="campus_id" value="{{ auth()->user()->campus_id }}">
-    @endif
-
-    <span class="text-danger campus_id_error"></span>
-</div>
-
-<div class="fv-row mb-10">
-    <label class="form-label">College</label>
-    <select name="department_id" id="department_select"
-        class="form-select form-select-solid">
-        <option value="">Select College</option>
-    </select>
-    <span class="text-danger department_id_error"></span>
-</div>
-                                    </div>
-
-                                    <!-- Step 2: Login Credentials -->
-                                    <div class="flex-column" data-kt-stepper-element="content">
-                                        <div class="fv-row mb-10">
-                                            <label class="form-label">Email</label>
-                                            <input type="email" class="form-control form-control-solid" name="email"
-                                                placeholder="Enter email" />
-                                            <span class="text-danger email_error"></span>
-                                        </div>
-                                        {{-- <div class="fv-row mb-10">
-                                            <label class="form-label">Password</label>
-                                            <input type="password" class="form-control form-control-solid"
-                                                name="password" placeholder="Enter password" />
-                                            <span class="text-danger password_error"></span>
-                                        </div> --}}
-                                       <div class="fv-row mb-10">
-                                            <label class="form-label">Password</label>
-
-                                            <div class="position-relative">
-                                                <input type="password"
-                                                    id="password"
-                                                    class="form-control form-control-solid"
-                                                    name="password"
-                                                    placeholder="Enter password" />
-
-                                                <i class="toggle-password fas fa-eye position-absolute"
-                                                data-target="#password"
-                                                style="cursor: pointer; right: 15px; top: 50%; transform: translateY(-50%);">
-                                                </i>
-                                            </div>
-
-                                            <span class="text-danger password_error"></span>
+                                        <div class="stepper-label">
+                                            <h3 class="stepper-title">Login Credentials</h3>
+                                            <div class="stepper-desc">Email and password.</div>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <!-- Step 3: Roles -->
-                                    <div class="flex-column" data-kt-stepper-element="content">
-                                        <div class="fv-row mb-10">
-                                            <label class="form-label">Role</label>
-
-                                            @if (auth()->user()->hasRole(['super-admin']))
-
-                                                <!-- Super-admin and other admin can select multiple roles -->
-                                                 {{-- multiple="multiple" --}}
-                                                <select class="form-select form-control-solid" name="role[]"
-                                                    data-control="select2"
-                                                    data-placeholder="Select role">
-                                                    @foreach ($roles as $role)
-                                                        <option value="{{ $role->name }}">
-                                                            {{ $roleLabels[$role->name] ?? $role->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            @else
-                                                <!-- Non-super-admin automatically gets student role -->
-                                                <input type="text" class="form-control form-control-solid"
-                                                    name="role[]" value="student" readonly>
-                                            @endif
-
-                                            <span class="text-danger role_error"></span>
+                                <div class="stepper-item" data-kt-stepper-element="nav">
+                                    <div class="stepper-wrapper d-flex align-items-center">
+                                        <div class="stepper-icon w-40px h-40px">
+                                            <i class="stepper-check fas fa-check"></i>
+                                            <span class="stepper-number">3</span>
+                                        </div>
+                                        <div class="stepper-label">
+                                            <h3 class="stepper-title">Roles & Permissions</h3>
+                                            <div class="stepper-desc">Assign role for the user.</div>
                                         </div>
                                     </div>
-                                    <!-- Step 4: Review -->
-                                    <div class="flex-column" data-kt-stepper-element="content">
-                                        <h5>Review User Information</h5>
-                                        <p><strong>Full Name:</strong> <span id="review_full_name"></span></p>
-                                        <p><strong>Email:</strong> <span id="review_email"></span></p>
-                                        <p><strong>Phone:</strong> <span id="review_phone"></span></p>
-                                        <p><strong>Address:</strong> <span id="review_address"></span></p>
-                                        <p><strong>Campus:</strong> <span id="review_campus"></span></p>
-                                        <p><strong>College:</strong> <span id="review_department"></span></p>
-                                        <p><strong>Role:</strong> <span id="review_role"></span></p>
-                                    </div>
+                                </div>
 
-                                    <!-- Stepper Actions -->
-                                    <div class="d-flex justify-content-between mt-5">
-                                        <div class="d-flex gap-2">
-                                            <button type="button" class="btn btn-light btn-active-light-primary btn-sm"
-                                                data-kt-stepper-action="previous">Back</button>
-                                            <button type="button" class="btn btn-warning" id="user_cancel_button"
-                                                style="display:none">Cancel update</button>
+                                <div class="stepper-item" data-kt-stepper-element="nav">
+                                    <div class="stepper-wrapper d-flex align-items-center">
+                                        <div class="stepper-icon w-40px h-40px">
+                                            <i class="stepper-check fas fa-check"></i>
+                                            <span class="stepper-number">4</span>
                                         </div>
-                                        <div class="d-flex gap-2">
-                                            <button type="button" class="btn btn-primary btn-sm"
-                                                data-kt-stepper-action="next">Continue</button>
-                                            <button type="submit" class="btn btn-success btn-sm"
-                                                data-kt-stepper-action="submit" id="user_save_button">Submit</button>
+                                        <div class="stepper-label">
+                                            <h3 class="stepper-title">Review & Submit</h3>
+                                            <div class="stepper-desc">Confirm all details before submitting.</div>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
-                        <!-- End Stepper -->
+
+                        <!-- Stepper Content -->
+                        <div class="flex-row-fluid">
+                            <form id="UserForm" class="form w-lg-500px mx-auto" novalidate
+                                enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" id="user_id" name="user_id">
+
+                                <!-- Step 1: User Details -->
+                                <div class="flex-column current" data-kt-stepper-element="content">
+                                    <div class="fv-row mb-10">
+                                        <label class="form-label">Full Name</label>
+                                        <input type="text" class="form-control form-control-solid" name="name"
+                                            placeholder="Enter full name" />
+                                        <span class="text-danger name_error"></span>
+                                    </div>
+                                    <div class="fv-row mb-10">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="text" class="form-control form-control-solid" name="phone"
+                                            placeholder="Enter phone number" />
+                                        <span class="text-danger phone_error"></span>
+                                    </div>
+                                    <div class="fv-row mb-10">
+                                        <label class="form-label">Address</label>
+                                        <input type="text" class="form-control form-control-solid" name="address"
+                                            placeholder="Enter address" />
+                                        <span class="text-danger address_error"></span>
+                                    </div>
+                                    {{-- <div class="fv-row mb-10">
+                                        <label class="form-label">Campus</label>
+                                        <select name="campus_id" id="campus_select"
+                                            class="form-select form-select-solid">
+                                            <option value="">Select Campus</option>
+                                            @foreach ($campuses as $campus)
+                                            <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <span class="text-danger campus_id_error"></span>
+                                    </div>
+
+                                    <div class="fv-row mb-10">
+                                        <label class="form-label">College</label>
+                                        <select name="department_id" id="department_select"
+                                            class="form-select form-select-solid">
+                                            <option value="">Select College</option>
+                                        </select>
+                                        <span class="text-danger department_id_error"></span>
+                                    </div> --}}
+                                    <div class="fv-row mb-10">
+                                        <label class="form-label">Campus</label>
+
+                                        <select name="campus_id" id="campus_select"
+                                            class="form-select form-select-solid" {{
+                                            !auth()->user()->hasRole('super-admin') ? 'disabled' : '' }}>
+
+                                            <option value="">Select Campus</option>
+
+                                            @foreach ($campuses as $campus)
+                                            <option value="{{ $campus->id }}" {{ !auth()->user()->hasRole('super-admin')
+                                                && auth()->user()->campus_id == $campus->id ? 'selected' : '' }}>
+                                                {{ $campus->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+
+                                        {{-- Hidden input (important when disabled) --}}
+                                        @if(!auth()->user()->hasRole('super-admin'))
+                                        <input type="hidden" name="campus_id" value="{{ auth()->user()->campus_id }}">
+                                        @endif
+
+                                        <span class="text-danger campus_id_error"></span>
+                                    </div>
+
+                                    <div class="fv-row mb-10">
+                                        <label class="form-label">College</label>
+                                        <select name="department_id" id="department_select"
+                                            class="form-select form-select-solid">
+                                            <option value="">Select College</option>
+                                        </select>
+                                        <span class="text-danger department_id_error"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Step 2: Login Credentials -->
+                                <div class="flex-column" data-kt-stepper-element="content">
+                                    <div class="fv-row mb-10">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control form-control-solid" name="email"
+                                            placeholder="Enter email" />
+                                        <span class="text-danger email_error"></span>
+                                    </div>
+                                    {{-- <div class="fv-row mb-10">
+                                        <label class="form-label">Password</label>
+                                        <input type="password" class="form-control form-control-solid" name="password"
+                                            placeholder="Enter password" />
+                                        <span class="text-danger password_error"></span>
+                                    </div> --}}
+                                    <div class="fv-row mb-10">
+                                        <label class="form-label">Password</label>
+
+                                        <div class="position-relative">
+                                            <input type="password" id="password" class="form-control form-control-solid"
+                                                name="password" placeholder="Enter password" />
+
+                                            <i class="toggle-password fas fa-eye position-absolute"
+                                                data-target="#password"
+                                                style="cursor: pointer; right: 15px; top: 50%; transform: translateY(-50%);">
+                                            </i>
+                                        </div>
+
+                                        <span class="text-danger password_error"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Step 3: Roles -->
+                                <div class="flex-column" data-kt-stepper-element="content">
+                                    <div class="fv-row mb-10">
+                                        <label class="form-label">Role</label>
+
+                                        @if (auth()->user()->hasRole(['super-admin']))
+
+                                        <!-- Super-admin and other admin can select multiple roles -->
+                                        {{-- multiple="multiple" --}}
+                                        <select class="form-select form-control-solid" name="role[]"
+                                            data-control="select2" data-placeholder="Select role">
+                                            @foreach ($roles as $role)
+                                            <option value="{{ $role->name }}">
+                                                {{ $roleLabels[$role->name] ?? $role->name }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                        @else
+                                        <!-- Non-super-admin automatically gets student role -->
+                                        <input type="text" class="form-control form-control-solid" name="role[]"
+                                            value="student" readonly>
+                                        @endif
+
+                                        <span class="text-danger role_error"></span>
+                                    </div>
+                                </div>
+                                <!-- Step 4: Review -->
+                                <div class="flex-column" data-kt-stepper-element="content">
+                                    <h5>Review User Information</h5>
+                                    <p><strong>Full Name:</strong> <span id="review_full_name"></span></p>
+                                    <p><strong>Email:</strong> <span id="review_email"></span></p>
+                                    <p><strong>Phone:</strong> <span id="review_phone"></span></p>
+                                    <p><strong>Address:</strong> <span id="review_address"></span></p>
+                                    <p><strong>Campus:</strong> <span id="review_campus"></span></p>
+                                    <p><strong>College:</strong> <span id="review_department"></span></p>
+                                    <p><strong>Role:</strong> <span id="review_role"></span></p>
+                                </div>
+
+                                <!-- Stepper Actions -->
+                                <div class="d-flex justify-content-between mt-5">
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-light btn-active-light-primary btn-sm"
+                                            data-kt-stepper-action="previous">Back</button>
+                                        <button type="button" class="btn btn-warning" id="user_cancel_button"
+                                            style="display:none">Cancel update</button>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-primary btn-sm"
+                                            data-kt-stepper-action="next">Continue</button>
+                                        <button type="submit" class="btn btn-success btn-sm"
+                                            data-kt-stepper-action="submit" id="user_save_button">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
+                    <!-- End Stepper -->
                 </div>
             </div>
+        </div>
 
-            <!-- User Table -->
-            <div class="col-xxl-12">
-                <div class="card card-xxl-stretch mb-5 mb-xl-3">
-                    <div class="card-header border-0 pt-5 pb-3">
-                        <h3 class="card-title align-items-start flex-column">
-                            <span class="card-label fw-boldest text-gray-800 fs-2">User Management</span>
-                            <span class="text-gray-400 fw-bold mt-2 fs-6">Manage your users</span>
-                        </h3>
-                        <div class="card-toolbar">
+        <!-- User Table -->
+        <div class="col-xxl-12">
+            <div class="card card-xxl-stretch mb-5 mb-xl-3">
+                <div class="card-header border-0 pt-5 pb-3">
+                    <h3 class="card-title align-items-start flex-column">
+                        <span class="card-label fw-boldest text-gray-800 fs-2">User Management</span>
+                        <span class="text-gray-400 fw-bold mt-2 fs-6">Manage your users</span>
+                    </h3>
+                    <div class="card-toolbar">
                         <!-- Search -->
                         <div class="position-relative pe-6 my-1">
                             <span
@@ -294,30 +290,30 @@
                                 id="campusFilter">
                                 <option value="">Select School Campus</option>
                                 @foreach ($campuses as $campus)
-                                    <option value="{{ $campus->id }}">{{ $campus->name }}</option>
+                                <option value="{{ $campus->id }}">{{ $campus->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
-                    </div>
+                </div>
 
-                    <div class="card-body py-0">
-                        <div id="all_users">
-                            <div class="text-center py-5">
-                                <span class="spinner-border text-primary"></span>
-                                <div class="mt-2">Loading...</div>
-                            </div>
+                <div class="card-body py-0">
+                    <div id="all_users">
+                        <div class="text-center py-5">
+                            <span class="spinner-border text-primary"></span>
+                            <div class="mt-2">Loading...</div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
-    </div>
 
-    @push('scripts')
-        <script>
-            $(document).ready(function() {
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
 
                  /**
                  * ==========================================
@@ -708,6 +704,6 @@
                 });
 
             });
-        </script>
-    @endpush
+</script>
+@endpush
 @endsection
