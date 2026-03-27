@@ -89,12 +89,23 @@ class UserAccountController extends Controller
         $validator = \Validator::make($request->all(), [
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
+            'password'     => [
+                'required', // optional for update
+                'string',
+                'min:8',
+                'max:20',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/',
+            ],
             'role'     => 'required|array', // plural
             'phone'    => 'required|string|max:20',
             'address'  => 'required|string|max:255',
             'campus_id' => 'required|exists:campuses,id',
             'department_id' => 'nullable|exists:departments,id',
+        ],
+         [
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).',
+            'password.min'   => 'Password must be at least 8 characters.',
+            'password.max'   => 'Password may not be greater than 20 characters.',
         ]);
 
         if ($validator->fails()) {
@@ -309,12 +320,23 @@ class UserAccountController extends Controller
         $validator = \Validator::make($request->all(), [
             'name'       => 'required|string|max:255',
             'email'      => 'required|email|unique:users,email,' . $id,
-            'password'   => 'nullable|string|min:6',
+            'password'     => [
+                'nullable', // optional for update
+                'string',
+                'min:8',
+                'max:20',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/',
+            ],
             'role'       => 'required|array',
             'phone'      => 'required|string|max:20',
             'address'    => 'required|string|max:255',
             'campus_id'  => 'required|exists:campuses,id',
             'department_id' => 'nullable|exists:departments,id',
+        ],
+        [
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).',
+            'password.min'   => 'Password must be at least 8 characters.',
+            'password.max'   => 'Password may not be greater than 20 characters.',
         ]);
 
         if ($validator->fails()) {

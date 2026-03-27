@@ -119,7 +119,7 @@
                                                 placeholder="Enter address" />
                                             <span class="text-danger address_error"></span>
                                         </div>
-                                        <div class="fv-row mb-10">
+                                        {{-- <div class="fv-row mb-10">
                                             <label class="form-label">Campus</label>
                                             <select name="campus_id" id="campus_select"
                                                 class="form-select form-select-solid">
@@ -138,7 +138,40 @@
                                                 <option value="">Select College</option>
                                             </select>
                                             <span class="text-danger department_id_error"></span>
-                                        </div>
+                                        </div> --}}
+                                        <div class="fv-row mb-10">
+    <label class="form-label">Campus</label>
+
+    <select name="campus_id" id="campus_select"
+        class="form-select form-select-solid"
+        {{ !auth()->user()->hasRole('super-admin') ? 'disabled' : '' }}>
+
+        <option value="">Select Campus</option>
+
+        @foreach ($campuses as $campus)
+            <option value="{{ $campus->id }}"
+                {{ !auth()->user()->hasRole('super-admin') && auth()->user()->campus_id == $campus->id ? 'selected' : '' }}>
+                {{ $campus->name }}
+            </option>
+        @endforeach
+    </select>
+
+    {{-- Hidden input (important when disabled) --}}
+    @if(!auth()->user()->hasRole('super-admin'))
+        <input type="hidden" name="campus_id" value="{{ auth()->user()->campus_id }}">
+    @endif
+
+    <span class="text-danger campus_id_error"></span>
+</div>
+
+<div class="fv-row mb-10">
+    <label class="form-label">College</label>
+    <select name="department_id" id="department_select"
+        class="form-select form-select-solid">
+        <option value="">Select College</option>
+    </select>
+    <span class="text-danger department_id_error"></span>
+</div>
                                     </div>
 
                                     <!-- Step 2: Login Credentials -->
@@ -149,10 +182,28 @@
                                                 placeholder="Enter email" />
                                             <span class="text-danger email_error"></span>
                                         </div>
-                                        <div class="fv-row mb-10">
+                                        {{-- <div class="fv-row mb-10">
                                             <label class="form-label">Password</label>
                                             <input type="password" class="form-control form-control-solid"
                                                 name="password" placeholder="Enter password" />
+                                            <span class="text-danger password_error"></span>
+                                        </div> --}}
+                                       <div class="fv-row mb-10">
+                                            <label class="form-label">Password</label>
+
+                                            <div class="position-relative">
+                                                <input type="password"
+                                                    id="password"
+                                                    class="form-control form-control-solid"
+                                                    name="password"
+                                                    placeholder="Enter password" />
+
+                                                <i class="toggle-password fas fa-eye position-absolute"
+                                                data-target="#password"
+                                                style="cursor: pointer; right: 15px; top: 50%; transform: translateY(-50%);">
+                                                </i>
+                                            </div>
+
                                             <span class="text-danger password_error"></span>
                                         </div>
                                     </div>
@@ -165,8 +216,9 @@
                                             @if (auth()->user()->hasRole(['super-admin']))
 
                                                 <!-- Super-admin and other admin can select multiple roles -->
+                                                 {{-- multiple="multiple" --}}
                                                 <select class="form-select form-control-solid" name="role[]"
-                                                    multiple="multiple" data-control="select2"
+                                                    data-control="select2"
                                                     data-placeholder="Select role">
                                                     @foreach ($roles as $role)
                                                         <option value="{{ $role->name }}">
@@ -267,6 +319,34 @@
         <script>
             $(document).ready(function() {
 
+                 /**
+                 * ==========================================
+                 * Toggle Password Visibility (Eye Icon)
+                 * ==========================================
+                 */
+                $(document).on('click', '.toggle-password', function () {
+
+                    const target = $(this).data('target');
+                    const input = $(target);
+
+                    if (input.length === 0) return; // prevent error
+
+                    if (input.attr('type') === 'password') {
+                        input.attr('type', 'text');
+                        $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+                    } else {
+                        input.attr('type', 'password');
+                        $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+                    }
+
+                });
+
+
+                 /**
+                 * ==========================================
+                 * Stepper Initialization
+                 * ==========================================
+                 */
                 var currentStep = 0;
                 var totalSteps = $('[data-kt-stepper-element="content"]').length;
 
@@ -320,9 +400,13 @@
                         $('#user_save_button').hide();
                     }
                 }
-
+                  // Initialize first step
                 showStep(currentStep);
-
+                  /**
+                 * ==========================================
+                 * Stepper Navigation (Next / Previous)
+                 * ==========================================
+                 */
                 $('[data-kt-stepper-action="next"]').click(function() {
                     if (currentStep < totalSteps - 1) {
                         currentStep++;
@@ -337,6 +421,11 @@
                     }
                 });
 
+                 /**
+                 * ==========================================
+                 * Cancel Button (Reset Form)
+                 * ==========================================
+                 */
                 $('#user_cancel_button').click(function() {
                     $('#UserForm')[0].reset();
                     $('#user_id').val('');
@@ -348,30 +437,87 @@
 
 
 
-                // On campus change, load departments
-                $('#campus_select').on('change', function() {
-                    var campusId = $(this).val();
-                    $('#department_select').html('<option value="">Loading...</option>');
+                /**
+                 * ==========================================
+                 * Load Departments based on Campus
+                 * ==========================================
+                 */
+                // $('#campus_select').on('change', function() {
+                //     var campusId = $(this).val();
+                //     $('#department_select').html('<option value="">Loading...</option>');
 
-                    if (campusId) {
-                        $.get('/user-accounts/departments/' + campusId, function(data) {
-                            var options = '<option value="">Select College</option>';
-                            data.forEach(function(dept) {
-                                options += `<option value="${dept.id}">${dept.name}</option>`;
-                            });
-                            $('#department_select').html(options);
+                //     if (campusId) {
+                //         $.get('/user-accounts/departments/' + campusId, function(data) {
+                //             var options = '<option value="">Select College</option>';
+                //             data.forEach(function(dept) {
+                //                 options += `<option value="${dept.id}">${dept.name}</option>`;
+                //             });
+                //             $('#department_select').html(options);
 
-                            // If editing, select previous department
-                            var selectedDept = $('#department_select').data('selected');
-                            if (selectedDept) {
-                                $('#department_select').val(selectedDept).trigger('change');
-                                $('#department_select').removeData('selected'); // clear after use
-                            }
-                        });
-                    } else {
-                        $('#department_select').html('<option value="">Select College</option>');
-                    }
-                });
+                //             // If editing, select previous department
+                //             var selectedDept = $('#department_select').data('selected');
+                //             if (selectedDept) {
+                //                 $('#department_select').val(selectedDept).trigger('change');
+                //                 $('#department_select').removeData('selected'); // clear after use
+                //             }
+                //         });
+                //     } else {
+                //         $('#department_select').html('<option value="">Select College</option>');
+                //     }
+                // });
+
+                // -------------------------
+    // Load Departments
+    // -------------------------
+    function loadDepartments(campusId, selectedDept = null) {
+        $('#department_select').html('<option value="">Loading...</option>');
+        if (campusId) {
+            $.get('/user-accounts/departments/'+campusId,function(data){
+                let options = '<option value="">Select College</option>';
+                data.forEach(d => options += `<option value="${d.id}">${d.name}</option>`);
+                $('#department_select').html(options);
+                if(selectedDept) $('#department_select').val(selectedDept);
+            });
+        } else {
+            $('#department_select').html('<option value="">Select College</option>');
+        }
+    }
+
+    // On Campus Change
+    $('#campus_select').on('change', function(){ loadDepartments($(this).val()); });
+
+    // Auto load on page ready
+    let initialCampus = $('#campus_select').val();
+    if(initialCampus) loadDepartments(initialCampus);
+
+    // -------------------------
+    // Edit User
+    // -------------------------
+    $(document).on('click', '.user_edit', function(){
+        const id = $(this).data('id');
+        $.get(`/user-accounts/${id}`, function(res){
+            $('#user_id').val(res.id);
+            $('[name="name"]').val(res.name);
+            $('[name="email"]').val(res.email);
+            $('[name="phone"]').val(res.profile?.phone ?? '');
+            $('[name="address"]').val(res.profile?.address ?? '');
+            $('[name="role[]"]').val(res.roles.map(r => r.name)).trigger('change');
+
+            $('#campus_select').val(res.campus_id);
+            loadDepartments(res.campus_id, res.department_id);
+
+            $('#user_cancel_button').show();
+            currentStep = 0; showStep(currentStep);
+        });
+    });
+
+
+
+
+
+
+
+
 
                 // Get user table with optional search & campus
                 function GetUserRecord(search = '') {
@@ -499,29 +645,29 @@
                     });
                 });
 
-                // Edit user
-                $(document).on('click', '.user_edit', function() {
-                    const id = $(this).data('id');
-                    $.get(`/user-accounts/${id}`, function(response) {
-                        $('#user_id').val(response.id);
-                        $('[name="name"]').val(response.name);
-                        $('[name="email"]').val(response.email);
-                        $('[name="phone"]').val(response.profile?.phone ?? '');
-                        $('[name="address"]').val(response.profile?.address ?? '');
-                        let roles = response.roles.map(r => r.name);
-                        $('[name="role[]"]').val(roles).trigger('change');
+                // // Edit user
+                // $(document).on('click', '.user_edit', function() {
+                //     const id = $(this).data('id');
+                //     $.get(`/user-accounts/${id}`, function(response) {
+                //         $('#user_id').val(response.id);
+                //         $('[name="name"]').val(response.name);
+                //         $('[name="email"]').val(response.email);
+                //         $('[name="phone"]').val(response.profile?.phone ?? '');
+                //         $('[name="address"]').val(response.profile?.address ?? '');
+                //         let roles = response.roles.map(r => r.name);
+                //         $('[name="role[]"]').val(roles).trigger('change');
 
-                        // ✅ Store previous department in data attribute
-                        $('#department_select').data('selected', response.department_id ?? '');
+                //         // Store previous department in data attribute
+                //         $('#department_select').data('selected', response.department_id ?? '');
 
-                        // ✅ Set campus and trigger department load
-                        $('#campus_select').val(response.campus_id).trigger('change');
+                //         //  Set campus and trigger department load
+                //         $('#campus_select').val(response.campus_id).trigger('change');
 
-                        $('#user_cancel_button').show();
-                        currentStep = 0;
-                        showStep(currentStep);
-                    });
-                });
+                //         $('#user_cancel_button').show();
+                //         currentStep = 0;
+                //         showStep(currentStep);
+                //     });
+                // });
 
                 // Delete user
                 $(document).on('click', '.user_delete', function() {

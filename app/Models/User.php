@@ -3,11 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Campus;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Department;
 
 class User extends Authenticatable
 {
@@ -50,12 +52,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    public function campus():belongsTo
+    public function campus()
     {
         return $this->belongsTo(Campus::class);
     }
 
-    public function department():belongsTo
+    public function department()
     {
         return $this->belongsTo(Department::class)->withDefault();
     }

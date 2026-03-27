@@ -16,7 +16,74 @@
     <div class="container-xxl" id="kt_content_container">
         <!--begin::Row-->
         <div class="row gx-5 gx-xl-10 mb-xl-10">
+               <!--begin::Col: Big Clock & Today Stats-->
+            <div class="col-lg-12 col-xl-12 col-xxl-6 mb-10 mb-xl-0">
+                <div class="card card-flush shadow-sm rounded h-lg-100 text-center">
+                    <div class="card-header pt-5 d-flex flex-column justify-content-center align-items-center">
+                        <!-- Admin Name -->
+                        <h3 class="card-title text-gray-800 fs-3 fw-bold">Welcome Back, {{ Auth::user()->name }} 👋</h3>
+                        <hr class="w-75 border-secondary mt-3 mb-0">
+                    </div>
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center py-5">
 
+                        <!-- Big Digital Clock -->
+                        <div class="bg-dark rounded px-10 py-10 mb-4 d-inline-block shadow-lg neon-clock">
+                            <span id="digitalClock" class="fs-1 fw-bold text-white" style="letter-spacing:5px;"></span>
+                            <div id="digitalSeconds" class="fs-6 text-white mt-1"></div>
+                        </div>
+
+                        <!-- Current Date -->
+                        <span id="digitalDate" class="fs-5 text-gray-400 mb-5"></span>
+
+                        <!-- Today Stats Cards -->
+                        <div class="row g-3 w-100 px-3 justify-content-center">
+
+                            <div class="col-6 col-md-3">
+                                <div class="card shadow-sm rounded bg-light-primary h-100 py-3 hover-shadow">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-person-plus fs-2 text-primary mb-2"></i>
+                                        <div class="fs-3 fw-bold">{{ $newUsersToday ?? 0 }}</div>
+                                        <div class="fs-9 text-gray-500">New Users</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-3">
+                                <div class="card shadow-sm rounded bg-light-success h-100 py-3 hover-shadow">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-journal-text fs-2 text-success mb-2"></i>
+                                        <div class="fs-3 fw-bold">{{ $researchToday ?? 0 }}</div>
+                                        <div class="fs-9 text-gray-500">Research Submitted</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-3">
+                                <div class="card shadow-sm rounded bg-light-warning h-100 py-3 hover-shadow">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-download fs-2 text-warning mb-2"></i>
+                                        <div class="fs-3 fw-bold">{{ $downloadsToday ?? 0 }}</div>
+                                        <div class="fs-9 text-gray-500">Downloads</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-3">
+                                <div class="card shadow-sm rounded bg-light-info h-100 py-3 hover-shadow">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-award fs-2 text-info mb-2"></i>
+                                        <div class="fs-3 fw-bold">{{ $topResearcherTodayCount ?? 0 }}</div>
+                                        <div class="fs-9 text-gray-500">Top Researcher</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--end::Col-->
             <!--begin::Col: Total Research & Users-->
             <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-10">
 
@@ -57,14 +124,16 @@
                     <div class="card-body d-flex flex-column justify-content-center pt-3 pb-1" style="height: 220px;">
                         <canvas id="rolesChart" style="max-height:100%; max-width:100%;"></canvas>
                         <div class="d-flex flex-wrap justify-content-center align-items-center mt-3 gap-2"
-                             style="max-height: 60px; overflow-y:auto; text-align:center;">
+                            style="max-height: 60px; overflow-y:auto; text-align:center;">
                             @foreach($roleLabels as $index => $role)
-                                <div class="d-flex align-items-center text-truncate" style="max-width: 100px;">
-                                    <span style="display:inline-block;width:12px;height:12px;background-color:{{ ['#0d6efd','#198754','#ffc107','#dc3545','#6f42c1','#6c757d'][$index % 6] }};border-radius:50%;margin-right:6px;"></span>
-                                    <span class="text-gray-600 fs-7 text-truncate" title="{{ $role }} ({{ $roleCounts[$index] }})">
-                                        {{ $role }} ({{ $roleCounts[$index] }})
-                                    </span>
-                                </div>
+                            <div class="d-flex align-items-center text-truncate" style="max-width: 100px;">
+                                <span
+                                    style="display:inline-block;width:12px;height:12px;background-color:{{ ['#0d6efd','#198754','#ffc107','#dc3545','#6f42c1','#6c757d'][$index % 6] }};border-radius:50%;margin-right:6px;"></span>
+                                <span class="text-gray-600 fs-7 text-truncate"
+                                    title="{{ $role }} ({{ $roleCounts[$index] }})">
+                                    {{ $role }} ({{ $roleCounts[$index] }})
+                                </span>
+                            </div>
                             @endforeach
                         </div>
                     </div>
@@ -108,10 +177,12 @@
                             <div class="text-white opacity-75 fw-semibold fs-6">Top Researcher</div>
                             <div class="d-flex align-items-center text-truncate" style="max-width: 180px;">
                                 <i class="ki-duotone ki-arrow-up-right fs-2 text-success me-2"></i>
-                                <span class="text-white opacity-75 fw-bolder fs-6 text-truncate" title="{{ $topResearcherName }}">
+                                <span class="text-white opacity-75 fw-bolder fs-6 text-truncate"
+                                    title="{{ $topResearcherName }}">
                                     {{ $topResearcherName }}
                                 </span>
-                                <span class="text-white opacity-75 fw-bold fs-7 ms-1">({{ $topResearcherCount }} papers)</span>
+                                <span class="text-white opacity-75 fw-bold fs-7 ms-1">({{ $topResearcherCount }}
+                                    papers)</span>
                             </div>
                         </div>
 
@@ -122,10 +193,12 @@
                             <div class="text-white opacity-75 fw-semibold fs-6">Most Downloaded Research</div>
                             <div class="d-flex align-items-center text-truncate" style="max-width: 180px;">
                                 <i class="ki-duotone ki-arrow-up-right fs-2 text-primary me-2"></i>
-                                <span class="text-white opacity-75 fw-bolder fs-6 text-truncate" title="{{ $topDownloaded->title ?? 'N/A' }}">
+                                <span class="text-white opacity-75 fw-bolder fs-6 text-truncate"
+                                    title="{{ $topDownloaded->title ?? 'N/A' }}">
                                     {{ $topDownloaded->title ?? 'N/A' }}
                                 </span>
-                                <span class="text-white opacity-75 fw-bold fs-7 ms-1">({{ $topDownloaded->downloads ?? 0 }})</span>
+                                <span class="text-white opacity-75 fw-bold fs-7 ms-1">({{ $topDownloaded->downloads ?? 0
+                                    }})</span>
                             </div>
                         </div>
 
@@ -147,7 +220,8 @@
                             <div class="text-white opacity-75 fw-semibold fs-6">Avg Research per Campus</div>
                             <div class="d-flex align-items-center">
                                 <i class="ki-duotone ki-arrow-up-right fs-2 text-success me-2"></i>
-                                <span class="text-white opacity-75 fw-bolder fs-6">{{ $avgResearchPerCampus ?? 0 }}</span>
+                                <span class="text-white opacity-75 fw-bolder fs-6">{{ $avgResearchPerCampus ?? 0
+                                    }}</span>
                             </div>
                         </div>
 
@@ -157,72 +231,7 @@
             </div>
             <!--end::Col-->
 
-            <!--begin::Col: Big Clock & Today Stats-->
-            <div class="col-lg-12 col-xl-12 col-xxl-6 mb-10 mb-xl-0">
-                <div class="card card-flush shadow-sm rounded h-lg-100 text-center">
-                    <div class="card-header pt-5 d-flex justify-content-center align-items-center">
-                        <h3 class="card-title text-gray-800 fs-3 fw-bold">Dashboard Overview</h3>
-                        <i class="bi bi-speedometer2 fs-2 text-gray-400 ms-3"></i>
-                    </div>
-                    <div class="card-body d-flex flex-column justify-content-center align-items-center py-5">
 
-                        <!-- Big Digital Clock -->
-                        <div class="bg-dark rounded px-5 py-4 mb-4 d-inline-block shadow-lg">
-                            <span id="digitalClock" class="fs-1 fw-bold text-white" style="letter-spacing:5px;"></span>
-                        </div>
-
-                        <!-- Current Date -->
-                        <span id="digitalDate" class="fs-5 text-gray-400 mb-5"></span>
-
-                        <!-- Today Stats Cards -->
-                        <div class="row g-3 w-100 px-3 justify-content-center">
-
-                            <div class="col-6 col-md-3">
-                                <div class="card shadow-sm rounded bg-light-primary h-100 py-3">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-person-plus fs-2 text-primary mb-2"></i>
-                                        <div class="fs-3 fw-bold">{{ $newUsersToday ?? 0 }}</div>
-                                        <div class="fs-7 text-gray-500">New Users</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-6 col-md-3">
-                                <div class="card shadow-sm rounded bg-light-success h-100 py-3">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-journal-text fs-2 text-success mb-2"></i>
-                                        <div class="fs-3 fw-bold">{{ $researchToday ?? 0 }}</div>
-                                        <div class="fs-7 text-gray-500">Research Submitted</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-6 col-md-3">
-                                <div class="card shadow-sm rounded bg-light-warning h-100 py-3">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-download fs-2 text-warning mb-2"></i>
-                                        <div class="fs-3 fw-bold">{{ $downloadsToday ?? 0 }}</div>
-                                        <div class="fs-7 text-gray-500">Downloads</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-6 col-md-3">
-                                <div class="card shadow-sm rounded bg-light-info h-100 py-3">
-                                    <div class="card-body text-center">
-                                        <i class="bi bi-award fs-2 text-info mb-2"></i>
-                                        <div class="fs-3 fw-bold">{{ $topResearcherTodayCount ?? 0 }}</div>
-                                        <div class="fs-7 text-gray-500">Top Researcher</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <!--end::Col-->
 
         </div>
         <!--end::Row-->
