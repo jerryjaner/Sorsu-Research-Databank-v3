@@ -1,59 +1,187 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sorsu Research Databank System v3
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel 12 application built to manage research assets, campus and department metadata, and user access for students and administrators.
 
-## About Laravel
+## Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This system supports:
+- public research search by campus and department
+- authenticated student access for downloading abstracts and managing profiles
+- role-based administrator access for managing campuses, departments, users, roles, permissions, and research records
+- PDF abstract and research paper preview/download
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Key Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Student homepage with searchable research listings
+- Role-based access control using `spatie/laravel-permission`
+- Administrator dashboard for managing:
+  - research entries
+  - campuses and departments
+  - user accounts
+  - roles and permissions
+- Research download and PDF preview support
+- Profile update experience for students
 
-## Learning Laravel
+## Built With
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- PHP 8.2
+- Laravel 12
+- Tailwind CSS
+- Vite
+- Alpine.js
+- Breeze authentication
+- Spatie Laravel Permission
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Installation
 
-## Laravel Sponsors
+1. Clone the repository
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+git clone <repo-url>
+cd Research-Databank-System-v2
+```
 
-### Premium Partners
+2. Install PHP dependencies
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+composer install
+```
 
-## Contributing
+3. Install JavaScript dependencies
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+npm install
+```
 
-## Code of Conduct
+4. Copy the environment file
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+cp .env.example .env
+```
 
-## Security Vulnerabilities
+5. Generate the application key
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan key:generate
+```
+
+6. Configure your database settings in `.env`
+
+7. Run database migrations and seeders
+
+```bash
+php artisan migrate --seed
+```
+
+8. Build front-end assets
+
+```bash
+npm run build
+```
+
+## Development
+
+Start the development server
+
+```bash
+php artisan serve
+```
+
+Start Vite in development mode
+
+```bash
+npm run dev
+```
+
+## Deployment
+
+This repository includes a GitHub Actions workflow at `.github/workflows/hostinger-deploy.yml` that deploys to Hostinger when code is pushed to `main`.
+
+The workflow performs these steps:
+- checks out the repository
+- installs PHP and Node dependencies
+- builds front-end assets with `npm run build`
+- connects to Hostinger over SSH
+- pulls the latest code on the server
+- installs composer dependencies
+- runs `php artisan migrate --force`
+- syncs the generated `public/build` files to the Hostinger public folder
+
+### Hostinger setup
+
+1. Ensure your Hostinger account has SSH access enabled.
+2. Add your site path in the workflow (for example `domains/skyblue-lapwing-383377.hostingersite.com`).
+3. Upload your public SSH key to Hostinger and keep the private key in GitHub Secrets.
+4. Add these repository secrets in GitHub:
+   - `SSH_HOST`
+   - `SSH_USERNAME`
+   - `SSH_PORT`
+   - `SSH_KEY`
+
+### Notes for deployment
+
+- The workflow copies `.env.example` to `.env` during CI, so any runtime environment values should be configured on the server or with real environment files on Hostinger.
+- The workflow assumes the site is located at `~/domains/skyblue-lapwing-383377.hostingersite.com` on the Hostinger server.
+- If your Hostinger environment uses a global Composer installation, you can update the workflow to use `composer install` instead of `php composer.phar install`.
+
+## Database Seeders
+
+The app seeds initial roles, permissions, and campus data using:
+- `RoleSeeder`
+- `PermissionSeeder`
+- `UserSeeder`
+- `CampusSeeder`
+
+Default roles include:
+- `super-admin`
+- `bulan-admin`
+- `sorsogon-admin`
+- `castilla-admin`
+- `magallanes-admin`
+- `graduate-admin`
+- `student`
+
+## Routes Summary
+
+Public routes:
+- `/` — homepage
+- `/search` — research search
+- `/departments/{campusId}` — fetch departments for a campus
+
+Student routes (authenticated):
+- `/research/download/{id}` — download research abstract
+- `/student-profile-account` — profile edit page
+
+Administrator routes (authenticated + admin roles):
+- `/dashboard`
+- `/roles`, `/permissions`
+- `/campuses`, `/college`
+- `/user-accounts`
+- `/researches`
+
+Authentication routes are registered in `routes/auth.php`.
+
+## Testing
+
+Run the application tests with:
+
+```bash
+php artisan test --compact
+```
+
+## Useful Scripts
+
+- `composer run setup` — install dependencies, prepare `.env`, run migrations, install JS packages, build assets
+- `composer run test` — run the test suite
+- `npm run dev` — start Vite development server
+- `npm run build` — build production assets
+
+## Notes
+
+- The project uses a custom `research` table for research records.
+- Student users are managed separately from administrator accounts and must be assigned the `student` role.
+- Administrators require one of the seeded admin role names.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License.
