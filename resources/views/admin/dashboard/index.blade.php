@@ -230,9 +230,6 @@
 
             </div>
             <!--end::Col-->
-
-
-
         </div>
         <!--end::Row-->
     </div>
