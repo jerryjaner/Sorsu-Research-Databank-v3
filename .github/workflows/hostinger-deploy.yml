@@ -1,28 +1,52 @@
 name: HostingerDeploy
 
+# Trigger workflow on push to main branch
 on:
   push:
     branches: [main]
+
 jobs:
   build:
+    # Use the latest Ubuntu runner
     runs-on: ubuntu-latest
+
     steps:
+      # Step 1: Setup PHP environment
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.2'  # Laravel requires PHP 8.2
+
+      # Step 2: Checkout the repository
       - uses: actions/checkout@v2
+        # This ensures the workflow has access to all repo files
+
+      # Step 3: Setup Node.js
       - uses: actions/setup-node@v3
         with:
-          node-version: 22
+          node-version: 22  # Required for compiling frontend assets
+
+      # Step 4: Copy example environment file
       - name: Copy .env
         run: cp .env.example .env
-      - name: Install composer Dependencies
+        # Provides a .env file for Laravel during build
+
+      # Step 5: Install PHP dependencies with Composer
+      - name: Install Composer Dependencies
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-      - name: Install node dependencies
+        # Quiet install for faster execution and reproducibility
+
+      # Step 6: Install Node dependencies
+      - name: Install Node dependencies
         run: npm ci
+        # Installs exact dependencies as in package-lock.json
+
+      # Step 7: Build frontend assets
       - name: Setup Project
         run: |
           npm run build
+        # Produces optimized production assets in public/build
+
+      # Step 8: Deploy Laravel PHP backend to Hostinger via SSH
       - name: Deploy PHP to Server
         if: ${{ success() }}
         uses: appleboy/ssh-action@master
@@ -32,17 +56,26 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd domains
-            cd skyblue-lapwing-383377.hostingersite.com
+            # Navigate to project folder on Hostinger
+            cd domains/skyblue-lapwing-383377.hostingersite.com
+            # Pull latest code from repo
             git pull
+            # Install PHP dependencies on server
             php composer.phar install
+            # Run Laravel migrations
             php artisan migrate --force
+
+      # Step 9: Setup SSH key for rsync
       - name: Install SSH key
         run: |
           mkdir -p ~/.ssh/
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -t rsa -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+        # Ensures secure SSH connection to server
+
+      # Step 10: Sync frontend build folder to Hostinger
       - name: Copy Build Files to Target Server
         run: |
           rsync -r -e "ssh -p ${{ secrets.SSH_PORT }}" ${{ github.workspace }}/public/build/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/domains/skyblue-lapwing-383377.hostingersite.com/public/build
+        # Ensures the latest compiled assets are deployed
