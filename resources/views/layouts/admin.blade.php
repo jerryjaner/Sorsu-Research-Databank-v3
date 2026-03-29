@@ -25,14 +25,78 @@ License: For each use you must have a valid license purchased only from above li
 
 		<link href="{{URL::to('administrator/assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css" />
 		<link href="{{URL::to('administrator/assets/css/style.bundle.css')}}" rel="stylesheet" type="text/css" />
-				<link href="{{ URL::to('administrator/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
+		<link href="{{ URL::to('administrator/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 		<!--end::Global Stylesheets Bundle-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
         <style>
-            .swal2-icon {
-                margin-left: auto !important;
-                margin-right: auto !important;
-            }
-        </style>
+        .swal2-icon {
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+		.avatar-upload {
+			position: relative;
+			max-width: 205px;
+			margin: 0 auto; /* Center the upload area */
+		}
+		.avatar-edit {
+			position: absolute;
+			right: 12px;
+			z-index: 1;
+			top: 10px;
+		}
+		.avatar-edit input {
+			display: none;
+		}
+		.avatar-edit label {
+			display: inline-block;
+			width: 34px;
+			height: 34px;
+			margin-bottom: 0;
+			border-radius: 100%;
+			background: #FFFFFF;
+			border: 1px solid transparent;
+			box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+			cursor: pointer;
+			font-weight: normal;
+			transition: all .2s ease-in-out;
+		}
+		.avatar-edit label:hover {
+			background: #f1f1f1;
+			border-color: #d6d6d6;
+		}
+		.avatar-edit label:after {
+			content: "\f040";
+			font-family: 'FontAwesome';
+			color: #757575;
+			position: absolute;
+			top: 10px;
+			left: 0;
+			right: 0;
+			text-align: center;
+			margin: auto;
+		}
+		.avatar-preview {
+			width: 192px;
+			height: 192px;
+			position: relative;
+			border-radius: 100%;
+			border: 6px solid #F8F8F8;
+			box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+			overflow: hidden; /* Ensure the image stays within the circle */
+		}
+		#imagePreview {
+			width: 100%;
+			height: 100%;
+			border-radius: 100%;
+			background-size: cover; /* Ensure the image covers the circle */
+			background-position: center;
+			background-repeat: no-repeat;
+			position: absolute; /* Positioning adjustments */
+		}
+
+
+	</style>
 
 	</head>
 	<!--end::Head-->
@@ -129,9 +193,30 @@ License: For each use you must have a valid license purchased only from above li
 
         <!--begin::Page Custom Javascript-->
         <script src="{{ asset('javascript/admin/ajax-setup.js') }}"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         {{-- <script src="{{ asset('javascript/admin/datatable-setup.js') }}"></script> --}}
         {{-- <script src="{{ asset('javascript/admin/role/role-ajax.js') }}"></script> --}}
         <!--end::Page Custom Javascript-->
+        <script>
+            @if (Session::has('message'))
+            toastr.options.progressBar = true;
+            var type = "{{ Session::get('alert-type', 'info') }}";
+            switch (type) {
+                case 'info':
+                    toastr.info("{{ Session::get('message') }}");
+                    break;
+                case 'success':
+                    toastr.success("{{ Session::get('message') }}");
+                    break;
+                case 'warning':
+                    toastr.warning("{{ Session::get('message') }}");
+                    break;
+                case 'error':
+                    toastr.error("{{ Session::get('message') }}");
+                    break;
+            }
+        @endif
+        </script>
 
 
 		<!--end::Javascript-->

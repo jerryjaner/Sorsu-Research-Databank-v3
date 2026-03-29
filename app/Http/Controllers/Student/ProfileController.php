@@ -27,7 +27,7 @@ public function update(Request $request)
         'name' => 'required|string|max:255',
         'email' => ['required','email', Rule::unique('users')->ignore($user->id)],
         'password' => $request->filled('password') ? ['required','string','min:8','confirmed'] : 'nullable',
-        'image_upload' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        'image_upload' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
     ]);
 
     if ($validator->fails()) {

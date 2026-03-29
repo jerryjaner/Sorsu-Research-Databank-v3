@@ -1,23 +1,7 @@
 <!--begin::Container-->
 <div class="container-fluid d-flex align-items-stretch justify-content-between" id="kt_header_container">
     <!--begin::Page title-->
-    {{-- <div class="page-title d-flex flex-column align-items-start justify-content-center flex-wrap me-2 mb-5 mb-lg-0"
-        data-kt-swapper="true" data-kt-swapper-mode="prepend"
-        data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
-        <!--begin::Heading-->
-        <h1 class="text-dark fw-bolder mt-1 mb-1 fs-2">Dashboard
-            <small class="text-muted fs-6 fw-normal ms-1"></small>
-        </h1>
-        <!--end::Heading-->
-        <!--begin::Breadcrumb-->
-        <ul class="breadcrumb fw-bold fs-base mb-1">
-            <li class="breadcrumb-item text-muted">
-                <a href="index.html" class="text-muted text-hover-primary">Home</a>
-            </li>
-            <li class="breadcrumb-item text-dark">Dashboards</li>
-        </ul>
-        <!--end::Breadcrumb-->
-    </div> --}}
+
     <div class="page-title d-flex flex-column align-items-start justify-content-center flex-wrap me-2 mb-5 mb-lg-0"
         data-kt-swapper="true" data-kt-swapper-mode="prepend"
         data-kt-swapper-parent="{default: '#kt_content_container', lg: '#kt_header_container'}">
@@ -455,7 +439,9 @@
             <!--begin::Menu wrapper-->
             <div class="cursor-pointer symbol symbol-circle symbol-30px symbol-md-40px" data-kt-menu-trigger="click"
                 data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end" data-kt-menu-flip="bottom">
-                <img alt="Pic" src="{{ asset('administrator/assets/media/avatars/150-1.jpg') }}" />
+                <img alt="Pic"  src="{{ Auth::user()->profile && Auth::user()->profile->profile_picture
+                                        ? asset('storage/profile-picture/images/' . Auth::user()->profile->profile_picture)
+                                        : asset('administrator/assets/media/avatars/blank-profile.png') }}" />
             </div>
             <!--begin::Menu-->
             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold py-4 fs-6 w-275px"
@@ -465,7 +451,9 @@
                     <div class="menu-content d-flex align-items-center px-3">
                         <!--begin::Avatar-->
                         <div class="symbol symbol-50px symbol-circle me-5">
-                            <img alt="Logo" src="{{ 'administrator/assets/media/avatars/150-1.jpg' }}" />
+                            <img alt="Logo" src="{{ Auth::user()->profile && Auth::user()->profile->profile_picture
+                                        ? asset('storage/profile-picture/images/' . Auth::user()->profile->profile_picture)
+                                        : asset('administrator/assets/media/avatars/blank-profile.png') }}" />
                         </div>
                         <!--end::Avatar-->
                         <!--begin::Username-->
@@ -484,7 +472,7 @@
                 <!--end::Menu separator-->
                 <!--begin::Menu item-->
                 <div class="menu-item px-5">
-                    <a href="#" class="menu-link px-5">Profile</a>
+                    <a href="{{ route('admin.profile.overview') }}" class="menu-link px-5">Profile</a>
                 </div>
                 <!--end::Menu item-->
                 <!--begin::Menu item-->

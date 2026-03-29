@@ -60,9 +60,9 @@
                             <!--begin::Menu wrapper-->
                             <div class="cursor-pointer symbol symbol-30px symbol-md-40px" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
                                <img alt="Pic"
-     src="{{ Auth::user()->profile && Auth::user()->profile->profile_picture
-        ? asset('storage/profile-picture/images/' . Auth::user()->profile->profile_picture)
-        : asset('student/assets/media/avatars/default.png') }}" />
+                                    src="{{ Auth::user()->profile && Auth::user()->profile->profile_picture
+                                        ? asset('storage/profile-picture/images/' . Auth::user()->profile->profile_picture)
+                                        : asset('student/assets/media/avatars/blank-profile.png') }}" />
                             </div>
                             <!--begin::Menu-->
                             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold py-4 fs-6 w-275px" data-kt-menu="true">
@@ -72,9 +72,9 @@
                                         <!--begin::Avatar-->
                                         <div class="symbol symbol-50px me-5">
                                             <img alt="Logo"
-     src="{{ Auth::user()->profile && Auth::user()->profile->profile_picture
-        ? asset('storage/profile-picture/images/' . Auth::user()->profile->profile_picture)
-        : asset('student/assets/media/avatars/default.png') }}" />
+                                                src="{{ Auth::user()->profile && Auth::user()->profile->profile_picture
+                                                    ? asset('storage/profile-picture/images/' . Auth::user()->profile->profile_picture)
+                                                    : asset('student/assets/media/avatars/blank-profile.png') }}" />
                                         </div>
                                         <!--end::Avatar-->
                                         <!--begin::Username-->

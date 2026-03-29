@@ -37,12 +37,12 @@ Profile Account
 
                         <div class="avatar-preview">
                             <div id="imagePreview" style="
-            background-image: url('{{ Auth::user()->profile && Auth::user()->profile->profile_picture
-                ? asset('storage/profile-picture/images/' . Auth::user()->profile->profile_picture)
-                : asset('student/assets/media/avatars/default.png') }}');
-            background-size: cover;
-            background-position: center;
-            ">
+                                background-image: url('{{ Auth::user()->profile && Auth::user()->profile->profile_picture
+                                    ? asset('storage/profile-picture/images/' . Auth::user()->profile->profile_picture)
+                                    : asset('student/assets/media/avatars/blank-profile.png') }}');
+                                background-size: cover;
+                                background-position: center;
+                                ">
                             </div>
                         </div>
 

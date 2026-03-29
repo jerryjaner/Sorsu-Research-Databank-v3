@@ -206,16 +206,17 @@
                                 </div>
 
                                 <!-- Step 3: Roles -->
-                                <div class="flex-column" data-kt-stepper-element="content">
+                                {{-- <div class="flex-column" data-kt-stepper-element="content">
                                     <div class="fv-row mb-10">
                                         <label class="form-label">Role</label>
 
                                         @if (auth()->user()->hasRole(['super-admin']))
 
                                         <!-- Super-admin and other admin can select multiple roles -->
-                                        {{-- multiple="multiple" --}}
+
                                         <select class="form-select form-control-solid" name="role[]"
                                             data-control="select2" data-placeholder="Select role">
+                                            <option value="">Select Role</option>
                                             @foreach ($roles as $role)
                                             <option value="{{ $role->name }}">
                                                 {{ $roleLabels[$role->name] ?? $role->name }}
@@ -229,6 +230,29 @@
                                         @endif
 
                                         <span class="text-danger role_error"></span>
+                                    </div>
+                                </div> --}}
+                               <div class="flex-column" data-kt-stepper-element="content">
+                                    <div class="fv-row mb-10">
+                                        <label class="form-label">Role</label>
+
+                                        @if (auth()->user()->hasRole('super-admin'))
+                                            <select class="form-select form-control-solid" name="role[]" data-control="select2" data-placeholder="Select Role" multiple>
+                                                {{-- placeholder disabled so it disappears when user selects --}}
+                                                <option value="" disabled>{{ old('role') ? '' : 'Select Role' }}</option>
+
+                                                @foreach ($roles as $role)
+                                                    <option value="{{ $role->name }}" {{ collect(old('role'))->contains($role->name) ? 'selected' : '' }}>
+                                                        {{ $roleLabels[$role->name] ?? $role->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        @else
+                                            <input type="hidden" name="role[]" value="student">
+                                            <input type="text" class="form-control form-control-solid" value="student" readonly>
+                                        @endif
+
+                                       <span class="text-danger role_error"></span>
                                     </div>
                                 </div>
                                 <!-- Step 4: Review -->

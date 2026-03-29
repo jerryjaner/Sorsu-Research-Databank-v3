@@ -7,16 +7,12 @@
     use App\Http\Controllers\Administrator\ResearchController;
     use App\Http\Controllers\Administrator\RoleController;
     use App\Http\Controllers\Administrator\UserAccountController;
+    use App\Http\Controllers\Administrator\AdminAccountProfileController;
     use App\Http\Controllers\Student\HomepageController;
     use App\Http\Controllers\Student\ProfileController;
     use Illuminate\Support\Facades\Route;
 
 
-
-
-    // Route::get('/', function () {
-    //     return view('welcome');
-    // });
 
         // Guest access: homepage, search, departments
         Route::get('/', [HomepageController::class, 'index'])->name('homepage');
@@ -79,6 +75,16 @@
             Route::get('researches/edit/{id}', [ResearchController::class, 'edit'])->name('researches.edit');
             Route::post('researches/update/{id}', [ResearchController::class, 'update'])->name('researches.update');
             Route::delete('researches/delete/{id}', [ResearchController::class, 'destroy'])->name('researches.destroy');
+
+
+
+            Route::prefix('account')->group(function () {
+                Route::get('/profile', [AdminAccountProfileController::class, 'overviewIndex'])->name('profile.overview');
+                Route::get('/profile/settings', [AdminAccountProfileController::class, 'settingsIndex'])->name('profile.settings');
+                Route::get('/profile/settings/security', [AdminAccountProfileController::class, 'securityIndex'])->name('profile.security');
+                Route::put('/update/{id}', [AdminAccountProfileController::class, 'update'])->name('profile.update');
+            });
+
         });
 
     require __DIR__.'/auth.php';
