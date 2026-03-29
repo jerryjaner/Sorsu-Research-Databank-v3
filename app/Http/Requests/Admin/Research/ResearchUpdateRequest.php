@@ -27,18 +27,16 @@ class ResearchUpdateRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
-            'adviser' => 'required|string|max:255',
             'campus_id' => ['required', 'exists:campuses,id'],
              'department_id' => ['nullable', 'exists:departments,id'],
             // Department required unless campus is Graduate Studies
              // Department required only if campus is NOT Graduate Studies
 
-            'course' => 'required|string|max:255',
-            'major' => 'nullable|string|max:255',
-            'academic_year' => 'required|string|max:255',
+            'research_agenda' => 'required|string|max:255',
+            'completion_year' => 'required|string|max:255',
             'publication_status' => 'required|in:published,unpublished',
             'publication' => 'required|string|max:255',
-            'description' => 'required|string',
+            'keywords' => 'required|string',
             'abstract_document' => 'nullable|file|mimes:pdf|max:10240',
             'full_paper_file' => 'nullable|file|mimes:pdf|max:10240',
         ];

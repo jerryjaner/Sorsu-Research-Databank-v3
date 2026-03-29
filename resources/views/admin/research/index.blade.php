@@ -117,19 +117,13 @@
                             <span class="text-danger error-text title_error"></span>
                         </div>
 
-                        <!-- Author & Adviser -->
+                        <!-- Author's -->
                         <div class="row g-3 mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Author <span class="text-danger">*</span></label>
+                            <div class="col-md-12">
+                                <label class="form-label">Author's <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control form-control-solid" name="author"
                                     placeholder="Author">
                                 <span class="text-danger error-text author_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Adviser <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-solid" name="adviser"
-                                    placeholder="Adviser">
-                                <span class="text-danger error-text adviser_error"></span>
                             </div>
                         </div>
 
@@ -157,29 +151,23 @@
                                 <span class="text-danger error-text department_id_error"></span>
                             </div>
                         </div>
-                        <!-- Course & Major -->
+                        <!-- Research Agenda -->
                         <div class="row g-3 mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Course <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-solid" name="course"
-                                    placeholder="Course">
-                                <span class="text-danger error-text course_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Major <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-solid" name="major"
-                                    placeholder="Major">
-                                <span class="text-danger error-text major_error"></span>
+                            <div class="col-md-12">
+                                <label class="form-label">Research Agenda <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-solid" name="research_agenda"
+                                    placeholder="Research Agenda">
+                                <span class="text-danger error-text research_agenda_error"></span>
                             </div>
                         </div>
 
-                        <!-- Academic Year & Publication Status -->
+                        <!-- Completion Year & Publication Status -->
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Academic Year <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-solid" name="academic_year"
-                                    placeholder="Academic Year">
-                                <span class="text-danger error-text academic_year_error"></span>
+                                <label class="form-label">Completion Year <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-solid" name="completion_year"
+                                    placeholder="Completion Year">
+                                <span class="text-danger error-text completion_year_error"></span>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Publication Status <span class="text-danger">*</span></label>
@@ -192,20 +180,19 @@
                             </div>
                         </div>
 
-                        <!-- Publication -->
+                        <!-- Publication Link -->
                         <div class="mb-3">
-                            <label class="form-label">Publication <span class="text-danger">*</span></label>
+                            <label class="form-label">Publication Link <span class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-solid" name="publication"
-                                placeholder="Publication">
+                                placeholder="Publication Link">
                             <span class="text-danger error-text publication_error"></span>
                         </div>
-
-                        <!-- Description -->
+                         <!-- Keywords -->
                         <div class="mb-3">
-                            <label class="form-label">Description <span class="text-danger">*</span></label>
-                            <textarea class="form-control form-control-solid" name="description"
+                            <label class="form-label">Keywords <span class="text-danger">*</span></label>
+                            <textarea class="form-control form-control-solid" name="keywords"
                                 placeholder="Type here . . ." cols="30" rows="5"></textarea>
-                            <span class="text-danger error-text description_error"></span>
+                            <span class="text-danger error-text keywords_error"></span>
                         </div>
 
                         <!-- Abstract File -->
@@ -277,15 +264,11 @@
                             <input type="text" class="form-control form-control-solid" id="view_title" readonly>
                         </div>
 
-                        <!-- Author & Adviser -->
+                        <!-- Author's -->
                         <div class="row g-3 mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Author</label>
+                            <div class="col-md-12">
+                                <label class="form-label">Author's</label>
                                 <input type="text" class="form-control form-control-solid" id="view_author" readonly>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Adviser</label>
-                                <input type="text" class="form-control form-control-solid" id="view_adviser" readonly>
                             </div>
                         </div>
 
@@ -302,23 +285,20 @@
                             </div>
                         </div>
 
-                        <!-- Course & Major -->
+                        <!-- Research Agenda -->
                         <div class="row g-3 mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Course</label>
-                                <input type="text" class="form-control form-control-solid" id="view_course" readonly>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Major</label>
-                                <input type="text" class="form-control form-control-solid" id="view_major" readonly>
+                            <div class="col-md-12">
+                                <label class="form-label">Research Agenda</label>
+                                <input type="text" class="form-control form-control-solid" id="view_research_agenda"
+                                    readonly>
                             </div>
                         </div>
 
-                        <!-- Academic Year & Publication Status -->
+                        <!-- Completion Year & Publication Status -->
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Academic Year</label>
-                                <input type="text" class="form-control form-control-solid" id="view_academic_year"
+                                <label class="form-label">Completion Year</label>
+                                <input type="text" class="form-control form-control-solid" id="view_completion_year"
                                     readonly>
                             </div>
                             <div class="col-md-6">
@@ -331,16 +311,16 @@
                             </div>
                         </div>
 
-                        <!-- Publication -->
+                        <!-- Publication Link-->
                         <div class="mb-3">
-                            <label class="form-label">Publication</label>
+                            <label class="form-label">Publication Link</label>
                             <input type="text" class="form-control form-control-solid" id="view_publication" readonly>
                         </div>
 
-                        <!-- Description -->
+                        <!-- Keywords -->
                         <div class="mb-3">
-                            <label class="form-label">Description</label>
-                            <textarea class="form-control form-control-solid" id="view_description" rows="4"
+                            <label class="form-label">Keywords</label>
+                            <textarea class="form-control form-control-solid" id="view_keywords" rows="4"
                                 readonly></textarea>
                         </div>
 
@@ -402,11 +382,16 @@
                     <div class="alert alert-warning d-flex align-items-start mb-4">
                         <i class="bi bi-info-circle-fill fs-3 me-3"></i>
                         <div>
-                            <strong>Editing research:</strong>
-                            <p class="mb-0">Update the details below and submit to save changes.</p>
+                            <strong>Editing Research Record</strong>
+                            <p class="mb-1">
+                                You may update all fields including the title, author, abstract, and other details.
+                            </p>
+                            <p class="mb-0">
+                                <strong>Note:</strong> Upload a new file only if you want to replace the existing one.
+                                Otherwise, leave the file field empty to keep the current file.
+                            </p>
                         </div>
                     </div>
-
                     <!-- Form -->
                     <form id="EditResearchForm" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -420,19 +405,13 @@
                             <span class="text-danger error-text title_error"></span>
                         </div>
 
-                        <!-- Author & Adviser -->
+                        <!-- Author's  -->
                         <div class="row g-3 mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Author <span class="text-danger">*</span></label>
+                            <div class="col-md-12">
+                                <label class="form-label">Author's <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control form-control-solid" name="author"
                                     id="edit_author" placeholder="Author">
                                 <span class="text-danger error-text author_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Adviser <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-solid" name="adviser"
-                                    id="edit_adviser" placeholder="Adviser">
-                                <span class="text-danger error-text adviser_error"></span>
                             </div>
                         </div>
 
@@ -458,29 +437,23 @@
                             </div>
                         </div>
 
-                        <!-- Course & Major -->
+                        <!-- Research Agenda -->
                         <div class="row g-3 mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Course <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-solid" name="course"
-                                    id="edit_course" placeholder="Course">
-                                <span class="text-danger error-text course_error"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Major <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-solid" name="major" id="edit_major"
-                                    placeholder="Major">
-                                <span class="text-danger error-text major_error"></span>
+                            <div class="col-md-12">
+                                <label class="form-label">Research Agenda <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-solid" name="research_agenda"
+                                    id="edit_research_agenda" placeholder="Research Agenda">
+                                <span class="text-danger error-text research_agenda_error"></span>
                             </div>
                         </div>
 
-                        <!-- Academic Year & Publication Status -->
+                        <!-- Completion Year & Publication Status -->
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Academic Year <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-solid" name="academic_year"
-                                    id="edit_academic_year" placeholder="Academic Year">
-                                <span class="text-danger error-text academic_year_error"></span>
+                                <label class="form-label">Completion Year <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-solid" name="completion_year"
+                                    id="edit_completion_year" placeholder="Completion Year">
+                                <span class="text-danger error-text completion_year_error"></span>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Publication Status <span class="text-danger">*</span></label>
@@ -494,20 +467,20 @@
                             </div>
                         </div>
 
-                        <!-- Publication -->
+                        <!-- Publication Link -->
                         <div class="mb-3">
-                            <label class="form-label">Publication <span class="text-danger">*</span></label>
+                            <label class="form-label">Publication Link <span class="text-danger">*</span></label>
                             <input type="text" class="form-control form-control-solid" name="publication"
-                                id="edit_publication" placeholder="Publication">
+                                id="edit_publication" placeholder="Publication Link">
                             <span class="text-danger error-text publication_error"></span>
                         </div>
 
-                        <!-- Description -->
+                        <!-- Keywords -->
                         <div class="mb-3">
-                            <label class="form-label">Description <span class="text-danger">*</span></label>
-                            <textarea class="form-control form-control-solid" name="description" id="edit_description"
+                            <label class="form-label">Keywords <span class="text-danger">*</span></label>
+                            <textarea class="form-control form-control-solid" name="keywords" id="edit_keywords"
                                 placeholder="Type here . . ." rows="5"></textarea>
-                            <span class="text-danger error-text description_error"></span>
+                            <span class="text-danger error-text keywords_error"></span>
                         </div>
 
                         <!-- Abstract File -->
@@ -530,8 +503,7 @@
                         <div class="d-flex justify-content-end mt-4">
                             <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal"> <i
                                     class="bi bi-x-circle me-1"></i>Close</button>
-                            <button type="submit" class="btn btn-primary" id="btn_edit_submit"> <i
-                                    class="bi bi-check2-circle me-1"></i>Update</button>
+                            <button type="submit" class="btn btn-primary" id="btn_edit_submit">Update</button>
                         </div>
                     </form>
 
@@ -912,17 +884,18 @@
     $.ajaxSetup({
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
     });
-      // GLOBAL 403 HANDLER
-                $(document).ajaxError(function(event, xhr) {
-                    if (xhr.status === 403) {
-                        Swal.fire(
-                            'Permission Denied',
-                            xhr.responseJSON?.message ||
-                            'You do not have permission to perform this action.',
-                            'error'
-                        );
-                    }
-                });
+
+    // GLOBAL 403 HANDLER
+    $(document).ajaxError(function(event, xhr) {
+        if (xhr.status === 403) {
+            Swal.fire(
+                'Permission Denied',
+                xhr.responseJSON?.message ||
+                'You do not have permission to perform this action.',
+                'error'
+            );
+        }
+    });
 
     // -----------------------------
     // Fetch research records
@@ -1017,13 +990,11 @@
             $('#edit_id').val(res.id);
             $('#edit_title').val(res.title);
             $('#edit_author').val(res.author);
-            $('#edit_adviser').val(res.adviser);
-            $('#edit_course').val(res.course);
-            $('#edit_major').val(res.major);
-            $('#edit_academic_year').val(res.academic_year);
+            $('#edit_research_agenda').val(res.research_agenda);
+            $('#edit_completion_year').val(res.completion_year);
             $('#edit_publication_status').val(res.publication_status);
             $('#edit_publication').val(res.publication);
-            $('#edit_description').val(res.description);
+            $('#edit_keywords').val(res.keywords);
             $('#edit_campusSelect').val(res.campus.id);
 
             // Load departments and select the correct one
@@ -1081,15 +1052,13 @@
             $('#viewResearchModal input, #viewResearchModal textarea').val('');
             $('#view_title').val(res.title);
             $('#view_author').val(res.author);
-            $('#view_adviser').val(res.adviser);
             $('#view_campus').val(res.campus.name);
             $('#view_department').val(res.department.name);
-            $('#view_course').val(res.course);
-            $('#view_major').val(res.major);
-            $('#view_academic_year').val(res.academic_year);
+            $('#view_research_agenda').val(res.research_agenda);
+            $('#view_completion_year').val(res.completion_year);
             $('#view_publication_status').val(res.publication_status);
             $('#view_publication').val(res.publication);
-            $('#view_description').val(res.description);
+            $('#view_keywords').val(res.keywords);
             $('#view_abstract_document').val(res.abstract_file_name);
             $('#view_full_paper_file').val(res.research_paper_file_name);
 

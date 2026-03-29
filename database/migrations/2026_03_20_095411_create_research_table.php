@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('author');
-            $table->string('adviser');
             $table->foreignId('campus_id')
                 ->nullable()
                 ->constrained()
@@ -25,12 +24,11 @@ return new class extends Migration
                 ->nullable()
                 ->constrained()
                 ->nullOnDelete();
-            $table->string('course')->nullable();
-            $table->string('major')->nullable();
-            $table->string('academic_year');
+            $table->string('research_agenda');
+            $table->string('completion_year');
             $table->enum('publication_status', ['published', 'unpublished'])->default('unpublished');
             $table->longtext('publication')->nullable();
-            $table->longtext('description');
+            $table->longtext('keywords')->nullable();
             $table->string('abstract_file_name');
             $table->string('abstract_path');
             $table->string('research_paper_file_name');
