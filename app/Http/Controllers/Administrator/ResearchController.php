@@ -132,7 +132,7 @@ class ResearchController extends Controller
                                     </th>
                                     <th class="min-w-200px px-0">Research Title</th>
                                     <th class="min-w-200px px-0">School Campus</th>
-                                    <th class="min-w-200px px-0">School Department</th>
+                                    <th class="min-w-200px px-0">College</th>
                                     <th class="min-w-125px">Created At</th>
                                     <th class="text-end pe-2 min-w-70px">Action</th>
                                 </tr>

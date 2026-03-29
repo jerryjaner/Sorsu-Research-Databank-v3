@@ -112,9 +112,9 @@ class AdminAccountProfileController extends Controller
         // Load related users
         $userIds = $rawSessions->pluck('user_id')->filter()->unique();
         $users = User::with(['roles', 'campus'])
-            ->whereIn('id', $userIds)
-            ->get()
-            ->keyBy('id');
+                ->whereIn('id', $userIds)
+                ->get()
+                ->keyBy('id');
 
         $agent = new Agent();
 
@@ -153,9 +153,8 @@ class AdminAccountProfileController extends Controller
     }
 
     /**
-     * ===============================
-     * UPDATE PROFILE
-     * ===============================
+        * Update profile (general info + avatar)
+         * Note: For simplicity, we're not separating general info and avatar updates here, but this can be easily split into two methods if needed.
      */
     public function update(Request $request)
     {
