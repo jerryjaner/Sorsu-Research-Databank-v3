@@ -29,6 +29,22 @@ class PermissionStoreRequest extends FormRequest
         ];
     }
 
+    /**
+     * Custom validation messages.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Permission name is required.',
+            'name.string'   => 'Permission name must be a valid string.',
+            'name.max'      => 'Permission name cannot exceed 255 characters.',
+            'name.unique'   => 'This permission name is already taken.',
+        ];
+    }
+
+
      /**
      * Handle a failed validation attempt.
      *

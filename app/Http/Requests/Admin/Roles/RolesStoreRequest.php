@@ -28,6 +28,21 @@ class RolesStoreRequest extends FormRequest
         ];
     }
 
+     /**
+     * Custom validation messages.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Role name is required.',
+            'name.string'   => 'Role name must be a valid string.',
+            'name.max'      => 'Role name cannot exceed 255 characters.',
+            'name.unique'   => 'This role name is already taken.',
+        ];
+    }
+
     /**
      * Handle a failed validation attempt.
      *

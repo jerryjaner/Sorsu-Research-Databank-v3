@@ -38,6 +38,20 @@ class CampusUpdateRequest extends FormRequest
         ];
     }
 
+     /**
+     * Custom validation messages.
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Campus name is required.',
+            'name.string'   => 'Campus name must be a valid string.',
+            'name.max'      => 'Campus name cannot exceed 255 characters.',
+            'name.unique'   => 'This campus name is already taken.',
+        ];
+    }
+
+
     /**
      * Handle a failed validation attempt.
      *

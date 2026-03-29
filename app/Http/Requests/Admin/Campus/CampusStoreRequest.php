@@ -27,6 +27,24 @@ class CampusStoreRequest extends FormRequest
             'name' => ['required', 'string', 'max:255', 'unique:campuses,name'],
         ];
     }
+
+     /**
+     * Custom validation messages.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Campus name is required.',
+            'name.string'   => 'Campus name must be a valid string.',
+            'name.max'      => 'Campus name cannot exceed 255 characters.',
+            'name.unique'   => 'This campus name is already taken.',
+        ];
+    }
+
+
+
     /**
      * Handle a failed validation attempt.
      *

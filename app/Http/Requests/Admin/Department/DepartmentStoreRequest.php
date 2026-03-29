@@ -28,6 +28,23 @@ class DepartmentStoreRequest extends FormRequest
             'campus_id' => ['required', 'exists:campuses,id'],
         ];
     }
+
+     /**
+     * Custom validation messages.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {        return [
+            'name.required' => 'College name is required.',
+            'name.string'   => 'College name must be a valid string.',
+            'name.max'      => 'College name cannot exceed 255 characters.',
+            'name.unique'   => 'This college name is already taken.',
+            'campus_id.required' => 'Campus selection is required.',
+            'campus_id.exists' => 'Selected campus does not exist.',
+        ];
+    }
+
     /**
      * Handle a failed validation attempt.
      *
