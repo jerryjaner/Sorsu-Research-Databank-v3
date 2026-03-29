@@ -143,7 +143,7 @@ class AdminAccountProfileController extends Controller
             return (object)[
                 'id' => $session->id,
                 'name' => $userModel?->name ?? 'Guest',
-                'campus' => $userModel?->campus?->name ?? 'N/A',
+                'campus' => $userModel?->campus?->name ?? 'All Campuses',
                 'role' => $roleLabels[$roleName] ?? $roleName ?? 'N/A',
                 'device' => $agent->browser() . ' - ' . $agent->platform(),
                 'ip_address' => $session->ip_address ?? 'N/A',
