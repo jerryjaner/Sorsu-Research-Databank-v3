@@ -122,7 +122,7 @@
                             <div class="col-md-12">
                                 <label class="form-label">Author's <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control form-control-solid" name="author"
-                                    placeholder="Author">
+                                    placeholder="Author's">
                                 <span class="text-danger error-text author_error"></span>
                             </div>
                         </div>
@@ -410,7 +410,7 @@
                             <div class="col-md-12">
                                 <label class="form-label">Author's <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control form-control-solid" name="author"
-                                    id="edit_author" placeholder="Author">
+                                    id="edit_author" placeholder="Author's">
                                 <span class="text-danger error-text author_error"></span>
                             </div>
                         </div>
