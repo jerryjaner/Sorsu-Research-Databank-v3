@@ -140,7 +140,7 @@
         </div>
         <!--end::Navbar-->
 
-       <!--begin::Login sessions-->
+        <!--begin::Login sessions-->
         <div class="card mb-5 mb-xl-10">
             <!--begin::Card header-->
             <div class="card-header">
@@ -150,8 +150,7 @@
 
                 <div class="card-toolbar">
                     <div class="my-1 me-4">
-                        <select class="form-select form-select-sm form-select-solid w-125px"
-                            onchange="window.location.href='?hours='+this.value">
+                        <select class="form-select form-select-sm form-select-solid w-125px" onchange="window.location.href='?hours='+this.value">
 
                             <option value="1" {{ $hours == 1 ? 'selected' : '' }}>1 Hour</option>
                             <option value="6" {{ $hours == 6 ? 'selected' : '' }}>6 Hours</option>
@@ -180,76 +179,74 @@
                         </thead>
                         <tbody class="fw-6 fw-semibold text-gray-600">
                             @forelse($rawSessions as $session)
-                                <tr>
-                                    <td>
-                                        <div class="d-flex flex-column">
-                                            <span class="fw-bold text-gray-800">{{ $session->name }}</span>
-                                            @if($session->is_current)
-                                                <span class="text-primary fs-7">This device</span>
-                                            @endif
-                                        </div>
-                                    </td>
-                                    <td>{{ $session->role }}</td>
-                                    <td>{{ $session->campus }}</td>
-                                    <td>
-                                        @if($session->last_activity >= now()->subMinutes(5)->timestamp)
-                                            <span class="badge badge-light-success">Active</span>
-                                        @else
-                                            <span class="badge badge-light-secondary">Idle</span>
+                            <tr>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <span class="fw-bold text-gray-800">{{ $session->name }}</span>
+                                        @if($session->is_current)
+                                        <span class="text-primary fs-7">This device</span>
                                         @endif
-                                    </td>
-                                    <td>{{ $session->device }}</td>
-                                    <td>{{ $session->ip_address }}</td>
-                                    <td>{{ $session->time }}</td>
-                                </tr>
+                                    </div>
+                                </td>
+                                <td>{{ $session->role }}</td>
+                                <td>{{ $session->campus }}</td>
+                                <td>
+                                    @if($session->last_activity >= now()->subMinutes(5)->timestamp)
+                                    <span class="badge badge-light-success">Active</span>
+                                    @else
+                                    <span class="badge badge-light-secondary">Offline</span>
+                                    @endif
+                                </td>
+                                <td>{{ $session->device }}</td>
+                                <td>{{ $session->ip_address }}</td>
+                                <td>{{ $session->time }}</td>
+                            </tr>
                             @empty
-                                <tr>
-                                    <td colspan="7" class="text-center text-muted py-5">No login sessions found</td>
-                                </tr>
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-5">No login sessions found</td>
+                            </tr>
                             @endforelse
                         </tbody>
                     </table>
-
                     <!-- Pagination -->
-                   <!-- Pagination -->
-<div class="d-flex justify-content-end mt-3">
-    @if ($rawSessions->hasPages())
-        <nav>
-            <ul class="pagination pagination-sm">
-                {{-- Previous Page Link --}}
-                @if ($rawSessions->onFirstPage())
-                    <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
-                @else
-                    <li class="page-item">
-                        <a class="page-link" href="{{ $rawSessions->previousPageUrl() }}">&laquo;</a>
-                    </li>
-                @endif
+                    <div class="d-flex justify-content-end mt-3">
+                        @if ($rawSessions->hasPages())
+                        <nav>
+                            <ul class="pagination pagination-sm">
+                                {{-- Previous Page Link --}}
+                                @if ($rawSessions->onFirstPage())
+                                <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                                @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $rawSessions->previousPageUrl() }}">&laquo;</a>
+                                </li>
+                                @endif
 
-                {{-- Pagination Elements --}}
-                @foreach ($rawSessions->links()->elements[0] as $page => $url)
-                    @if ($page == $rawSessions->currentPage())
-                        <li class="page-item active">
-                            <span class="page-link">{{ $page }}</span>
-                        </li>
-                    @else
-                        <li class="page-item">
-                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                        </li>
-                    @endif
-                @endforeach
+                                {{-- Pagination Elements --}}
+                                @foreach ($rawSessions->links()->elements[0] as $page => $url)
+                                @if ($page == $rawSessions->currentPage())
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $page }}</span>
+                                </li>
+                                @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                </li>
+                                @endif
+                                @endforeach
 
-                {{-- Next Page Link --}}
-                @if ($rawSessions->hasMorePages())
-                    <li class="page-item">
-                        <a class="page-link" href="{{ $rawSessions->nextPageUrl() }}">&raquo;</a>
-                    </li>
-                @else
-                    <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
-                @endif
-            </ul>
-        </nav>
-    @endif
-</div>
+                                {{-- Next Page Link --}}
+                                @if ($rawSessions->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $rawSessions->nextPageUrl() }}">&raquo;</a>
+                                </li>
+                                @else
+                                <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                                @endif
+                            </ul>
+                        </nav>
+                        @endif
+                    </div>
                 </div>
             </div>
             <!--end::Card body-->
