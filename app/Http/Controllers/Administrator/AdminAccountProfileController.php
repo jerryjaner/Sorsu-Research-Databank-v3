@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Jenssegers\Agent\Agent;
+use Illuminate\Http\Request;
 
 class AdminAccountProfileController extends Controller
 {
