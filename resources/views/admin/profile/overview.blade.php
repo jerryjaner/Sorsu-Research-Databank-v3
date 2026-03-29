@@ -151,7 +151,7 @@
                 <!--end::Card title-->
 
                 <!--begin::Action-->
-                <a href="/rider/?page=account/settings" class="btn btn-sm btn-primary align-self-center">Edit Profile</a>
+
                 <!--end::Action-->
             </div>
             <!--begin::Card header-->
