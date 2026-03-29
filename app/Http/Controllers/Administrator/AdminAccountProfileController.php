@@ -57,9 +57,7 @@ class AdminAccountProfileController extends Controller
     }
 
     /**
-     * ===============================
-     * OVERVIEW
-     * ===============================
+    * Overview page (basic info + stats)
      */
     public function overviewIndex()
     {
@@ -68,9 +66,7 @@ class AdminAccountProfileController extends Controller
     }
 
     /**
-     * ===============================
-     * SETTINGS
-     * ===============================
+     * Settings page (general info + avatar)
      */
     public function settingsIndex()
     {
@@ -79,9 +75,8 @@ class AdminAccountProfileController extends Controller
     }
 
     /**
-     * ===============================
-     * SECURITY (LOGIN SESSIONS)
-     * ===============================
+    * Security page (sessions + activity log)
+     * Note: For simplicity, we're only showing active sessions here. A full activity log would require a separate implementation to track user actions across the app.
      */
     public function securityIndex()
     {
@@ -152,6 +147,7 @@ class AdminAccountProfileController extends Controller
                 'is_current' => $session->id === session()->getId(),
             ];
         });
+
 
         return view('admin.profile.security', $stats + compact('rawSessions', 'hours'));
     }
