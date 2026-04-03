@@ -9,7 +9,7 @@ trait SendMailNotifier
 {
     public function SendMailNotifier($data, $plainPassword)
     {
-        $subject = 'Account Credentials';
+        $subject = '🔐 Account Credentials';
         $body = "Your account has been created successfully. Your login credentials are as follows:\n\n";
         $body .= "Email: {$data->email}\n";
         $body .= "Password: $plainPassword\n";
