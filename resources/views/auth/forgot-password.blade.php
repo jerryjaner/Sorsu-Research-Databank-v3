@@ -36,7 +36,7 @@
 
                     <!--begin::Input group-->
                     <div class="fv-row mb-10">
-                        <label class="form-label fs-6 fw-bold text-dark">Email</label>
+                        <label class="form-label fs-6 fw-bold text-dark">Email <span class="text-danger">*</span></label>
                         <input type="email"
                             class="form-control form-control-lg form-control-solid @error('email') is-invalid @enderror"
                             name="email" value="{{ old('email') }}" placeholder="Enter Email">

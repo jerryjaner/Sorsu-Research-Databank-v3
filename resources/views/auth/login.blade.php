@@ -28,7 +28,7 @@
 
                 <!-- Email input -->
                 <div class="fv-row mb-10">
-                    <label class="form-label fs-6 fw-bold text-dark">Email</label>
+                    <label class="form-label fs-6 fw-bold text-dark">Email <span class="text-danger">*</span></label>
                     <input type="email" name="email"
                            class="form-control form-control-lg form-control-solid @error('email') is-invalid @enderror"
                            placeholder="Enter your email" value="{{ old('email') }}">
@@ -40,7 +40,7 @@
                 <!-- Password input -->
                 <div class="fv-row mb-10">
                     <div class="d-flex flex-stack mb-2">
-                        <label class="form-label fw-bold text-dark fs-6 mb-0">Password</label>
+                        <label class="form-label fw-bold text-dark fs-6 mb-0">Password <span class="text-danger">*</span></label>
                         <a href="{{ route('password.request') }}" class="link-primary fs-6 fw-bold">
                             Forgot Password ?
                         </a>

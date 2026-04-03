@@ -9,7 +9,7 @@ trait UpdateMailNotifier
     public function UpdateMailNotifier($dataRequest, $plainPassword, $emailChanged, $passwordChanged)
     {
         // Assuming the updated email is in $dataRequest['email']
-        $subject = 'Account Credentials Update';
+        $subject = '🔐 Account Credentials Update';
         $body = "Your account has been updated successfully. The following changes were made:\n\n";
 
         // If email has changed, use the updated email from $dataRequest['email']
