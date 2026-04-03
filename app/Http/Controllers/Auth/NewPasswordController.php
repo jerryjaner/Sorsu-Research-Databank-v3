@@ -31,12 +31,27 @@ class NewPasswordController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'token' => ['required'],
-            'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
 
+            $request->validate([
+                'token' => ['required'],
+                'email' => ['required', 'email'],
+                'password' => [
+                    'required', // optional for update
+                    'string',
+                    'min:8',
+                    'max:20',
+                    'confirmed',
+                    'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/',
+                    Rules\Password::defaults(),
+                ],
+            ], [
+                // Custom error messages
+                'password.required' => 'Password is required.',
+                'password.min' => 'Password must be at least 8 characters.',
+                'password.max' => 'Password may not be greater than 20 characters.',
+                'password.confirmed' => 'Password confirmation does not match.',
+                'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).',
+            ]);
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the
         // database. Otherwise we will parse the error and return the response.

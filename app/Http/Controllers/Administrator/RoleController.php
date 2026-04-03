@@ -31,6 +31,7 @@ class RoleController extends Controller
     {
         $this->applyPermissions();
     }
+
     public function index()
     {
         $permissions = Permission::get();

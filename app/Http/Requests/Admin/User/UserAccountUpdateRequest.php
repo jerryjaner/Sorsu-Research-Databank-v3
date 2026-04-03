@@ -36,7 +36,14 @@ class UserAccountUpdateRequest extends FormRequest
                 Rule::unique(User::class)->ignore($this->id),
             ],
             'role'       => 'required|array',
-            'phone'      => 'required|string|max:20',
+            'phone' => [
+                'required',
+                'string',
+                'min:11',
+                'max:11',
+                'regex:/^09\d{9}$/',
+                 Rule::unique(Profiles::class)->ignore($this->id),
+            ],
             'address'    => 'required|string|max:255',
             'campus_id'  => 'required|exists:campuses,id',
             'department_id' => 'nullable|exists:departments,id',
@@ -55,6 +62,13 @@ class UserAccountUpdateRequest extends FormRequest
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).',
             'password.min' => 'The password must be at least 8 characters.',
             'password.max' => 'The password may not be greater than 20 characters.',
+
+            'phone.required' => 'The phone number is required.',
+            'phone.string' => 'The phone number must be a string.',
+            'phone.min' => 'The phone number must be exactly 11 digits.',
+            'phone.max' => 'The phone number must be exactly 11 digits.',
+            'phone.regex' => 'The phone number must start with "09" and be followed by 9 digits.',
+            'phone.unique' => 'This phone number is already taken.',
         ];
     }
      /**
