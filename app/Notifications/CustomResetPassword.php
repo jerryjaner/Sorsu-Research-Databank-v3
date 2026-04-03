@@ -1,16 +1,25 @@
 <?php
+
 namespace App\Notifications;
 
-use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Notifications\Notification;
+use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class CustomResetPassword extends ResetPassword
+class CustomResetPassword extends Notification
 {
+    use Queueable;
+
     public $token;
 
     public function __construct($token)
     {
         $this->token = $token;
+    }
+
+    public function via($notifiable)
+    {
+        return ['mail'];
     }
 
     public function toMail($notifiable)
@@ -22,13 +31,10 @@ class CustomResetPassword extends ResetPassword
 
         return (new MailMessage)
             ->subject('🔐 Reset Your Password')
-            ->greeting('Hello ' . ($notifiable->name ?? 'User') . ',')
-            ->line('We received a request to reset your password.')
-            ->action('Reset Password Now', $resetUrl)
-            ->line('This link will expire in 60 minutes.')
-            ->line('If you did not request a password reset, no action is required.')
-            ->salutation("Best regards,  \nCampus Administrator");
-
+            ->view('emails.auth.reset-password', [
+                'name' => $notifiable->name ?? 'User',
+                'resetUrl' => $resetUrl,
+                'logo' => asset('student/assets/media/logos/ssu-logo.png'),
+            ]);
     }
-
 }
