@@ -185,12 +185,6 @@
                                             placeholder="Enter email" />
                                         <span class="text-danger email_error"></span>
                                     </div>
-                                    {{-- <div class="fv-row mb-10">
-                                        <label class="form-label">Password</label>
-                                        <input type="password" class="form-control form-control-solid" name="password"
-                                            placeholder="Enter password" />
-                                        <span class="text-danger password_error"></span>
-                                    </div> --}}
                                     <div class="fv-row mb-10">
                                         <label class="form-label">Password</label>
 
