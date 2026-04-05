@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
 
 class PermissionSeeder extends Seeder
 {
@@ -12,7 +14,10 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        // List of default permissions with store, update, and destroy
+        //  Reset cached roles and permissions
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
+        // List of default permissions
         $permissions = [
             // User management
             'user_store',
@@ -65,10 +70,17 @@ class PermissionSeeder extends Seeder
             'research_destroy',
         ];
 
+        //  Create permissions
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(['name' => $permission]);
         }
 
-        $this->command->info('Default permissions including store, update, and destroy seeded successfully!');
+        //  Ensure super-admin role exists
+        $superAdminRole = Role::firstOrCreate(['name' => 'super-admin']);
+
+        //  Assign ALL permissions to super-admin
+        $superAdminRole->syncPermissions(Permission::all());
+
+        $this->command->info('Permissions seeded and assigned to super-admin successfully!');
     }
 }

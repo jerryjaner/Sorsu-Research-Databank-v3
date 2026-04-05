@@ -23,8 +23,10 @@
                         <div>
                             <h5 class="mb-1 fw-bold">Create a New User</h5>
                             <p class="mb-0 text-muted">
-                                Complete the steps to create a new user account. You can assign roles and permissions in
-                                the final step.
+                                Complete the steps below to create a new user account. Ensure all information is accurate, set secure login credentials, and assign the appropriate role before submitting.
+                            </p>
+                            <p class="mb-0 text-info">
+                                Note: Selecting a College is <strong>optional</strong> for the Graduate Studies Campus.
                             </p>
                         </div>
                     </div>
@@ -172,6 +174,7 @@
                                         </select>
                                         <span class="text-danger department_id_error"></span>
                                     </div>
+
                                 </div>
 
                                 <!-- Step 2: Login Credentials -->
@@ -339,395 +342,395 @@
 <script>
     $(document).ready(function() {
 
-                 /**
-                 * ==========================================
-                 * Toggle Password Visibility (Eye Icon)
-                 * ==========================================
-                 */
-                $(document).on('click', '.toggle-password', function () {
+            /**
+         * ==========================================
+         * Toggle Password Visibility (Eye Icon)
+         * ==========================================
+         */
+        $(document).on('click', '.toggle-password', function () {
 
-                    const target = $(this).data('target');
-                    const input = $(target);
+            const target = $(this).data('target');
+            const input = $(target);
 
-                    if (input.length === 0) return; // prevent error
+            if (input.length === 0) return; // prevent error
 
-                    if (input.attr('type') === 'password') {
-                        input.attr('type', 'text');
-                        $(this).removeClass('fa-eye').addClass('fa-eye-slash');
-                    } else {
-                        input.attr('type', 'password');
-                        $(this).removeClass('fa-eye-slash').addClass('fa-eye');
-                    }
+            if (input.attr('type') === 'password') {
+                input.attr('type', 'text');
+                $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+            } else {
+                input.attr('type', 'password');
+                $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+            }
 
-                });
-
-
-                 /**
-                 * ==========================================
-                 * Stepper Initialization
-                 * ==========================================
-                 */
-                var currentStep = 0;
-                var totalSteps = $('[data-kt-stepper-element="content"]').length;
-
-                function showStep(index) {
-                    $('[data-kt-stepper-element="content"]').hide().removeClass('current d-block');
-                    $('[data-kt-stepper-element="content"]').eq(index).show().addClass('current d-block');
-
-                    $('[data-kt-stepper-element="nav"]').each(function(i) {
-                        $(this).removeClass('current completed');
-                        if (i < index) $(this).addClass('completed');
-                        if (i === index) $(this).addClass('current');
-                    });
-
-                    if (index === 0) {
-                        $('[data-kt-stepper-action="previous"]').hide();
-                    } else {
-                        $('[data-kt-stepper-action="previous"]').show();
-                    }
-
-                    if (index === totalSteps - 1) {
-                        $('[data-kt-stepper-action="next"]').hide();
-                        $('#user_save_button').show();
-
-                        // Fill review
-                        // let roles = $('[name="role[]"] option:selected').map(function() {
-                        //     return $(this).text();
-                        // }).get().join(', ');
-                        let roleElement = $('[name="role[]"]');
-                        let roles = '';
-
-                        if (roleElement.is('select')) {
-                            roles = roleElement.find('option:selected').map(function() {
-                                return $(this).text();
-                            }).get().join(', ');
-                        } else {
-                            roles = roleElement.val();
-                        }
-
-                        let campus = $('#campus_select option:selected').text() || 'N/A';
-                        let department = $('#department_select option:selected').text() || 'N/A';
-
-                        $('#review_full_name').text($('[name="name"]').val());
-                        $('#review_email').text($('[name="email"]').val());
-                        $('#review_phone').text($('[name="phone"]').val());
-                        $('#review_address').text($('[name="address"]').val());
-                        $('#review_role').text(roles || 'No Role');
-                        $('#review_campus').text(campus);
-                        $('#review_department').text(department);
-                    } else {
-                        $('[data-kt-stepper-action="next"]').show();
-                        $('#user_save_button').hide();
-                    }
-                }
-                  // Initialize first step
-                showStep(currentStep);
-                  /**
-                 * ==========================================
-                 * Stepper Navigation (Next / Previous)
-                 * ==========================================
-                 */
-                $('[data-kt-stepper-action="next"]').click(function() {
-                    if (currentStep < totalSteps - 1) {
-                        currentStep++;
-                        showStep(currentStep);
-                    }
-                });
-
-                $('[data-kt-stepper-action="previous"]').click(function() {
-                    if (currentStep > 0) {
-                        currentStep--;
-                        showStep(currentStep);
-                    }
-                });
-
-                 /**
-                 * ==========================================
-                 * Cancel Button (Reset Form)
-                 * ==========================================
-                 */
-                $('#user_cancel_button').click(function() {
-                    $('#UserForm')[0].reset();
-                    $('#user_id').val('');
-                    $('[name="role[]"]').val(null).trigger('change');
-                    $(this).hide();
-                    currentStep = 0;
-                    showStep(currentStep);
-                });
-
-
-
-                /**
-                 * ==========================================
-                 * Load Departments based on Campus
-                 * ==========================================
-                 */
-                // $('#campus_select').on('change', function() {
-                //     var campusId = $(this).val();
-                //     $('#department_select').html('<option value="">Loading...</option>');
-
-                //     if (campusId) {
-                //         $.get('/user-accounts/departments/' + campusId, function(data) {
-                //             var options = '<option value="">Select College</option>';
-                //             data.forEach(function(dept) {
-                //                 options += `<option value="${dept.id}">${dept.name}</option>`;
-                //             });
-                //             $('#department_select').html(options);
-
-                //             // If editing, select previous department
-                //             var selectedDept = $('#department_select').data('selected');
-                //             if (selectedDept) {
-                //                 $('#department_select').val(selectedDept).trigger('change');
-                //                 $('#department_select').removeData('selected'); // clear after use
-                //             }
-                //         });
-                //     } else {
-                //         $('#department_select').html('<option value="">Select College</option>');
-                //     }
-                // });
-
-                // -------------------------
-    // Load Departments
-    // -------------------------
-    function loadDepartments(campusId, selectedDept = null) {
-        $('#department_select').html('<option value="">Loading...</option>');
-        if (campusId) {
-            $.get('/user-accounts/departments/'+campusId,function(data){
-                let options = '<option value="">Select College</option>';
-                data.forEach(d => options += `<option value="${d.id}">${d.name}</option>`);
-                $('#department_select').html(options);
-                if(selectedDept) $('#department_select').val(selectedDept);
-            });
-        } else {
-            $('#department_select').html('<option value="">Select College</option>');
-        }
-    }
-
-    // On Campus Change
-    $('#campus_select').on('change', function(){ loadDepartments($(this).val()); });
-
-    // Auto load on page ready
-    let initialCampus = $('#campus_select').val();
-    if(initialCampus) loadDepartments(initialCampus);
-
-    // -------------------------
-    // Edit User
-    // -------------------------
-    $(document).on('click', '.user_edit', function(){
-        const id = $(this).data('id');
-        $.get(`/user-accounts/${id}`, function(res){
-            $('#user_id').val(res.id);
-            $('[name="name"]').val(res.name);
-            $('[name="email"]').val(res.email);
-            $('[name="phone"]').val(res.profile?.phone ?? '');
-            $('[name="address"]').val(res.profile?.address ?? '');
-            $('[name="role[]"]').val(res.roles.map(r => r.name)).trigger('change');
-
-            $('#campus_select').val(res.campus_id);
-            loadDepartments(res.campus_id, res.department_id);
-
-            $('#user_cancel_button').show();
-            currentStep = 0; showStep(currentStep);
         });
-    });
 
 
+            /**
+         * ==========================================
+         * Stepper Initialization
+         * ==========================================
+         */
+        var currentStep = 0;
+        var totalSteps = $('[data-kt-stepper-element="content"]').length;
 
+        function showStep(index) {
+            $('[data-kt-stepper-element="content"]').hide().removeClass('current d-block');
+            $('[data-kt-stepper-element="content"]').eq(index).show().addClass('current d-block');
 
+            $('[data-kt-stepper-element="nav"]').each(function(i) {
+                $(this).removeClass('current completed');
+                if (i < index) $(this).addClass('completed');
+                if (i === index) $(this).addClass('current');
+            });
 
+            if (index === 0) {
+                $('[data-kt-stepper-action="previous"]').hide();
+            } else {
+                $('[data-kt-stepper-action="previous"]').show();
+            }
 
+            if (index === totalSteps - 1) {
+                $('[data-kt-stepper-action="next"]').hide();
+                $('#user_save_button').show();
 
+                // Fill review
+                // let roles = $('[name="role[]"] option:selected').map(function() {
+                //     return $(this).text();
+                // }).get().join(', ');
+                let roleElement = $('[name="role[]"]');
+                let roles = '';
 
-
-                // Get user table with optional search & campus
-                function GetUserRecord(search = '') {
-                    let campusFilter = $('#campusFilter').val();
-
-                    $.ajax({
-                        url: '{{ route('admin.user-accounts.fetch') }}',
-                        method: 'GET',
-                        data: {
-                            search: search,
-                            campus: campusFilter
-                        },
-                        success: function(response) {
-                            $("#all_users").html(response);
-                            $("#kt_table_widget_1").DataTable({
-                                "order": [
-                                    [0, "asc"]
-                                ],
-                                "language": {
-                                    "lengthMenu": "Show _MENU_"
-                                }
-                            });
-                        },
-                        error: function(xhr) {
-                            let message = xhr.responseJSON?.message || 'Failed to load users';
-                            Swal.fire('Error', message, 'error');
-                        }
-                    });
+                if (roleElement.is('select')) {
+                    roles = roleElement.find('option:selected').map(function() {
+                        return $(this).text();
+                    }).get().join(', ');
+                } else {
+                    roles = roleElement.val();
                 }
 
-                // Initial load
-                GetUserRecord();
+                let campus = $('#campus_select option:selected').text() || 'N/A';
+                let department = $('#department_select option:selected').text() || 'N/A';
 
-                // Search input
-                $('#search_user').on('keyup', function() {
-                    let query = $(this).val();
-                    GetUserRecord(query);
+                $('#review_full_name').text($('[name="name"]').val());
+                $('#review_email').text($('[name="email"]').val());
+                $('#review_phone').text($('[name="phone"]').val());
+                $('#review_address').text($('[name="address"]').val());
+                $('#review_role').text(roles || 'No Role');
+                $('#review_campus').text(campus);
+                $('#review_department').text(department);
+            } else {
+                $('[data-kt-stepper-action="next"]').show();
+                $('#user_save_button').hide();
+            }
+        }
+            // Initialize first step
+        showStep(currentStep);
+            /**
+         * ==========================================
+         * Stepper Navigation (Next / Previous)
+         * ==========================================
+         */
+        $('[data-kt-stepper-action="next"]').click(function() {
+            if (currentStep < totalSteps - 1) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+
+        $('[data-kt-stepper-action="previous"]').click(function() {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        });
+
+            /**
+         * ==========================================
+         * Cancel Button (Reset Form)
+         * ==========================================
+         */
+        $('#user_cancel_button').click(function() {
+            $('#UserForm')[0].reset();
+            $('#user_id').val('');
+            $('[name="role[]"]').val(null).trigger('change');
+            $(this).hide();
+            currentStep = 0;
+            showStep(currentStep);
+        });
+
+
+
+        /**
+         * ==========================================
+         * Load Departments based on Campus
+         * ==========================================
+         */
+        // $('#campus_select').on('change', function() {
+        //     var campusId = $(this).val();
+        //     $('#department_select').html('<option value="">Loading...</option>');
+
+        //     if (campusId) {
+        //         $.get('/user-accounts/departments/' + campusId, function(data) {
+        //             var options = '<option value="">Select College</option>';
+        //             data.forEach(function(dept) {
+        //                 options += `<option value="${dept.id}">${dept.name}</option>`;
+        //             });
+        //             $('#department_select').html(options);
+
+        //             // If editing, select previous department
+        //             var selectedDept = $('#department_select').data('selected');
+        //             if (selectedDept) {
+        //                 $('#department_select').val(selectedDept).trigger('change');
+        //                 $('#department_select').removeData('selected'); // clear after use
+        //             }
+        //         });
+        //     } else {
+        //         $('#department_select').html('<option value="">Select College</option>');
+        //     }
+        // });
+
+        // -------------------------
+        // Load Departments
+        // -------------------------
+        function loadDepartments(campusId, selectedDept = null) {
+            $('#department_select').html('<option value="">Loading...</option>');
+            if (campusId) {
+                $.get('/user-accounts/departments/'+campusId,function(data){
+                    let options = '<option value="">Select College</option>';
+                    data.forEach(d => options += `<option value="${d.id}">${d.name}</option>`);
+                    $('#department_select').html(options);
+                    if(selectedDept) $('#department_select').val(selectedDept);
                 });
+            } else {
+                $('#department_select').html('<option value="">Select College</option>');
+            }
+        }
 
-                // Campus filter
-                $('#campusFilter').on('change', function() {
-                    GetUserRecord($('#search_user').val()); // include search
-                });
+        // On Campus Change
+        $('#campus_select').on('change', function(){ loadDepartments($(this).val()); });
+
+        // Auto load on page ready
+        let initialCampus = $('#campus_select').val();
+        if(initialCampus) loadDepartments(initialCampus);
+
+        // -------------------------
+        // Edit User
+        // -------------------------
+        $(document).on('click', '.user_edit', function(){
+            const id = $(this).data('id');
+            $.get(`/user-accounts/${id}`, function(res){
+                $('#user_id').val(res.id);
+                $('[name="name"]').val(res.name);
+                $('[name="email"]').val(res.email);
+                $('[name="phone"]').val(res.profile?.phone ?? '');
+                $('[name="address"]').val(res.profile?.address ?? '');
+                $('[name="role[]"]').val(res.roles.map(r => r.name)).trigger('change');
+
+                $('#campus_select').val(res.campus_id);
+                loadDepartments(res.campus_id, res.department_id);
+
+                $('#user_cancel_button').show();
+                currentStep = 0; showStep(currentStep);
+            });
+        });
 
 
 
-                $('#UserForm').on('submit', function(e) {
-                    e.preventDefault();
-                    const form = this;
-                    const id = $('#user_id').val();
-                    let url = '{{ route('admin.user-accounts.store') }}';
-                    let method = "POST";
-                    let formData = new FormData(form);
-                    if (id) {
-                        url = "/user-accounts/" + id;
-                        formData.append('_method', 'PUT');
-                    }
 
-                    $('#user_save_button').prop('disabled', true).text('Please wait...');
-                    $(form).find('span.text-danger').text('');
 
-                    $.ajax({
-                        url: url,
-                        method: method,
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        dataType: 'json',
-                        success: function(response) {
-                            if (response.status === 422) {
-                                $.each(response.errors, function(key, val) {
-                                    $(form).find('.' + key + '_error').text(val[0]);
-                                });
-                            } else {
-                                form.reset();
-                                $('#user_id').val('');
-                                $('[name="role[]"]').val(null).trigger('change');
-                                $('#user_cancel_button').hide();
-                                currentStep = 0;
-                                showStep(currentStep);
-                                GetUserRecord();
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: id ? 'User Updated Successfully' :
-                                        'User Created Successfully',
-                                    showConfirmButton: false,
-                                    timer: 2000
-                                });
-                            }
-                        },
-                        error: function(xhr) {
-                            let message = 'An error occurred!';
 
-                            if (xhr.status === 422) {
-                                let errors = xhr.responseJSON.errors;
-                                let errorList = '';
 
-                                $.each(errors, function(key, value) {
-                                    errorList += `<li>${value[0]}</li>`;
-                                });
 
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Validation Error',
-                                    html: `<ul style="text-align:center; list-style: none; padding-left: 0; color:red;">${errorList}</ul>`
-                                });
 
-                                return;
-                            }
+        // Get user table with optional search & campus
+        function GetUserRecord(search = '') {
+            let campusFilter = $('#campusFilter').val();
 
-                            if (xhr.status === 401) {
-                                message = 'Unauthenticated. Please login.';
-                                window.location.href = '/login';
-                            } else if (xhr.status === 403) {
-                                message = 'Unauthorized. You do not have permission.';
-                            } else if (xhr.responseJSON?.message) {
-                                message = xhr.responseJSON.message;
-                            }
-
-                            Swal.fire('Error', message, 'error');
-                        },
-                        complete: function() {
-                            $('#user_save_button').prop('disabled', false).text('Submit');
+            $.ajax({
+                url: '{{ route('admin.user-accounts.fetch') }}',
+                method: 'GET',
+                data: {
+                    search: search,
+                    campus: campusFilter
+                },
+                success: function(response) {
+                    $("#all_users").html(response);
+                    $("#kt_table_widget_1").DataTable({
+                        "order": [
+                            [0, "asc"]
+                        ],
+                        "language": {
+                            "lengthMenu": "Show _MENU_"
                         }
                     });
-                });
-
-                // // Edit user
-                // $(document).on('click', '.user_edit', function() {
-                //     const id = $(this).data('id');
-                //     $.get(`/user-accounts/${id}`, function(response) {
-                //         $('#user_id').val(response.id);
-                //         $('[name="name"]').val(response.name);
-                //         $('[name="email"]').val(response.email);
-                //         $('[name="phone"]').val(response.profile?.phone ?? '');
-                //         $('[name="address"]').val(response.profile?.address ?? '');
-                //         let roles = response.roles.map(r => r.name);
-                //         $('[name="role[]"]').val(roles).trigger('change');
-
-                //         // Store previous department in data attribute
-                //         $('#department_select').data('selected', response.department_id ?? '');
-
-                //         //  Set campus and trigger department load
-                //         $('#campus_select').val(response.campus_id).trigger('change');
-
-                //         $('#user_cancel_button').show();
-                //         currentStep = 0;
-                //         showStep(currentStep);
-                //     });
-                // });
-
-                // Delete user
-                $(document).on('click', '.user_delete', function() {
-                    const id = $(this).data('id');
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You won't be able to revert this!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (!result.isConfirmed) return;
-                        $.ajax({
-                            url: `/user-accounts/${id}`,
-                            method: 'DELETE',
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function() {
-                                GetUserRecord();
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'User Deleted Successfully',
-                                    showConfirmButton: false,
-                                    timer: 2000
-                                });
-                            },
-                            error: function(xhr) {
-                                let message = xhr.responseJSON?.message ||
-                                    'Failed to delete user';
-                                if (xhr.status === 401) window.location.href = '/login';
-                                else if (xhr.status === 403) message =
-                                    'Unauthorized. You do not have permission.';
-                                Swal.fire('Error', message, 'error');
-                            }
-                        });
-                    });
-                });
-
+                },
+                error: function(xhr) {
+                    let message = xhr.responseJSON?.message || 'Failed to load users';
+                    Swal.fire('Error', message, 'error');
+                }
             });
+        }
+
+        // Initial load
+        GetUserRecord();
+
+        // Search input
+        $('#search_user').on('keyup', function() {
+            let query = $(this).val();
+            GetUserRecord(query);
+        });
+
+        // Campus filter
+        $('#campusFilter').on('change', function() {
+            GetUserRecord($('#search_user').val()); // include search
+        });
+
+
+
+        $('#UserForm').on('submit', function(e) {
+            e.preventDefault();
+            const form = this;
+            const id = $('#user_id').val();
+            let url = '{{ route('admin.user-accounts.store') }}';
+            let method = "POST";
+            let formData = new FormData(form);
+            if (id) {
+                url = "/user-accounts/" + id;
+                formData.append('_method', 'PUT');
+            }
+
+            $('#user_save_button').prop('disabled', true).text('Please wait...');
+            $(form).find('span.text-danger').text('');
+
+            $.ajax({
+                url: url,
+                method: method,
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 422) {
+                        $.each(response.errors, function(key, val) {
+                            $(form).find('.' + key + '_error').text(val[0]);
+                        });
+                    } else {
+                        form.reset();
+                        $('#user_id').val('');
+                        $('[name="role[]"]').val(null).trigger('change');
+                        $('#user_cancel_button').hide();
+                        currentStep = 0;
+                        showStep(currentStep);
+                        GetUserRecord();
+                        Swal.fire({
+                            icon: 'success',
+                            title: id ? 'User Updated Successfully' :
+                                'User Created Successfully',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    let message = 'An error occurred!';
+
+                    if (xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+                        let errorList = '';
+
+                        $.each(errors, function(key, value) {
+                            errorList += `<li>${value[0]}</li>`;
+                        });
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Validation Error',
+                            html: `<ul style="text-align:center; list-style: none; padding-left: 0; color:red;">${errorList}</ul>`
+                        });
+
+                        return;
+                    }
+
+                    if (xhr.status === 401) {
+                        message = 'Unauthenticated. Please login.';
+                        window.location.href = '/login';
+                    } else if (xhr.status === 403) {
+                        message = 'Unauthorized. You do not have permission.';
+                    } else if (xhr.responseJSON?.message) {
+                        message = xhr.responseJSON.message;
+                    }
+
+                    Swal.fire('Error', message, 'error');
+                },
+                complete: function() {
+                    $('#user_save_button').prop('disabled', false).text('Submit');
+                }
+            });
+        });
+
+        // // Edit user
+        // $(document).on('click', '.user_edit', function() {
+        //     const id = $(this).data('id');
+        //     $.get(`/user-accounts/${id}`, function(response) {
+        //         $('#user_id').val(response.id);
+        //         $('[name="name"]').val(response.name);
+        //         $('[name="email"]').val(response.email);
+        //         $('[name="phone"]').val(response.profile?.phone ?? '');
+        //         $('[name="address"]').val(response.profile?.address ?? '');
+        //         let roles = response.roles.map(r => r.name);
+        //         $('[name="role[]"]').val(roles).trigger('change');
+
+        //         // Store previous department in data attribute
+        //         $('#department_select').data('selected', response.department_id ?? '');
+
+        //         //  Set campus and trigger department load
+        //         $('#campus_select').val(response.campus_id).trigger('change');
+
+        //         $('#user_cancel_button').show();
+        //         currentStep = 0;
+        //         showStep(currentStep);
+        //     });
+        // });
+
+        // Delete user
+        $(document).on('click', '.user_delete', function() {
+            const id = $(this).data('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (!result.isConfirmed) return;
+                $.ajax({
+                    url: `/user-accounts/${id}`,
+                    method: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function() {
+                        GetUserRecord();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'User Deleted Successfully',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    },
+                    error: function(xhr) {
+                        let message = xhr.responseJSON?.message ||
+                            'Failed to delete user';
+                        if (xhr.status === 401) window.location.href = '/login';
+                        else if (xhr.status === 403) message =
+                            'Unauthorized. You do not have permission.';
+                        Swal.fire('Error', message, 'error');
+                    }
+                });
+            });
+        });
+
+    });
 </script>
 @endpush
 @endsection

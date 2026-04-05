@@ -86,18 +86,53 @@ class UserAccountController extends Controller
      */
     public function store(Request $request)
     {
+        // $validator = \Validator::make($request->all(), [
+        //     'name'     => 'required|string|max:255',
+        //     'email'    => 'required|email|unique:users,email',
+        //     'password'     => [
+        //         'required', // optional for update
+        //         'string',
+        //         'min:8',
+        //         'max:20',
+        //         'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/',
+        //     ],
+        //     'role'     => 'required|array', // plural
+        //     'phone' => [
+        //         'required',
+        //         'string',
+        //         'min:11',
+        //         'max:11',
+        //         'regex:/^09\d{9}$/',
+        //         'unique:profiles,phone'
+        //     ],
+        //     'address'  => 'required|string|max:255',
+        //     'campus_id' => 'required|exists:campuses,id',
+        //     'department_id' => 'nullable|exists:departments,id',
+        // ],
+        //  [
+        //     'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).',
+        //     'password.min'   => 'Password must be at least 8 characters.',
+        //     'password.max'   => 'Password may not be greater than 20 characters.',
+
+        //     'phone.required' => 'The phone number is required.',
+        //     'phone.string' => 'The phone number must be a string.',
+        //     'phone.min' => 'The phone number must be exactly 11 digits.',
+        //     'phone.max' => 'The phone number must be exactly 11 digits.',
+        //     'phone.regex' => 'The phone number must start with "09" and be followed by 9 digits.',
+        //     'phone.unique' => 'This phone number is already taken.',
+        // ]);
         $validator = \Validator::make($request->all(), [
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
-            'password'     => [
-                'required', // optional for update
+            'name'           => 'required|string|max:255',
+            'email'          => 'required|email|unique:users,email',
+            'password'       => [
+                'required',
                 'string',
                 'min:8',
                 'max:20',
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/',
             ],
-            'role'     => 'required|array', // plural
-            'phone' => [
+            'role'           => 'required|array',
+            'phone'          => [
                 'required',
                 'string',
                 'min:11',
@@ -105,22 +140,36 @@ class UserAccountController extends Controller
                 'regex:/^09\d{9}$/',
                 'unique:profiles,phone'
             ],
-            'address'  => 'required|string|max:255',
-            'campus_id' => 'required|exists:campuses,id',
-            'department_id' => 'nullable|exists:departments,id',
+            'address'        => 'required|string|max:255',
+            'campus_id'      => 'required|exists:campuses,id',
+            'department_id'  => 'nullable|exists:departments,id',
         ],
-         [
+        [
             'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).',
             'password.min'   => 'Password must be at least 8 characters.',
             'password.max'   => 'Password may not be greater than 20 characters.',
-
             'phone.required' => 'The phone number is required.',
-            'phone.string' => 'The phone number must be a string.',
-            'phone.min' => 'The phone number must be exactly 11 digits.',
-            'phone.max' => 'The phone number must be exactly 11 digits.',
-            'phone.regex' => 'The phone number must start with "09" and be followed by 9 digits.',
-            'phone.unique' => 'This phone number is already taken.',
+            'phone.string'   => 'The phone number must be a string.',
+            'phone.min'      => 'The phone number must be exactly 11 digits.',
+            'phone.max'      => 'The phone number must be exactly 11 digits.',
+            'phone.regex'    => 'The phone number must start with "09" and be followed by 9 digits.',
+            'phone.unique'   => 'This phone number is already taken.',
         ]);
+
+
+        $validator->after(function ($validator) use ($request) {
+            $campus = Campus::find($request->campus_id);
+
+            // If the campus is NOT Graduate Studies, department is required
+            if ($campus && $campus->name !== 'Sorsogon State University - Graduate Studies Campus') {
+                if (empty($request->department_id)) {
+                    $validator->errors()->add(
+                        'department_id',
+                        'College is required for this campus.'
+                    );
+                }
+            }
+        });
 
         if ($validator->fails()) {
             return response()->json([
@@ -284,10 +333,48 @@ class UserAccountController extends Controller
 
     public function update(Request $request, $id)
     {
+        // $validator = \Validator::make($request->all(), [
+        //     'name'       => 'required|string|max:255',
+        //     'email'      => 'required|email|unique:users,email,' . $id,
+        //     'password'     => [
+        //         'nullable', // optional for update
+        //         'string',
+        //         'min:8',
+        //         'max:20',
+        //         'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/',
+        //     ],
+        //     'role'       => 'required|array',
+        //     'phone' => [
+        //         'required',
+        //         'string',
+        //         'min:11',
+        //         'max:11',
+        //         'unique:profiles,phone,' . $id,
+        //         'regex:/^09\d{9}$/',
+
+        //     ],
+        //     'address'    => 'required|string|max:255',
+        //     'campus_id'  => 'required|exists:campuses,id',
+        //     'department_id' => 'nullable|exists:departments,id',
+        // ],
+        // [
+        //     'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).',
+        //     'password.min'   => 'Password must be at least 8 characters.',
+        //     'password.max'   => 'Password may not be greater than 20 characters.',
+
+        //     'phone.required' => 'The phone number is required.',
+        //     'phone.string' => 'The phone number must be a string.',
+        //     'phone.min' => 'The phone number must be exactly 11 digits.',
+        //     'phone.max' => 'The phone number must be exactly 11 digits.',
+        //     'phone.regex' => 'The phone number must start with "09" and be followed by 9 digits.',
+        //     'phone.unique' => 'This phone number is already taken.',
+
+        // ]);
+
         $validator = \Validator::make($request->all(), [
             'name'       => 'required|string|max:255',
             'email'      => 'required|email|unique:users,email,' . $id,
-            'password'     => [
+            'password'   => [
                 'nullable', // optional for update
                 'string',
                 'min:8',
@@ -295,14 +382,13 @@ class UserAccountController extends Controller
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).+$/',
             ],
             'role'       => 'required|array',
-            'phone' => [
+            'phone'      => [
                 'required',
                 'string',
                 'min:11',
                 'max:11',
                 'unique:profiles,phone,' . $id,
                 'regex:/^09\d{9}$/',
-
             ],
             'address'    => 'required|string|max:255',
             'campus_id'  => 'required|exists:campuses,id',
@@ -312,16 +398,35 @@ class UserAccountController extends Controller
             'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).',
             'password.min'   => 'Password must be at least 8 characters.',
             'password.max'   => 'Password may not be greater than 20 characters.',
-
             'phone.required' => 'The phone number is required.',
-            'phone.string' => 'The phone number must be a string.',
-            'phone.min' => 'The phone number must be exactly 11 digits.',
-            'phone.max' => 'The phone number must be exactly 11 digits.',
-            'phone.regex' => 'The phone number must start with "09" and be followed by 9 digits.',
-            'phone.unique' => 'This phone number is already taken.',
-
+            'phone.string'   => 'The phone number must be a string.',
+            'phone.min'      => 'The phone number must be exactly 11 digits.',
+            'phone.max'      => 'The phone number must be exactly 11 digits.',
+            'phone.regex'    => 'The phone number must start with "09" and be followed by 9 digits.',
+            'phone.unique'   => 'This phone number is already taken.',
         ]);
 
+
+        $validator->after(function ($validator) use ($request) {
+            $campus = Campus::find($request->campus_id);
+
+            if ($campus && $campus->name !== 'Sorsogon State University - Graduate Studies Campus') {
+                if (empty($request->department_id)) {
+                    $validator->errors()->add(
+                        'department_id',
+                        'College is required for this campus.'
+                    );
+                }
+            }
+        });
+
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'errors' => $validator->errors()
+            ], 422);
+        }
         if ($validator->fails()) {
             return response()->json([
                 'status' => 422,
