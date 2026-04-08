@@ -214,26 +214,51 @@ class UserAccountController extends Controller
 
         $currentUser = auth()->user();
 
+            //These Comment lines include the super admin in table
+            // $users = User::with('profile', 'roles')
+            //     ->when(!$currentUser->hasRole('super-admin'), function($query) use ($currentUser) {
+            //         // Non-super-admin: limit by user's campus
+            //         $query->where('campus_id', $currentUser->campus_id);
+            //     })
+            //     ->when($campus, fn($q) => $q->where('campus_id', $campus))
+
+            //     ->when($search, function($q) use ($search) {
+            //             $q->where(function ($query) use ($search) {
+            //                 $query->where('name', 'like', "%{$search}%")
+            //                     ->orWhere('email', 'like', "%{$search}%")
+            //                     ->orWhereHas('profile', function ($p) use ($search) {
+            //                         $p->where('phone', 'like', "%{$search}%");
+            //                     })
+            //                     ->orWhereHas('roles', function ($r) use ($search) {
+            //                         $r->where('name', 'like', "%{$search}%");
+            //                     });
+            //             });
+            //         })
+            // ->get();
+
+            // Exclude super-admin from the list
         $users = User::with('profile', 'roles')
+            ->whereDoesntHave('roles', function ($q) {
+                $q->where('name', 'super-admin');
+            })
             ->when(!$currentUser->hasRole('super-admin'), function($query) use ($currentUser) {
-                // Non-super-admin: limit by user's campus
                 $query->where('campus_id', $currentUser->campus_id);
             })
             ->when($campus, fn($q) => $q->where('campus_id', $campus))
-
             ->when($search, function($q) use ($search) {
-                    $q->where(function ($query) use ($search) {
-                        $query->where('name', 'like', "%{$search}%")
-                            ->orWhere('email', 'like', "%{$search}%")
-                            ->orWhereHas('profile', function ($p) use ($search) {
-                                $p->where('phone', 'like', "%{$search}%");
-                            })
-                            ->orWhereHas('roles', function ($r) use ($search) {
-                                $r->where('name', 'like', "%{$search}%");
-                            });
-                    });
-                })
+                $q->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhereHas('profile', function ($p) use ($search) {
+                            $p->where('phone', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('roles', function ($r) use ($search) {
+                            $r->where('name', 'like', "%{$search}%");
+                        });
+                });
+            })
             ->get();
+
 
         $roleLabels = [
             'super-admin' => 'Super Administrator',
