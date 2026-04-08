@@ -95,6 +95,24 @@ License: For each use you must have a valid license purchased only from above li
 			position: absolute; /* Positioning adjustments */
 		}
 
+        .skeleton {
+            display: inline-block;
+            height: 15px;
+            background: linear-gradient(90deg, #eee, #ddd, #eee);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        .skeleton-checkbox { width: 20px; height: 20px; }
+        .skeleton-text { width: 80%; height: 15px; }
+        .skeleton-button { width: 60px; height: 25px; border-radius: 6px; }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
 
 	</style>
 
