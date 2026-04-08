@@ -88,10 +88,10 @@
 
                 <div class="card-body py-0">
                     <div id="all_roles">
-                        <div class="text-center py-5">
+                        {{-- <div class="text-center py-5">
                             <span class="spinner-border text-primary"></span>
                             <div class="mt-2">Loading...</div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -195,20 +195,65 @@
     });
 
     // Fetch roles table
+    // function GetRoleRecord(search = '') {
+    //     $.get('{{ route('admin.roles.fetch') }}', { search: search })
+    //     .done(function(response) {
+    //         $("#all_roles").html(response);
+    //         if($("#kt_table_widget_1").length){
+    //             $("#kt_table_widget_1").DataTable({
+    //                 "order": [[0, "asc"]],
+    //                 "language": {"lengthMenu": "Show _MENU_"}
+    //             });
+    //         }
+    //     })
+    //     .fail(function(xhr){
+    //         Swal.fire('Error', xhr.responseJSON?.message || 'Failed to load roles.', 'error');
+    //     });
+    // }
     function GetRoleRecord(search = '') {
+        // Show skeleton loader first
+        $("#all_roles").html(`
+            <div class="table-responsive">
+                <table class="table align-middle table-row-bordered table-row-dashed gy-5">
+                    <thead>
+                        <tr class="text-start text-gray-400 fw-boldest fs-7 text-uppercase">
+                            <th class="w-20px ps-0"></th>
+                            <th class="min-w-200px px-0">Role Name</th>
+                            <th class="min-w-125px">Created At</th>
+                            <th class="text-end pe-2 min-w-70px">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${Array(5).fill().map(_ => `
+                            <tr>
+                                <td><div class="skeleton skeleton-checkbox"></div></td>
+                                <td><div class="skeleton skeleton-text"></div></td>
+                                <td><div class="skeleton skeleton-text"></div></td>
+                                <td><div class="skeleton skeleton-button"></div></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        `);
+
+        // Fetch actual data
         $.get('{{ route('admin.roles.fetch') }}', { search: search })
-        .done(function(response) {
-            $("#all_roles").html(response);
-            if($("#kt_table_widget_1").length){
-                $("#kt_table_widget_1").DataTable({
-                    "order": [[0, "asc"]],
-                    "language": {"lengthMenu": "Show _MENU_"}
-                });
-            }
-        })
-        .fail(function(xhr){
-            Swal.fire('Error', xhr.responseJSON?.message || 'Failed to load roles.', 'error');
-        });
+            .done(function(response) {
+                $("#all_roles").html(response);
+
+                // Initialize DataTable if table exists
+                if ($("#kt_table_widget_1").length) {
+                    $("#kt_table_widget_1").DataTable({
+                        order: [[0, "asc"]],
+                        destroy: true, // destroy previous instance if exists
+                        language: { lengthMenu: "Show _MENU_" }
+                    });
+                }
+            })
+            .fail(function(xhr) {
+                Swal.fire('Error', xhr.responseJSON?.message || 'Failed to load roles.', 'error');
+            });
     }
 
     $('#role_search').on('keyup', function() {

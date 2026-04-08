@@ -67,10 +67,10 @@
 
                 <div class="card-body py-0">
                     <div id="all_researches">
-                        <div class="text-center py-5">
+                        {{-- <div class="text-center py-5">
                             <span class="spinner-border text-primary"></span>
                             <div class="mt-2">Loading...</div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -880,7 +880,7 @@
             //         });
             //     });
             // });
-            $(document).ready(function() {
+$(document).ready(function() {
     $.ajaxSetup({
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
     });
@@ -900,14 +900,67 @@
     // -----------------------------
     // Fetch research records
     // -----------------------------
+    // function GetResearchRecord(search = '', campus_id = '') {
+    //     $.get('{{ route('admin.researches.fetch') }}', { search, campus_id })
+    //         .done(function(response) {
+    //             $("#all_researches").html(response);
+    //             $("#kt_table_widget_1").DataTable({
+    //                 order: [[0, "asc"]],
+    //                 language: { lengthMenu: "Show _MENU_" }
+    //             });
+    //         });
+    // }
     function GetResearchRecord(search = '', campus_id = '') {
+        // Show skeleton loader first
+        $("#all_researches").html(`
+            <div class="table-responsive">
+                <table class="table align-middle table-row-bordered table-row-dashed gy-5">
+                    <thead>
+                        <tr class="text-start text-gray-400 fw-boldest fs-7 text-uppercase">
+                            <th class="w-20px ps-0"></th>
+                            <th class="min-w-200px px-0">Research Title</th>
+                            <th class="min-w-200px px-0">School Campus</th>
+                            <th class="min-w-200px px-0">College</th>
+                            <th class="min-w-125px">Created At</th>
+                            <th class="text-end pe-2 min-w-70px">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${Array(5).fill().map(_ => `
+                            <tr>
+                                <td><div class="skeleton skeleton-checkbox"></div></td>
+                                <td><div class="skeleton skeleton-text"></div></td>
+                                <td><div class="skeleton skeleton-text"></div></td>
+                                <td><div class="skeleton skeleton-text"></div></td>
+                                <td><div class="skeleton skeleton-text"></div></td>
+                                <td><div class="skeleton skeleton-button"></div></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        `);
+
+        // Fetch actual data
         $.get('{{ route('admin.researches.fetch') }}', { search, campus_id })
             .done(function(response) {
                 $("#all_researches").html(response);
-                $("#kt_table_widget_1").DataTable({
-                    order: [[0, "asc"]],
-                    language: { lengthMenu: "Show _MENU_" }
-                });
+
+                // Initialize DataTable if table exists
+                if ($("#kt_table_widget_1").length) {
+                    $("#kt_table_widget_1").DataTable({
+                        order: [[0, "asc"]],
+                        destroy: true, // destroy previous instance if exists
+                        language: { lengthMenu: "Show _MENU_" }
+                    });
+                }
+            })
+            .fail(function() {
+                $("#all_researches").html(`
+                    <div class="text-center py-5 text-danger">
+                        Failed to load researches. Please try again.
+                    </div>
+                `);
             });
     }
 

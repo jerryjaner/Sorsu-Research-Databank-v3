@@ -320,10 +320,10 @@
 
                 <div class="card-body py-0">
                     <div id="all_users">
-                        <div class="text-center py-5">
+                        {{-- <div class="text-center py-5">
                             <span class="spinner-border text-primary"></span>
                             <div class="mt-2">Loading...</div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -528,18 +528,70 @@
             });
         });
 
-
-
-
-
-
-
-
-
         // Get user table with optional search & campus
+        // function GetUserRecord(search = '') {
+        //     let campusFilter = $('#campusFilter').val();
+
+        //     $.ajax({
+        //         url: '{{ route('admin.user-accounts.fetch') }}',
+        //         method: 'GET',
+        //         data: {
+        //             search: search,
+        //             campus: campusFilter
+        //         },
+        //         success: function(response) {
+        //             $("#all_users").html(response);
+        //             $("#kt_table_widget_1").DataTable({
+        //                 "order": [
+        //                     [0, "asc"]
+        //                 ],
+        //                 "language": {
+        //                     "lengthMenu": "Show _MENU_"
+        //                 }
+        //             });
+        //         },
+        //         error: function(xhr) {
+        //             let message = xhr.responseJSON?.message || 'Failed to load users';
+        //             Swal.fire('Error', message, 'error');
+        //         }
+        //     });
+        // }
         function GetUserRecord(search = '') {
             let campusFilter = $('#campusFilter').val();
 
+            // Show skeleton loader first
+            $("#all_users").html(`
+                <div class="table-responsive">
+                    <table class="table align-middle table-row-bordered table-row-dashed gy-5">
+                        <thead>
+                            <tr class="text-start text-gray-400 fw-boldest fs-7 text-uppercase">
+                                <th class="min-w-90px px-0">Id</th>
+                                <th class="min-w-150px px-0">Name</th>
+                                <th class="min-w-150px px-0">Email</th>
+                                <th class="min-w-150px px-0">Address</th>
+                                <th class="min-w-150px px-0">Phone</th>
+                                <th class="min-w-150px px-0">Role</th>
+                                <th class="text-end pe-2 min-w-70px">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${Array(5).fill().map(_ => `
+                                <tr>
+                                    <td><div class="skeleton skeleton-text"></div></td>
+                                    <td><div class="skeleton skeleton-text"></div></td>
+                                    <td><div class="skeleton skeleton-text"></div></td>
+                                    <td><div class="skeleton skeleton-text"></div></td>
+                                    <td><div class="skeleton skeleton-text"></div></td>
+                                    <td><div class="skeleton skeleton-text"></div></td>
+                                    <td><div class="skeleton skeleton-button"></div></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `);
+
+            // Fetch actual data
             $.ajax({
                 url: '{{ route('admin.user-accounts.fetch') }}',
                 method: 'GET',
@@ -549,14 +601,15 @@
                 },
                 success: function(response) {
                     $("#all_users").html(response);
-                    $("#kt_table_widget_1").DataTable({
-                        "order": [
-                            [0, "asc"]
-                        ],
-                        "language": {
-                            "lengthMenu": "Show _MENU_"
-                        }
-                    });
+
+                    // Initialize DataTable if table exists
+                    if ($("#kt_table_widget_1").length) {
+                        $("#kt_table_widget_1").DataTable({
+                            order: [[0, "asc"]],
+                            destroy: true,
+                            language: { lengthMenu: "Show _MENU_" }
+                        });
+                    }
                 },
                 error: function(xhr) {
                     let message = xhr.responseJSON?.message || 'Failed to load users';

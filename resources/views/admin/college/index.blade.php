@@ -85,10 +85,10 @@
 
                     <div class="card-body py-0">
                         <div id="all_college">
-                            <div class="text-center py-5">
+                            {{-- <div class="text-center py-5">
                                 <span class="spinner-border text-primary"></span>
                                 <div class="mt-2">Loading...</div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -120,34 +120,90 @@
                     }
                 });
 
-                function GetCollegeRecord(search = '') {
-                    $.ajax({
-                        url: '{{ route('admin.college.fetch') }}',
-                        method: 'GET',
-                        data: {
-                            search: search
-                        },
-                        success: function(response) {
-                            $("#all_college").html(response);
+                // function GetCollegeRecord(search = '') {
+                //     $.ajax({
+                //         url: '{{ route('admin.college.fetch') }}',
+                //         method: 'GET',
+                //         data: {
+                //             search: search
+                //         },
+                //         success: function(response) {
+                //             $("#all_college").html(response);
 
-                            // Initialize DataTable if there is table
-                            if ($("#kt_table_widget_1").length) {
-                                $("#kt_table_widget_1").DataTable({
-                                    "order": [
-                                        [1, "asc"]
-                                    ],
-                                    "destroy": true, // destroy previous table if exists
-                                    "language": {
-                                        "lengthMenu": "Show _MENU_"
-                                    }
-                                });
-                            }
-                        },
-                        error: function(xhr) {
-                            Swal.fire('Error', 'Failed to load college.', 'error');
-                        }
-                    });
-                }
+                //             // Initialize DataTable if there is table
+                //             if ($("#kt_table_widget_1").length) {
+                //                 $("#kt_table_widget_1").DataTable({
+                //                     "order": [
+                //                         [1, "asc"]
+                //                     ],
+                //                     "destroy": true, // destroy previous table if exists
+                //                     "language": {
+                //                         "lengthMenu": "Show _MENU_"
+                //                     }
+                //                 });
+                //             }
+                //         },
+                //         error: function(xhr) {
+                //             Swal.fire('Error', 'Failed to load college.', 'error');
+                //         }
+                //     });
+                // }
+
+                function GetCollegeRecord(search = '') {
+    // Show skeleton loader first
+    $("#all_college").html(`
+        <div class="table-responsive">
+            <table class="table align-middle table-row-bordered table-row-dashed gy-5 all_campuses_table">
+                <thead>
+                    <tr class="text-start text-gray-400 fw-boldest fs-7 text-uppercase">
+                        <th class="w-20px ps-0"></th>
+                        <th class="min-w-200px px-0">Campus Name</th>
+                        <th class="min-w-200px px-0">College Name</th>
+                        <th class="min-w-125px">Created At</th>
+                        <th class="text-end pe-2 min-w-70px">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${Array(5).fill().map(_ => `
+                        <tr>
+                            <td><div class="skeleton skeleton-checkbox"></div></td>
+                            <td><div class="skeleton skeleton-text"></div></td>
+                            <td><div class="skeleton skeleton-text"></div></td>
+                            <td><div class="skeleton skeleton-text"></div></td>
+                            <td><div class="skeleton skeleton-button"></div></td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+    `);
+
+    // AJAX request
+    $.ajax({
+        url: '{{ route('admin.college.fetch') }}',
+        method: 'GET',
+        data: { search: search },
+        success: function(response) {
+            $("#all_college").html(response);
+
+            // Initialize DataTable if table exists
+            if ($("#kt_table_widget_1").length) {
+                $("#kt_table_widget_1").DataTable({
+                    "order": [[1, "asc"]],
+                    "destroy": true,
+                    "language": { "lengthMenu": "Show _MENU_" }
+                });
+            }
+        },
+        error: function(xhr) {
+            $("#all_college").html(`
+                <div class="text-center py-5 text-danger">
+                    Failed to load colleges. Please try again.
+                </div>
+            `);
+        }
+    });
+}
 
                 // Initial load
                 GetCollegeRecord();

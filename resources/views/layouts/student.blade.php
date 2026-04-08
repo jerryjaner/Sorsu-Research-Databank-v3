@@ -24,6 +24,8 @@
     <!--begin::Global Stylesheets Bundle(used by all pages)-->
     <link href="{{URL::to('student/assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{URL::to('student/assets/css/style.bundle.css')}}" rel="stylesheet" type="text/css" />
+
+    <link href="{{URL::to('student/assets/css/custom.css')}}" rel="stylesheet" type="text/css" />
     <!--end::Global Stylesheets Bundle-->
     <link href="{{ URL::to('student/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
 

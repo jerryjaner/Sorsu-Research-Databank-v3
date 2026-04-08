@@ -89,10 +89,10 @@
                     <div class="card-body py-0">
                         <div id="all_permissions">
                             {{-- table will be loaded here --}}
-                            <div class="text-center py-5">
+                            {{-- <div class="text-center py-5">
                                 <span class="spinner-border text-primary"></span>
                                 <div class="mt-2">Loading...</div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -116,17 +116,70 @@
             });
 
             GetPermissionRecord();
+
             // Fetch and display all permissions
+            // function GetPermissionRecord(search = '') {
+            //     $.ajax({
+            //         url: '{{ route('admin.permissions.fetch') }}',
+            //         method: 'GET',
+            //         data: { search: search }, // pass search query
+            //         success: function(response) {
+            //             $("#all_permissions").html(response);
+            //             if ($("#kt_table_widget_1").length) {
+            //                 $("#kt_table_widget_1").DataTable({
+            //                     "order": [[0, "asc"]],
+            //                     "language": { "lengthMenu": "Show _MENU_" },
+            //                 });
+            //             }
+            //         },
+            //         error: function(xhr) {
+            //             if (xhr.status === 403) {
+            //                 Swal.fire('Permission Denied', xhr.responseJSON?.message, 'error');
+            //             } else {
+            //                 Swal.fire('Error', 'Failed to load permissions.', 'error');
+            //             }
+            //         }
+            //     });
+            // }
             function GetPermissionRecord(search = '') {
+                 // Show skeleton loader first
+                $("#all_permissions").html(`
+                    <div class="table-responsive">
+                        <table class="table align-middle table-row-bordered table-row-dashed gy-5 all_permissions_table">
+                            <thead>
+                                <tr class="text-start text-gray-400 fw-boldest fs-7 text-uppercase">
+                                    <th class="w-20px ps-0"></th>
+                                    <th class="min-w-200px px-0">Permission Name</th>
+                                    <th class="min-w-125px">Created At</th>
+                                    <th class="text-end pe-2 min-w-70px">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${Array(5).fill().map(_ => `
+                                    <tr>
+                                        <td><div class="skeleton skeleton-checkbox"></div></td>
+                                        <td><div class="skeleton skeleton-text"></div></td>
+                                        <td><div class="skeleton skeleton-text"></div></td>
+                                        <td><div class="skeleton skeleton-button"></div></td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `);
+
                 $.ajax({
                     url: '{{ route('admin.permissions.fetch') }}',
                     method: 'GET',
                     data: { search: search }, // pass search query
                     success: function(response) {
                         $("#all_permissions").html(response);
+
+                        // Initialize DataTable if table exists
                         if ($("#kt_table_widget_1").length) {
                             $("#kt_table_widget_1").DataTable({
                                 "order": [[0, "asc"]],
+                                "destroy": true,
                                 "language": { "lengthMenu": "Show _MENU_" },
                             });
                         }
@@ -135,12 +188,15 @@
                         if (xhr.status === 403) {
                             Swal.fire('Permission Denied', xhr.responseJSON?.message, 'error');
                         } else {
-                            Swal.fire('Error', 'Failed to load permissions.', 'error');
+                            $("#all_permissions").html(`
+                                <div class="text-center py-5 text-danger">
+                                    Failed to load permissions. Please try again.
+                                </div>
+                            `);
                         }
                     }
                 });
             }
-
 
             // Search permissions dynamically
             $('#permission_search').on('keyup', function() {

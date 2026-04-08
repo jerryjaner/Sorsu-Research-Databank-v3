@@ -2,6 +2,7 @@
 @section('title', 'Home Page')
 
 @section('content')
+
 <!-- Toolbar -->
 <div class="toolbar py-5 py-lg-15" id="kt_toolbar">
     <div id="kt_toolbar_container" class="container-xxl d-flex flex-stack flex-wrap">
@@ -34,14 +35,12 @@
                 </div>
 
                 <div class="col-12 col-md-3">
-                    <input
-                        type="number"
+                    <input type="number"
                         class="form-control form-control-solid"
                         name="completion_year"
                         placeholder="Year (e.g. 2026)"
                         min="1900"
-                        max="2099"
-                    >
+                        max="2099">
                 </div>
 
                 <div class="col-6 col-md-1">
@@ -60,14 +59,13 @@
         </div>
 
         <!-- Research Results -->
-        <div class="row mt-5" id="research-results">
-            <!-- Placeholder / Results injected via JS -->
+       <div class="row mt-5" id="research-results">
+
         </div>
 
     </div>
 </div>
 
-{{-- Pass auth info to JS --}}
 <script>
     var isLoggedIn = @json(Auth::check());
 </script>
@@ -76,8 +74,31 @@
 <script>
 $(document).ready(function() {
 
+    let debounceTimer;
+
+   function showSpinner() {
+        let html = '';
+
+        for (let i = 0; i < 3; i++) {
+            html += `
+            <div class="col-12 mb-4">
+                <div class="card p-4">
+                    <div class="skeleton mb-3" style="height:20px; width:60%;"></div>
+                    <div class="skeleton mb-2" style="height:15px; width:40%;"></div>
+                    <div class="skeleton mb-2" style="height:15px; width:30%;"></div>
+                    <div class="skeleton" style="height:15px; width:80%;"></div>
+                </div>
+            </div>`;
+        }
+
+        $('#research-results').html(html);
+    }
+
     function fetchResearch(page = 1) {
         let formData = $('#filter-form').serialize();
+
+        // Spinner ONLY when user triggers
+        showSpinner();
 
         $.ajax({
             url: "{{ route('search') }}?page=" + page,
@@ -107,7 +128,6 @@ $(document).ready(function() {
                         html += `
                         <div class="col-12 mb-4">
                             <div class="card border-0 shadow-sm h-100" style="border-radius: 16px;">
-
                                 <div class="card-body p-4">
 
                                     <div class="d-flex justify-content-between align-items-start mb-2">
@@ -117,8 +137,7 @@ $(document).ready(function() {
 
                                         ${item.abstract_path
                                             ? (isLoggedIn
-                                                ? `<a href="/research/download/${item.id}"
-                                                    class="btn btn-sm btn-danger rounded-pill px-3">
+                                                ? `<a href="/research/download/${item.id}" class="btn btn-sm btn-danger rounded-pill px-3">
                                                     <i class="fas fa-file-pdf me-1"></i> Download
                                                 </a>`
                                                 : `<span class="badge bg-danger-subtle text-danger px-3 py-2">
@@ -127,41 +146,35 @@ $(document).ready(function() {
                                             : `<span class="text-muted small"><em>No Abstract</em></span>`}
                                     </div>
 
-                                    <!-- Author & Year -->
                                     <div class="mb-2 text-muted small d-flex align-items-center gap-2">
                                         <span><strong>Author's:</strong> ${item.author ?? 'N/A'}</span>
                                         <span>•</span>
                                         <span><strong>Year:</strong> ${item.completion_year ?? 'N/A'}</span>
                                     </div>
 
-                                    <!-- Keywords with copy button -->
                                     <div class="mb-3 d-flex align-items-center gap-2 position-relative">
                                         <span class="text-muted" id="keywords-${item.id}">
                                             ${item.keywords ? item.keywords : 'No keywords available.'}
                                         </span>
-                                        <button class="btn btn-sm btn-outline-secondary copy-keywords" data-target="#keywords-${item.id}" title="Copy Keywords">
+                                        <button class="btn btn-sm btn-outline-secondary copy-keywords" data-target="#keywords-${item.id}">
                                             <i class="fas fa-copy"></i>
                                         </button>
 
-                                        <!-- Copy feedback (hidden, will show near button) -->
                                         <span class="copy-feedback position-absolute text-success small fw-bold" style="top:-20px; right:0; display:none;">
                                             Copied!
                                         </span>
                                     </div>
 
-                                    <!-- Publication & Campus badges -->
                                     <div class="d-flex flex-wrap gap-2">
                                         ${item.publication
                                             ? `<span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">
                                                 ${item.publication}
-                                            </span>`
-                                            : ''}
+                                            </span>` : ''}
 
                                         ${item.campus
                                             ? `<span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">
                                                 ${item.campus.name}
-                                            </span>`
-                                            : ''}
+                                            </span>` : ''}
                                     </div>
 
                                 </div>
@@ -190,20 +203,18 @@ $(document).ready(function() {
         });
     }
 
-    // Submit form
+    // Submit
     $('#filter-form').on('submit', function(e) {
         e.preventDefault();
         fetchResearch();
     });
 
-    // Live search (title)
-    $('input[name="title"]').on('keyup', function() {
-        fetchResearch();
-    });
-
-    // Live search (year)
-    $('input[name="completion_year"]').on('keyup', function() {
-        fetchResearch();
+    // Debounce typing
+    $('input[name="title"], input[name="completion_year"]').on('keyup', function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            fetchResearch();
+        }, 400);
     });
 
     // Campus filter
@@ -224,7 +235,7 @@ $(document).ready(function() {
         if (page) fetchResearch(page);
     });
 
-    // Copy keywords to clipboard with feedback near button
+    // Copy keywords
     $(document).on('click', '.copy-keywords', function() {
         const target = $(this).data('target');
         const text = $(target).text().trim();
@@ -234,11 +245,10 @@ $(document).ready(function() {
 
         navigator.clipboard.writeText(text).then(() => {
             $feedback.fadeIn(150).delay(800).fadeOut(150);
-        }).catch(err => console.error('Failed to copy: ', err));
+        });
     });
 
-    // Initial fetch
-    fetchResearch();
+
 
 });
 </script>
