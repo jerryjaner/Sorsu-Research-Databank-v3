@@ -16,11 +16,7 @@ use Illuminate\Http\Request;
 
 class AdminAccountProfileController extends Controller
 {
-    /**
-     * ===============================
-     * SHARED STATS
-     * ===============================
-     */
+
      /**
      * ===============================
      * SHARED STATS

@@ -299,7 +299,7 @@ class UserAccountController extends Controller
                                 </td>
 
                                 <td class="p-0">
-                                    <span class="text-gray-800 fs-5">' . ucfirst($user->email) . '</span>
+                                    <span class="text-gray-800 fs-5">' . $user->email . '</span>
                                 </td>
                                 <td class="p-0">
                                     <span class="text-gray-800 fs-5">' . ucfirst($user->profile->address) . '</span>

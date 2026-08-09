@@ -44,7 +44,19 @@ class ResearchController extends Controller
      */
     public function index()
     {
-        $campuses = Campus::all();
+
+        // $campuses = Campus::all();
+         $user = auth()->user();
+
+        if ($user->hasRole('super-admin')) {
+            // Super admin sees all campuses
+            $campuses = Campus::all();
+        }
+       else {
+           // Other admins see only their assigned campus
+            $campuses = Campus::where('id', $user->campus_id)->get();
+        }
+
         return view('admin.research.index', compact('campuses'));
     }
 
