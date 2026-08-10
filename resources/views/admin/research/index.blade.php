@@ -880,6 +880,8 @@
             //         });
             //     });
             // });
+
+
 $(document).ready(function() {
     $.ajaxSetup({
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
@@ -1136,6 +1138,46 @@ $(document).ready(function() {
         $(this).find('input, textarea').val('');
         $(this).find('button[data-url]').removeData('url');
     });
+
+    $(document).on('click', '.research_delete', function() {
+        const id = $(this).data('id');
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (!result.isConfirmed) return;
+
+            $.ajax({
+                url: "/researches/delete/" + id,
+                method: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: id // pass the ID in the request body
+                },
+                success: function() {
+                    GetResearchRecord(); // refresh the table
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Research Deleted Successfully',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                },
+                error: function(xhr) {
+                    let message = xhr.responseJSON?.message ||
+                        'Something went wrong.';
+                    Swal.fire('Error', message, 'error');
+                }
+            });
+        });
+    });
+
+
 });
 </script>
 @endpush
