@@ -57,7 +57,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             # Navigate to project folder on Hostinger
-            cd domains/skyblue-lapwing-383377.hostingersite.com
+            cd domains/sorsureda.com
             # Pull latest code from repo
             git pull
             # Install PHP dependencies on server
@@ -77,5 +77,5 @@ jobs:
       # Step 10: Sync frontend build folder to Hostinger
       - name: Copy Build Files to Target Server
         run: |
-          rsync -r -e "ssh -p ${{ secrets.SSH_PORT }}" ${{ github.workspace }}/public/build/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/domains/skyblue-lapwing-383377.hostingersite.com/public/build
+          rsync -r -e "ssh -p ${{ secrets.SSH_PORT }}" ${{ github.workspace }}/public/build/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/domains/sorsureda.com/public/build
         # Ensures the latest compiled assets are deployed
