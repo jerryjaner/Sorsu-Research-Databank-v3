@@ -5,7 +5,7 @@
 
 @section('breadcrumb')
 <li class="breadcrumb-item text-muted">
-    <a href="{{ route('homepage') }}" class="text-muted text-hover-primary">Home</a>
+    <a href="{{ route('admin.dashboard') }}" class="text-muted text-hover-primary">Home</a>
 </li>
 <li class="breadcrumb-item text-dark">College</li>
 @endsection
