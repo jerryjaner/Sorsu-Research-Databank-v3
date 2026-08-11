@@ -5,7 +5,6 @@ namespace App\Http\Requests\Admin\Department;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class DepartmentUpdateRequest extends FormRequest
@@ -25,32 +24,24 @@ class DepartmentUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        $departmentId = $this->route('department'); // matches your route parameter
+       $id = $this->route('college');
 
         return [
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('departments', 'name')->ignore($departmentId),
-            ],
-            'campus_id' => [
-                'required',
-                'exists:campuses,id',
-            ],
+            'name' => ['required', 'string', 'max:255', 'unique:departments,name,'.$id],
+            'campus_id' => ['required', 'exists:campuses,id']
         ];
     }
 
-        /**
-        * Custom validation messages.
-        */
+    /**
+     * Custom validation messages.
+     */
     public function messages(): array
     {
         return [
             'name.required' => 'College name is required.',
-            'name.string'   => 'College name must be a valid string.',
-            'name.max'      => 'College name cannot exceed 255 characters.',
-            'name.unique'   => 'This college name is already taken.',
+            'name.string' => 'College name must be a valid string.',
+            'name.max' => 'College name cannot exceed 255 characters.',
+            'name.unique' => 'This college name is already taken.',
             'campus_id.required' => 'Campus selection is required.',
             'campus_id.exists' => 'Selected campus does not exist.',
         ];
@@ -59,17 +50,16 @@ class DepartmentUpdateRequest extends FormRequest
     /**
      * Handle a failed validation attempt.
      *
-     * @param  \Illuminate\Contracts\Validation\Validator  $validator
      * @return void
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     protected function failedValidation(Validator $validator)
     {
         $response = response()->json([
             'status' => 422,
-            'error' => $validator->errors()->toArray()
-        ]);
+            'errors' => $validator->errors()->toArray(),
+        ], 422);
 
         throw new ValidationException($validator, $response);
     }

@@ -4,10 +4,10 @@
 @section('page-title', 'College Management')
 
 @section('breadcrumb')
-<li class="breadcrumb-item text-muted">
-    <a href="{{ route('admin.dashboard') }}" class="text-muted text-hover-primary">Home</a>
-</li>
-<li class="breadcrumb-item text-dark">College</li>
+    <li class="breadcrumb-item text-muted">
+        <a href="{{ route('admin.dashboard') }}" class="text-muted text-hover-primary">Home</a>
+    </li>
+    <li class="breadcrumb-item text-dark">College</li>
 @endsection
 @section('content')
     <div class="container" id="kt_content_container">
@@ -86,9 +86,9 @@
                     <div class="card-body py-0">
                         <div id="all_college">
                             {{-- <div class="text-center py-5">
-                                <span class="spinner-border text-primary"></span>
-                                <div class="mt-2">Loading...</div>
-                            </div> --}}
+                            <span class="spinner-border text-primary"></span>
+                            <div class="mt-2">Loading...</div>
+                        </div> --}}
                         </div>
                     </div>
                 </div>
@@ -150,8 +150,8 @@
                 // }
 
                 function GetCollegeRecord(search = '') {
-    // Show skeleton loader first
-    $("#all_college").html(`
+                    // Show skeleton loader first
+                    $("#all_college").html(`
         <div class="table-responsive">
             <table class="table align-middle table-row-bordered table-row-dashed gy-5 all_campuses_table">
                 <thead>
@@ -165,45 +165,51 @@
                 </thead>
                 <tbody>
                     ${Array(5).fill().map(_ => `
-                        <tr>
-                            <td><div class="skeleton skeleton-checkbox"></div></td>
-                            <td><div class="skeleton skeleton-text"></div></td>
-                            <td><div class="skeleton skeleton-text"></div></td>
-                            <td><div class="skeleton skeleton-text"></div></td>
-                            <td><div class="skeleton skeleton-button"></div></td>
-                        </tr>
-                    `).join('')}
+                                <tr>
+                                    <td><div class="skeleton skeleton-checkbox"></div></td>
+                                    <td><div class="skeleton skeleton-text"></div></td>
+                                    <td><div class="skeleton skeleton-text"></div></td>
+                                    <td><div class="skeleton skeleton-text"></div></td>
+                                    <td><div class="skeleton skeleton-button"></div></td>
+                                </tr>
+                            `).join('')}
                 </tbody>
             </table>
         </div>
     `);
 
-    // AJAX request
-    $.ajax({
-        url: '{{ route('admin.college.fetch') }}',
-        method: 'GET',
-        data: { search: search },
-        success: function(response) {
-            $("#all_college").html(response);
+                    // AJAX request
+                    $.ajax({
+                        url: '{{ route('admin.college.fetch') }}',
+                        method: 'GET',
+                        data: {
+                            search: search
+                        },
+                        success: function(response) {
+                            $("#all_college").html(response);
 
-            // Initialize DataTable if table exists
-            if ($("#kt_table_widget_1").length) {
-                $("#kt_table_widget_1").DataTable({
-                    "order": [[1, "asc"]],
-                    "destroy": true,
-                    "language": { "lengthMenu": "Show _MENU_" }
-                });
-            }
-        },
-        error: function(xhr) {
-            $("#all_college").html(`
+                            // Initialize DataTable if table exists
+                            if ($("#kt_table_widget_1").length) {
+                                $("#kt_table_widget_1").DataTable({
+                                    "order": [
+                                        [1, "asc"]
+                                    ],
+                                    "destroy": true,
+                                    "language": {
+                                        "lengthMenu": "Show _MENU_"
+                                    }
+                                });
+                            }
+                        },
+                        error: function(xhr) {
+                            $("#all_college").html(`
                 <div class="text-center py-5 text-danger">
                     Failed to load colleges. Please try again.
                 </div>
             `);
-        }
-    });
-}
+                        }
+                    });
+                }
 
                 // Initial load
                 GetCollegeRecord();
@@ -215,116 +221,383 @@
                 });
 
 
-                // CREATE / UPDATE Department with spinner even on empty fields
+                // // CREATE / UPDATE Department with spinner even on empty fields
+                // $('#DepartmentForm').on('submit', function(e) {
+                //     e.preventDefault();
+
+                //     const form = this;
+                //     const id = $('#department_id').val();
+
+                //     let url = "{{ route('admin.college.store') }}"; // replace with your route
+                //     let method = "POST";
+                //     if (id) {
+                //         url = "/college/" + id; // update route
+                //         method = "POST";
+                //     }
+
+                //     let formData = new FormData(form);
+                //     if (id) formData.append('_method', 'PUT');
+
+                //     // ✅ Show spinner immediately
+                //     $('#department_save_button')
+                //         .html('please wait <span class="spinner-border spinner-border-sm ms-2"></span>')
+                //         .prop('disabled', true);
+
+                //     // Clear previous errors
+                //     $(form).find('span.error-text').text('');
+
+                //     // Slight delay to show spinner even for empty validation
+                //     setTimeout(function() {
+                //         // Client-side validation
+                //         let name = $('#department_name').val().trim();
+                //         let campus_id = $('#campus_id').val();
+                //         let hasError = false;
+
+                //         if (name === '') {
+                //             $('.name_error').text('College name is required');
+                //             hasError = true;
+                //         }
+                //         if (!campus_id) {
+                //             $('.campus_id_error').text('Campus selection is required');
+                //             hasError = true;
+                //         }
+
+                //         if (hasError) {
+                //             // Stop submission but keep spinner visible briefly
+                //             $('#department_save_button')
+                //                 .html(id ? 'Update College' : 'Save College')
+                //                 .prop('disabled', false);
+                //             return;
+                //         }
+
+                //         // If validation passes, send AJAX
+                //         $.ajax({
+                //             url: url,
+                //             method: method,
+                //             data: formData,
+                //             processData: false,
+                //             contentType: false,
+                //             dataType: 'json',
+
+                //             success: function(response) {
+                //                 form.reset();
+                //                 $('#department_id').val('');
+                //                 $('#department_cancel_button').hide();
+                //                 $('#department_save_button')
+                //                     .text('Save College')
+                //                     .prop('disabled', false);
+
+                //                 GetCollegeRecord(); // refresh table
+
+                //                 Swal.fire({
+                //                     icon: 'success',
+                //                     title: id ? 'College Updated Successfully' :
+                //                         'College Created Successfully',
+                //                     showConfirmButton: false,
+                //                     timer: 2000
+                //                 });
+                //             },
+
+                //             error: function(xhr) {
+                //                 $('#department_save_button')
+                //                     .text(id ? 'Update College' : 'Save College')
+                //                     .prop('disabled', false);
+
+                //                 if (xhr.status === 422) {
+                //                     let errors = xhr.responseJSON.errors;
+                //                     $.each(errors, function(key, val) {
+                //                         $(form).find('.' + key + '_error').text(val[
+                //                             0]);
+                //                     });
+                //                 } else if (xhr.status === 403) {
+                //                     Swal.fire('Permission Denied', xhr.responseJSON
+                //                         ?.message || 'You do not have permission.',
+                //                         'error');
+                //                 } else {
+                //                     Swal.fire('Error',
+                //                         'Something went wrong. Please try again.',
+                //                         'error');
+                //                 }
+                //             }
+                //         });
+                //     }, 200); // small delay to let spinner appear
+                // });
+
+                // =========================================================
+                // CREATE / UPDATE COLLEGE
+                // =========================================================
+
                 $('#DepartmentForm').on('submit', function(e) {
+
                     e.preventDefault();
 
                     const form = this;
                     const id = $('#department_id').val();
 
-                    let url = "{{ route('admin.college.store') }}"; // replace with your route
-                    let method = "POST";
+                    // ---------------------------------------------------------
+                    // Determine URL
+                    // ---------------------------------------------------------
+
+                    let url = "{{ route('admin.college.store') }}";
+
                     if (id) {
-                        url = "/college/" + id; // update route
-                        method = "POST";
+                        url = "{{ route('admin.college.update', ['college' => '__ID__']) }}"
+                            .replace('__ID__', id);
                     }
 
-                    let formData = new FormData(form);
-                    if (id) formData.append('_method', 'PUT');
 
-                    // ✅ Show spinner immediately
+                    // ---------------------------------------------------------
+                    // FormData
+                    // ---------------------------------------------------------
+
+                    let formData = new FormData(form);
+
+                    // Laravel method spoofing for PUT
+                    if (id) {
+                        formData.append('_method', 'PUT');
+                    }
+
+
+                    // ---------------------------------------------------------
+                    // Show loading spinner
+                    // ---------------------------------------------------------
+
                     $('#department_save_button')
-                        .html('please wait <span class="spinner-border spinner-border-sm ms-2"></span>')
+                        .html(`Please wait <span class="spinner-border spinner-border-sm ms-2"></span>`)
                         .prop('disabled', true);
 
-                    // Clear previous errors
-                    $(form).find('span.error-text').text('');
 
-                    // Slight delay to show spinner even for empty validation
+                    // ---------------------------------------------------------
+                    // Clear previous validation errors
+                    // ---------------------------------------------------------
+
+                    $(form)
+                        .find('.error-text')
+                        .text('');
+
+
+                    // ---------------------------------------------------------
+                    // Client-side validation
+                    // ---------------------------------------------------------
+
                     setTimeout(function() {
-                        // Client-side validation
+
                         let name = $('#department_name').val().trim();
-                        let campus_id = $('#campus_id').val();
+                        let campusId = $('#campus_id').val();
+
                         let hasError = false;
 
+
+                        // College name
                         if (name === '') {
-                            $('.name_error').text('College name is required');
-                            hasError = true;
-                        }
-                        if (!campus_id) {
-                            $('.campus_id_error').text('Campus selection is required');
+
+                            $('.name_error')
+                                .text('College name is required.');
+
                             hasError = true;
                         }
 
+                        // Campus
+                        if (!campusId) {
+
+                            $('.campus_id_error')
+                                .text('Campus selection is required.');
+
+                            hasError = true;
+                        }
+
+                        // Stop if client-side validation failed
                         if (hasError) {
-                            // Stop submission but keep spinner visible briefly
+
                             $('#department_save_button')
                                 .html(id ? 'Update College' : 'Save College')
                                 .prop('disabled', false);
+
                             return;
                         }
 
-                        // If validation passes, send AJAX
+                        // -----------------------------------------------------
+                        // AJAX REQUEST
+                        // -----------------------------------------------------
+
                         $.ajax({
+
                             url: url,
-                            method: method,
+
+                            method: 'POST',
+
                             data: formData,
+
                             processData: false,
+
                             contentType: false,
+
                             dataType: 'json',
 
+
+                            // -------------------------------------------------
+                            // SUCCESS
+                            // -------------------------------------------------
+
                             success: function(response) {
+
+                                // Reset form
                                 form.reset();
+
+                                // Remove department ID
                                 $('#department_id').val('');
+
+                                // Hide cancel button
                                 $('#department_cancel_button').hide();
+
+                                // Reset save button
                                 $('#department_save_button')
                                     .text('Save College')
                                     .prop('disabled', false);
 
-                                GetCollegeRecord(); // refresh table
+                                // Clear validation errors
+                                $(form)
+                                    .find('.error-text')
+                                    .text('');
 
+                                // Refresh table
+                                GetCollegeRecord();
+
+
+                                // Success notification
                                 Swal.fire({
+
                                     icon: 'success',
-                                    title: id ? 'College Updated Successfully' :
+
+                                    title: id ?
+                                        'College Updated Successfully' :
                                         'College Created Successfully',
+
                                     showConfirmButton: false,
+
                                     timer: 2000
                                 });
                             },
 
+
+                            // -------------------------------------------------
+                            // ERROR
+                            // -------------------------------------------------
+
                             error: function(xhr) {
+
+                                // Reset button
                                 $('#department_save_button')
                                     .text(id ? 'Update College' : 'Save College')
                                     .prop('disabled', false);
 
+
+                                // =============================================
+                                // VALIDATION ERROR - 422
+                                // =============================================
+
                                 if (xhr.status === 422) {
-                                    let errors = xhr.responseJSON.errors;
-                                    $.each(errors, function(key, val) {
-                                        $(form).find('.' + key + '_error').text(val[
-                                            0]);
+
+
+
+                                    let errors = xhr.responseJSON?.errors || {};
+
+
+                                    $.each(errors, function(key, messages) {
+
+                                        $(form)
+                                            .find('.' + key + '_error')
+                                            .text(messages[0]);
                                     });
-                                } else if (xhr.status === 403) {
-                                    Swal.fire('Permission Denied', xhr.responseJSON
-                                        ?.message || 'You do not have permission.',
-                                        'error');
-                                } else {
-                                    Swal.fire('Error',
-                                        'Something went wrong. Please try again.',
-                                        'error');
+
+
+                                    return;
                                 }
+
+
+                                // =============================================
+                                // PERMISSION ERROR - 403
+                                // =============================================
+
+                                if (xhr.status === 403) {
+
+                                    Swal.fire(
+
+                                        'Permission Denied',
+
+                                        xhr.responseJSON?.message ||
+                                        'You do not have permission to perform this action.',
+
+                                        'error'
+                                    );
+
+                                    return;
+                                }
+
+
+                                // =============================================
+                                // NOT FOUND - 404
+                                // =============================================
+
+                                if (xhr.status === 404) {
+
+                                    Swal.fire(
+                                        'Not Found',
+                                        'The college could not be found.',
+                                        'error'
+                                    );
+                                    return;
+                                }
+
+
+                                // =============================================
+                                // SERVER ERROR
+                                // =============================================
+
+                                Swal.fire(
+                                    'Error',
+                                    xhr.responseJSON?.message ||
+                                    'Something went wrong. Please try again.',
+                                    'error'
+                                );
                             }
                         });
-                    }, 200); // small delay to let spinner appear
+                    }, 200);
                 });
 
+
+
+                // // CANCEL
+                // $('#department_cancel_button').on('click', function() {
+                //     $('#DepartmentForm')[0].reset();
+                //     $('#department_id').val('');
+                //     $(this).hide();
+                //     $('#department_save_button').text('Save College');
+                // });
 
                 // CANCEL
                 $('#department_cancel_button').on('click', function() {
+
+                    // Reset form fields
                     $('#DepartmentForm')[0].reset();
+
+                    // Clear department ID
                     $('#department_id').val('');
+
+                    // Clear validation error messages
+                    $('#DepartmentForm')
+                        .find('.error-text')
+                        .text('');
+
+                    // Hide cancel button
                     $(this).hide();
-                    $('#department_save_button').text('Save College');
+
+                    // Reset save button
+                    $('#department_save_button')
+                        .text('Save College')
+                        .prop('disabled', false);
                 });
+
 
                 // EDIT
                 $(document).on('click', '.department_edit', function() {

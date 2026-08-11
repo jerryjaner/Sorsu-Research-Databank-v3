@@ -57,8 +57,8 @@ class DepartmentStoreRequest extends FormRequest
     {
         $response = response()->json([
             'status' => 422,
-            'error' => $validator->errors()->toArray()
-        ]);
+            'errors' => $validator->errors()->toArray(),
+        ], 422);
 
         throw new ValidationException($validator, $response);
     }
