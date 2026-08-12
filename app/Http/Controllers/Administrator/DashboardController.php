@@ -23,7 +23,7 @@ class DashboardController extends Controller
             'sorsogon-admin' => 'Sorsogon State University - Sorsogon Campus',
             'magallanes-admin' => 'Sorsogon State University - Magallanes Campus',
             'castilla-admin' => 'Sorsogon State University - Castilla Campus',
-            'graduate-admin' => 'Sorsogon State University - Graduate Studies Campus',
+            'graduate-admin' => 'Sorsogon State University - Graduate Studies',
         ];
 
         if ($user->hasRole('super-admin')) {

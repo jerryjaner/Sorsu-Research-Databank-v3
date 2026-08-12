@@ -18,7 +18,7 @@ class CampusSeeder extends Seeder
             'Sorsogon State University - Sorsogon Campus',
             'Sorsogon State University - Magallanes Campus',
             'Sorsogon State University - Castilla Campus',
-            'Sorsogon State University - Graduate Studies Campus'
+            'Sorsogon State University - Graduate Studies'
         ];
 
         foreach ($campuses as $campusName) {

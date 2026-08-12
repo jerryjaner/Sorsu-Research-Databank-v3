@@ -161,7 +161,7 @@ class UserAccountController extends Controller
             $campus = Campus::find($request->campus_id);
 
             // If the campus is NOT Graduate Studies, department is required
-            if ($campus && $campus->name !== 'Sorsogon State University - Graduate Studies Campus') {
+            if ($campus && $campus->name !== 'Sorsogon State University - Graduate Studies') {
                 if (empty($request->department_id)) {
                     $validator->errors()->add(
                         'department_id',
@@ -435,7 +435,7 @@ class UserAccountController extends Controller
         $validator->after(function ($validator) use ($request) {
             $campus = Campus::find($request->campus_id);
 
-            if ($campus && $campus->name !== 'Sorsogon State University - Graduate Studies Campus') {
+            if ($campus && $campus->name !== 'Sorsogon State University - Graduate Studies') {
                 if (empty($request->department_id)) {
                     $validator->errors()->add(
                         'department_id',

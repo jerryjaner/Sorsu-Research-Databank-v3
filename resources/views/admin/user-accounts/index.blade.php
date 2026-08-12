@@ -26,7 +26,7 @@
                                 Complete the steps below to create a new user account. Ensure all information is accurate, set secure login credentials, and assign the appropriate role before submitting.
                             </p>
                             <p class="mb-0 text-info">
-                                Note: Selecting a College is <strong>optional</strong> for the Graduate Studies Campus.
+                                Note: Selecting a College is <strong>optional</strong> for the Graduate Studies.
                             </p>
                         </div>
                     </div>

@@ -46,12 +46,12 @@ class ResearchUpdateRequest extends FormRequest
     {
         $validator->sometimes('department_id', 'required', function ($input) {
             $campus = Campus::find($input->campus_id);
-            return $campus && $campus->name !== 'Sorsogon State University - Graduate Studies Campus';
+            return $campus && $campus->name !== 'Sorsogon State University - Graduate Studies';
         });
 
         $validator->after(function ($validator) {
             $campus = Campus::find($this->campus_id);
-            if ($campus && $campus->name === 'Sorsogon State University - Graduate Studies Campus') {
+            if ($campus && $campus->name === 'Sorsogon State University - Graduate Studies') {
                 $validator->errors()->forget('department_id');
             }
         });
